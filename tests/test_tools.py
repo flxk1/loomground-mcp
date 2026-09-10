@@ -7,7 +7,7 @@ import json
 
 from mcp import Client
 
-from conftest import PATCH, TRANSPORT, call
+from conftest import PATCH, SOLVER_SAMPLES, TRANSPORT, call
 from loomground_mcp import build_server
 from loomground_mcp.tools import ALL
 
@@ -17,7 +17,7 @@ def test_lists_every_tool_with_plane_and_function():
         async with Client(build_server()) as client:
             return (await client.list_tools()).tools
     tools = asyncio.run(go())
-    assert len(tools) == len(ALL) >= 15
+    assert len(tools) == len(ALL) == 34
     assert all(t.description.startswith("[") and " · " in t.description for t in tools)
     assert "patch_lg" in next(t for t in tools if t.name == "solver_evaluate").input_schema["properties"]
 
@@ -50,6 +50,87 @@ def test_versum_search(policy_folder):
     assert [h["snippet"] for h in env["result"]["hits"]] == ["The operator may retain invoices for ten years."]
 
 
+def test_versum_capture(policy_folder, tmp_path):
+    src = tmp_path / "inbox"; src.mkdir()
+    (src / "policy.md").write_text("The controller must notify the authority within 72 hours.\n", encoding="utf-8")
+    env = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "policy.md"), "profile": "law-eu"})
+    r = env["result"]
+    assert env["ok"] and r["status"] == "admitted" and r["claim_count"] == 1 and r["urn"].startswith("urn:")
+    assert r["index"]["n_sources"] == 2  # policy.txt already in the folder + the admitted source
+    again = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "policy.md"), "profile": "law-eu"})
+    assert again["result"]["status"] == "duplicate" and again["result"]["admitted"] is False
+    (src / "table.csv").write_text("a,b\n", encoding="utf-8")
+    bad = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "table.csv")})
+    assert bad["ok"] is False and bad["error"]["type"] == "CaptureError"
+
+
+def test_versum_suggest(corpus_folder):
+    assert call("versum_suggest", {"folder": corpus_folder})["unavailable"] is True
+    call("versum_index", {"folder": corpus_folder, "profile": "law-eu"})
+    env = call("versum_suggest", {"folder": corpus_folder, "min_sources": 2})
+    r = env["result"]
+    assert r["n_suggested_concepts"] >= 1 and r["cross_source"] >= 1
+    cand = next(c for c in r["candidates"] if c["concept_id"] == "personal-data")
+    assert cand["n_sources"] == 2 and cand["seed"] == "definition"
+    assert call("versum_suggest", {"folder": corpus_folder, "min_sources": 3})["result"]["candidates"] == []
+
+
+def test_versum_confirm(corpus_folder):
+    call("versum_index", {"folder": corpus_folder, "profile": "law-eu"})
+    assert call("versum_confirm", {"folder": corpus_folder})["unavailable"] is True  # no queue yet
+    call("versum_suggest", {"folder": corpus_folder})
+    env = call("versum_confirm", {"folder": corpus_folder, "min_sources": 2})
+    assert env["result"]["concept_ids"] == ["personal-data"] and env["result"]["n_edges"] >= 2
+    import os
+    assert os.path.isfile(os.path.join(corpus_folder, ".versum", "concepts.csv"))
+    none = call("versum_confirm", {"folder": corpus_folder, "concept_ids": ["not-a-concept"]})
+    assert none["result"] == {"n_concepts": 0, "n_edges": 0, "concept_ids": []}
+
+
+def test_versum_canon(corpus_folder, tmp_path):
+    assert call("versum_canon", {"folder": corpus_folder})["unavailable"] is True
+    call("versum_index", {"folder": corpus_folder, "profile": "law-eu"})
+    env = call("versum_canon", {"folder": corpus_folder})
+    r = env["result"]
+    assert r["layout"] == "index" and r["n_sources"] == 2 and r["n_concepts"] >= 1
+    import csv, os
+    kg = tmp_path / "kg" / "by-domain" / "dom-a"; kg.mkdir(parents=True)
+    cols = ["canonical_urn", "library", "item_id", "source_urn", "text", "polarity", "predicate", "modality", "quantification"]
+    with (kg / "claims.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=cols); w.writeheader()
+        w.writerow(dict(zip(cols, ["urn:x:1", "lib", "i1", "urn:x:1", "A 'processor' duty.", "N", "obligation", "req", "null"])))
+        w.writerow(dict(zip(cols, ["urn:x:2", "lib", "i2", "urn:x:2", "The 'processor' duty recurs.", "N", "obligation", "req", "null"])))
+    env = call("versum_canon", {"folder": str(tmp_path / "kg")})
+    assert env["result"]["layout"] == "kg" and env["result"]["n_domains"] == 1 and env["result"]["n_concepts"] == 1
+    assert os.path.isfile(tmp_path / "kg" / "canon.json")
+    assert call("versum_canon", {"folder": str(kg)})["result"]["layout"] == "domain"
+
+
+# deontic
+
+def test_deontic_parse():
+    env = call("deontic_parse", {"statement": "if [the contract has ended] then O(operator : delete personal data) unless [a legal hold applies]"})
+    r = env["result"]
+    assert env["plane"] == "loomground-deontic" and r["operator"] == "O" and r["bearer"] == "operator"
+    assert r["condition"] == "the contract has ended" and r["exception"] == "a legal hold applies" and r["negated"] is False
+    assert r["formula"] == "if [the contract has ended] then O(operator : delete personal data) unless [a legal hold applies]"
+    assert r["round_trip"] is True and r["validation"] == {"ok": True, "errors": []}
+    bad = call("deontic_parse", {"statement": "the operator should probably delete data"})
+    assert bad["ok"] is False and bad["error"]["type"] == "DeonticSyntaxError"
+
+
+def test_deontic_conflicts():
+    env = call("deontic_conflicts", {"statements": ["O(operator : transfer personal data)",
+                                                    "F(operator : transfer personal data)",
+                                                    "P(operator : retain invoices)"]})
+    r = env["result"]
+    assert r["n_statements"] == 3 and len(r["candidates"]) == 1
+    c = r["candidates"][0]
+    assert c["predicate"] == "may-conflict-with" and c["resolution"] == "candidate-escalate"
+    assert (c["operator_a"], c["operator_b"]) == ("O", "F") and c["action"] == "transfer personal data"
+    assert call("deontic_conflicts", {"statements": ["O(a : x)", "F(a : ¬ x)"]})["result"]["candidates"] == []
+
+
 # solver
 
 def test_solver_evaluate():
@@ -70,6 +151,59 @@ def test_solver_verify():
 def test_solver_manifest():
     env = call("solver_manifest")
     assert env["ok"] and env["result"]["protocol"] and "capabilities" in env["result"]
+
+
+def _skill(tool):
+    env = call(tool, SOLVER_SAMPLES[tool][2])
+    assert env["ok"] and env["plane"] == "loomground-solver"
+    return env["result"]
+
+
+def test_solver_analyse_risks():
+    r = _skill("solver_analyse_risks")
+    assert r["method"] == "pareto" and r["result"]["ranking"] == ["data-breach", "vendor-lock-in", "typo-in-footer"]
+    assert r["result"]["scores"]["typo-in-footer"] == 0.0
+    over = call("solver_analyse_risks", {"method": "lexicographic", "vectors": {"a": [1, 9], "b": [2, 0]}, "extra": {"order": [1, 0]}})
+    assert over["result"]["method"] == "lexicographic" and over["result"]["result"]["choice"] == "a"
+
+
+def test_solver_estimate_liability():
+    r = _skill("solver_estimate_liability")
+    assert r["method"] == "bayesian_update" and r["result"]["choice"] == "liable"
+    assert r["result"]["scores"] == {"liable": 0.658537, "not-liable": 0.341463}
+
+
+def test_solver_litigation_risk():
+    r = _skill("solver_litigation_risk")
+    assert r["method"] == "expected_utility" and r["result"]["choice"] == "settle"
+    assert r["result"]["scores"] == {"fight": -8.0, "settle": 20.0}
+
+
+def test_solver_opponent_model():
+    r = _skill("solver_opponent_model")
+    assert r["method"] == "expected_utility" and r["result"]["choice"] == "escalate"
+    cautious = call("solver_opponent_model", {**SOLVER_SAMPLES["solver_opponent_model"][2], "method": "maximin"})
+    assert cautious["result"]["result"]["choice"] == "concede"
+
+
+def test_solver_probability():
+    r = _skill("solver_probability")
+    assert r["result"]["scores"]["delay"] == 0.727273 and r["result"]["choice"] == "delay"
+
+
+def test_solver_strategy():
+    r = _skill("solver_strategy")
+    assert r["method"] == "minimax_regret" and r["result"]["choice"] == "buy" and r["result"]["scores"] == {"build": 40.0, "buy": 30.0}
+
+
+def test_solver_advise_addons():
+    r = _skill("solver_advise_addons")
+    assert r["schema"] == "solver.addon-advice.v1" and r["activation_performed"] is False
+    wm, meta = r["recommendations"]
+    assert wm["addon"] == "world_model" and wm["recommended"] is True and wm["authorization_required"] is True
+    assert meta["addon"] == "metacognition" and meta["eligible"] is False
+    bad = call("solver_advise_addons", {"policy": {"world_model": {"mode": "always"}}})
+    assert bad["ok"] is False and bad["error"]["type"] == "ValueError"
 
 
 # ingest

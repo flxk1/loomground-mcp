@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 flxk1
-"""loomground-versum: index a folder, read its span-anchored claims, search them."""
+"""loomground-versum: index a folder, read its span-anchored claims, search them; admit one source, curate
+(suggest → confirm) and build the coordinate canon."""
 import csv
 from pathlib import Path
 from typing import Any, Optional
@@ -22,6 +23,13 @@ def _claims_path(folder: str) -> Path:
     p = _folder(folder) / ".versum" / "claims.csv"
     if not p.is_file():
         raise Unavailable(f"{folder} has no .versum/claims.csv; run versum_index first")
+    return p
+
+
+def _queue_path(folder: str) -> Path:
+    p = _folder(folder) / ".versum" / "curation" / "suggested_concepts.csv"
+    if not p.is_file():
+        raise Unavailable(f"{folder} has no .versum/curation queue; run versum_suggest first")
     return p
 
 
@@ -74,4 +82,48 @@ def versum_search(folder: str, query: str, k: int = 10, filters: Optional[dict[s
     return {"layout": "index", "retrieval": "bm25", "hits": hits}
 
 
-TOOLS = [versum_index, versum_claims, versum_search]
+@tool(PLANE, "versum.write.capture_file")
+def versum_capture(folder: str, source_path: str, profile: str = "generic") -> dict[str, Any]:
+    """Admit one local source (.txt/.md/.pdf) into <folder>: identity → dedupe → stub + sidecar → re-index. Returns the capture report (status admitted|duplicate, urn, claim_count, index); an unsupported or unreadable source is a CaptureError."""
+    from versum.write import capture_file
+    return capture_file(source_path, str(_folder(folder)), profile)
+
+
+@tool(PLANE, "versum.concept.curate.suggest_folder")
+def versum_suggest(folder: str, min_sources: int = 1) -> dict[str, Any]:
+    """Propose concepts from definitions and cross-source recurrence and link claims to them by mention, into <folder>/.versum/curation (never the graph). Returns the queue counts plus the candidates with at least `min_sources` distinct sources, for versum_confirm to pick from."""
+    from versum.concept.curate import suggest_folder
+    _claims_path(folder)
+    report = suggest_folder(str(_folder(folder)))
+    rows = _rows(_queue_path(folder))
+    for r in rows:
+        for k in ("n_claims", "n_sources"):
+            r[k] = int(r[k])
+    return {**report, "min_sources": min_sources, "candidates": [r for r in rows if r["n_sources"] >= min_sources]}
+
+
+@tool(PLANE, "versum.concept.curate.confirm_folder")
+def versum_confirm(folder: str, concept_ids: Optional[list[str]] = None, min_sources: int = 1) -> dict[str, Any]:
+    """Promote suggested concepts into <folder>/.versum/concepts.csv + semantic_edges.csv: an explicit `concept_ids` pick, else every candidate with at least `min_sources` sources (2 = convergent only). Requires versum_suggest first."""
+    from versum.concept.curate import confirm_folder
+    _queue_path(folder)
+    picked = {c.strip() for c in concept_ids if c.strip()} if concept_ids else None
+    return confirm_folder(str(_folder(folder)), min_sources, picked)
+
+
+@tool(PLANE, "versum.concept.canon.curate_kg / curate_domain_folder")
+def versum_canon(folder: str, config: Optional[str] = None, m_max: int = 1) -> dict[str, Any]:
+    """Cluster claims into the coordinate-identity canon and (over)write the concept tables. `config` (a sync config path) or a materialised KG root (`by-domain/`) curates the whole KG into canon.json + convergence.json; a by-domain folder (`claims.csv`) or a plain index (`.versum/claims.csv`) curates that one folder in place."""
+    from versum.concept.canon import curate_domain_folder, curate_kg
+    if config:
+        return {"layout": "kg", **curate_kg(config, m_max=m_max)}
+    root = _folder(folder)
+    if (root / "by-domain").is_dir():
+        return {"layout": "kg", **curate_kg({"kg_root": str(root)}, m_max=m_max)}
+    if (root / "claims.csv").is_file():
+        return {"layout": "domain", **curate_domain_folder(root, m_max=m_max)}
+    _claims_path(folder)
+    return {"layout": "index", **curate_domain_folder(root / ".versum", domain=root.name, m_max=m_max)}
+
+
+TOOLS = [versum_index, versum_claims, versum_search, versum_capture, versum_suggest, versum_confirm, versum_canon]

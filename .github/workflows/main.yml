@@ -18,4 +18,10 @@ jobs:
           cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -r requirements-dev.txt && python -m pip install -e ".[dev]"
+      # the solver skill scripts live in the loomground-solver checkout, not its wheel: fetch the pinned commit for the parity tests
+      - run: |
+          sha=$(sed -n 's#^loomground-solver @ git+https://github.com/flxk1/loomground-solver@\([0-9a-f]*\).*#\1#p' requirements-dev.txt)
+          git init -q solver-skills && git -C solver-skills fetch -q --depth 1 https://github.com/flxk1/loomground-solver "$sha" && git -C solver-skills checkout -q FETCH_HEAD
       - run: python -m pytest -q
+        env:
+          LOOMGROUND_SOLVER_SKILLS: ${{ github.workspace }}/solver-skills/skills

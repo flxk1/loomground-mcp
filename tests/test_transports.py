@@ -58,7 +58,7 @@ def test_sse_endpoint_and_tool_list(server):
                 out = await session.call_tool("solver_evaluate", {"patch_lg": PATCH, "transport_json": TRANSPORT})
                 return names, out.structured_content
     names, env = asyncio.run(go())
-    assert len(names) == len(ALL) >= 15 and env["result"]["trace"]["evaluation"]["transfer"]["verdict"] == "reserved"
+    assert len(names) == len(ALL) == 34 and env["result"]["trace"]["evaluation"]["transfer"]["verdict"] == "reserved"
 
 
 @pytest.mark.parametrize("server", ["streamable-http"], indirect=True)
@@ -68,4 +68,4 @@ def test_streamable_http_tool_list(server):
     async def go():
         async with Client(f"http://127.0.0.1:{port}/mcp") as client:
             return [t.name for t in (await client.list_tools()).tools]
-    assert len(asyncio.run(go())) == len(ALL) >= 15
+    assert len(asyncio.run(go())) == len(ALL) == 34

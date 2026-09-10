@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "loomground-mcp"
-description = "One MCP server exposing the Loomground planes as tools: versum, solver, ingest, the six operators and the assurance artifacts, over stdio or HTTP."
+description = "One MCP server exposing the Loomground planes as tools: versum, deontic, solver and its skills, ingest, operators and the assurance artifacts; stdio or HTTP."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
@@ -17,6 +17,7 @@ authors = [{ name = "Loomground Contributors" }]
 dependencies = [
     "mcp>=2,<3",
     "loomground-versum>=0.13,<0.14",
+    "loomground-deontic>=0.1,<0.2",
     "loomground-solver>=0.5,<0.6",
     "loomground-ingest>=0.2,<0.3",
     "loomground-brief>=0.1,<0.2",
