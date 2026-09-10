@@ -29,9 +29,9 @@ def test_loomground_catalogue():
     env = call("loomground_catalogue")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"repos", "pipeline", "patch_from_documents", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "782e745be23bbd12a5a067e4b67b889d10037faf"}
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "965198c71372ab26413588eca592110e8284d1f4"}
     names = [x["repo"] for x in r["repos"]]
-    assert len(names) == 33 and names[0] == "loomground" and "loomground-solver" in names  # the server itself is the interface, not a record
+    assert len(names) == 33 and names[0] == "loomground" and "loomground-mcp" in names
     assert {"repo", "family", "role", "description", "pipeline_position", "depends_on", "tools", "skills", "install", "url"} == set(r["repos"][0])
     assert [s["stage"] for s in r["pipeline"]][:3] == ["ingest", "versum", "solver"]
     assert [s["tool"] for s in r["patch_from_documents"]] == ["ingest_text", "versum_index", "norm_extract", "deontic_parse", None, "solver_evaluate"]

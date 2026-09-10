@@ -611,18 +611,6 @@
       "url": "https://github.com/flxk1/loomground-patchbay"
     },
     {
-      "repo": "loomground-builder",
-      "family": "Interfaces and authoring",
-      "role": "authoring tooling; experimental",
-      "description": "Authoring tooling; experimental.",
-      "pipeline_position": null,
-      "depends_on": [],
-      "tools": [],
-      "skills": [],
-      "install": null,
-      "url": "https://github.com/flxk1/loomground-builder"
-    },
-    {
       "repo": "RVND",
       "family": "RVND",
       "role": "local-first governance runtime for AI agents, built on Loomground",
@@ -671,6 +659,27 @@
       "skills": [],
       "install": null,
       "url": "https://github.com/flxk1/rvnd-plugins"
+    },
+    {
+      "repo": "loomground-mcp",
+      "family": "Interfaces and authoring",
+      "role": "one MCP server exposing the planes as tools and the skills as prompts",
+      "description": "One MCP server exposing the Loomground planes as tools: versum, the four languages, solver and its skills, ingest, operators, assurance; stdio or HTTP.",
+      "pipeline_position": null,
+      "depends_on": [
+        "loomground-versum",
+        "loomground-solver",
+        "loomground-ingest",
+        "loomground-deontic",
+        "loomground-factual",
+        "loomground-epistemic",
+        "loomground-norm",
+        "loomground-governance"
+      ],
+      "tools": [],
+      "skills": [],
+      "install": "pip install loomground-mcp",
+      "url": "https://github.com/flxk1/loomground-mcp"
     }
   ]
 }
