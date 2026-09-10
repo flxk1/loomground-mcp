@@ -8,6 +8,7 @@ Every result is one envelope in `structuredContent` (and as JSON text):
 
 | Tool | Plane | Function | In → out |
 |---|---|---|---|
+| `loomground_catalogue(query?)` | loomground | `CATALOGUE.json` (vendored `catalogue.json`) | `repos[]` (`repo`, `family`, `role`, `description`, `pipeline_position`, `depends_on`, `tools`, `skills`, `install`, `url`), `pipeline[]` (`step`, `stage`, `repo`, `tool`, `in`, `out`), `patch_from_documents[]`, `source` (`repo`, `commit`); `query` = case-insensitive substring over repo/family/role/tools/skills, filters `repos` only |
 | `versum_index(folder, profile="generic")` | loomground-versum | `versum.store.index.index_folder` | folder → index summary; writes `<folder>/.versum` |
 | `versum_claims(folder, limit=100)` | loomground-versum | `<folder>/.versum/claims.csv` | rows with `source_urn`, `span_start`, `span_end`, `marker`, `text`, projections |
 | `versum_search(folder, query, k=10, filters?)` | loomground-versum | `versum.store.retrieve.SearchIndex` / `from_kg` | hits with spans; hybrid over a materialised KG (`by-domain/`), BM25 over a plain index; `unavailable` when there is nothing to search |
@@ -46,6 +47,8 @@ Every result is one envelope in `structuredContent` (and as JSON text):
 | `effect_reconcile(auths, effects, since, until, match_window_s=0)` | effect-reconciliation | `reconcile` | status, matched, the three mismatches, rates |
 | `enforcement_compare(a, b)` | enforcement-posture | `compare` | unchanged, hardened, weakened, incomparable |
 | `nd_digest(ref)` | 5d-nd | `canonicalize` / `digest` / `validate` | canonical bytes, sha256, validity |
+
+`loomground_catalogue` is the family map, to be called first: every repository as one record, the pipeline order `source → ingest → versum → solver → applied | diagnostic` with the tool at each step, and `patch_from_documents` (ingest_text → versum_index → norm_extract / deontic_parse → author the `.lg` patch → solver_evaluate). It reads `catalogue.json`, vendored from `CATALOGUE.json` in the loomground repository at the commit the envelope's `source` names; `tests/test_catalogue_parity.py` asserts byte-equality against a checkout of that commit. `query` never touches `pipeline` or `patch_from_documents`.
 
 `topos_parse` is the one tool whose function lives in this repository: the loomground-topos spec ships the grammar (`grammar/topos.ebnf`, normative) and no package, so the reader is implemented here. It parses only — any id parses; ladder/catalogue membership and the well-formedness invariants are apply-time. An indented line continues the statement above it; a prop block on a node declaration is kept with a warning; an off-vocabulary `resolution_mode`/`state`/`status` value is a warning, not an error. Every rejected statement is one error with its line.
 

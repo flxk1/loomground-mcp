@@ -12,7 +12,8 @@ from .tools import ALL
 
 INSTRUCTIONS = (
     "Tools wrap the Loomground planes one function each. Every result is an envelope "
-    "{plane, function, ok, result | error | unavailable+reason}; ok=false is never a result."
+    "{plane, function, ok, result | error | unavailable+reason}; ok=false is never a result. "
+    "Call loomground_catalogue first for the family map and pipeline order."
 )
 
 

@@ -34,17 +34,18 @@ event: endpoint
 data: /messages/?session_id=d6f25abfea2945d49abb1cd724fc1100
 
 $ python example.py      # sse_client + ClientSession: list_tools, call_tool("solver_evaluate", …), call_tool("solver_strategy", …)
-38 tools: versum_index … nd_digest
+39 tools: loomground_catalogue … nd_digest
 {"plane": "loomground-solver", "ok": true, "status": "escalate", "evaluation": {"transfer": {"verdict": "reserved", "master": "withhold"}}, "undecided": ["t1"]}
 {"method": "minimax_regret", "result": {"choice": "buy", "ranking": ["buy", "build"], "scores": {"build": 40.0, "buy": 30.0}}}
 ```
 
 ## Interface
 
-38 tools, one per plane function (the seven solver skill scripts count as functions; the topos reader is this repository's); signatures, envelopes and enums: `docs/tools.md`.
+39 tools, one per plane function (the seven solver skill scripts count as functions; the topos reader and the catalogue are this repository's); signatures, envelopes and enums: `docs/tools.md`. Call `loomground_catalogue` first: the family map, the pipeline order, how documents become an `.lg` patch.
 
 | plane | tools |
 |---|---|
+| loomground | `loomground_catalogue` |
 | loomground-versum | `versum_index` · `versum_claims` · `versum_search` · `versum_capture` · `versum_suggest` · `versum_confirm` · `versum_canon` |
 | loomground-deontic | `deontic_parse` · `deontic_conflicts` |
 | loomground-factual · -epistemic · -norm · -topos | `factual_lower` · `epistemic_extract` · `norm_extract` · `topos_parse` |
@@ -59,13 +60,13 @@ Result envelope: `{plane, function, ok, result | error | unavailable}`; keys are
 
 Interface: exposes the planes over MCP. Pipeline position: beside `source → loomground-ingest → loomground-versum → loomground-solver → applied or diagnostic planes`, reachable from any MCP client.
 
-- consumes: loomground-versum `>=0.13,<0.14` · loomground-deontic `>=0.1,<0.2` · loomground-factual `>=0.1,<0.2` · loomground-epistemic `>=0.1,<0.2` · loomground-norm `>=0.1,<0.2` · loomground-topos (the `.lt` grammar, read by `tools/topos.py`; no package) · loomground-solver `>=0.5,<0.6` (kernel + the seven skill scripts as tools) · loomground-ingest `>=0.2,<0.3` · the six operators · the seven assurance artifacts (pins: `requirements-dev.txt`)
+- consumes: loomground (`CATALOGUE.json`, vendored as `catalogue.json`; no package) · loomground-versum `>=0.13,<0.14` · loomground-deontic `>=0.1,<0.2` · loomground-factual `>=0.1,<0.2` · loomground-epistemic `>=0.1,<0.2` · loomground-norm `>=0.1,<0.2` · loomground-topos (the `.lt` grammar, read by `tools/topos.py`; no package) · loomground-solver `>=0.5,<0.6` (kernel + the seven skill scripts as tools) · loomground-ingest `>=0.2,<0.3` · the six operators · the seven assurance artifacts (pins: `requirements-dev.txt`)
 - consumed by: any MCP client: Claude, Codex, n8n MCP Client Tool, Langdock remote MCP
 - third-party: `mcp` `>=2,<3`, the official SDK
 
 ## Status
 
-0.1.0 · 38 tools · 50 tests (one per tool, script parity for the seven solver skill tools, the loomground-topos examples corpus, SSE and streamable-HTTP smokes) · Python >=3.10 · mcp 2.x
+0.1.0 · 39 tools · 52 tests (one per tool, script parity for the seven solver skill tools, the loomground-topos examples corpus, catalogue parity against the loomground repository, SSE and streamable-HTTP smokes) · Python >=3.10 · mcp 2.x
 
 ## License
 
