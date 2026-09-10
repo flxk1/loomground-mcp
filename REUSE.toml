@@ -1,0 +1,9 @@
+version = 1
+SPDX-PackageName = "loomground-mcp"
+SPDX-PackageSupplier = "Organization: Loomground Contributors"
+
+[[annotations]]
+path = ["**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 flxk1"
+SPDX-License-Identifier = "Apache-2.0"

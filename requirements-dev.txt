@@ -1,0 +1,22 @@
+# Git-pinned first-party planes (no index yet). Install BEFORE `pip install .` so the ranges resolve.
+# Commits are on each repository's public main; language packs at the commits the planes themselves pin.
+loomground-governance @ git+https://github.com/flxk1/loomground-governance@cf09ad8336c0ef47e700952896314472129fa4c7
+loomground-deontic @ git+https://github.com/flxk1/loomground-deontic@f53b2434098ff2cb846c60e1ae75038cc4f8ea51
+loomground-factual @ git+https://github.com/flxk1/loomground-factual@f02001d767d62ce9d6b7c2ebabbeaee171914cb9
+loomground-solver @ git+https://github.com/flxk1/loomground-solver@351608303311c4016fcd5439ad23e5b4cbeb6226
+loomground-versum @ git+https://github.com/flxk1/loomground-versum@66778f8bca003508ab95b7b07fe17c8d9ecbd296
+loomground-ingest @ git+https://github.com/flxk1/loomground-ingest@e6ae8b77c1f5f50d9eaf5166f237ac18cda7b73c
+loomground-brief @ git+https://github.com/flxk1/loomground-brief@52301ff98b454b5cdafe93b1f2fa549931b6de9d
+loomground-collapse @ git+https://github.com/flxk1/loomground-collapse@fca47e239c90180551de1600001ae00012c980a5
+loomground-escalation @ git+https://github.com/flxk1/loomground-escalation@6e3cf8fd126122555060841e3cf441c7569a3d63
+loomground-falsifiability @ git+https://github.com/flxk1/loomground-falsifiability@5acc12dc249833d8c33101df0012655bd3f4dee2
+loomground-proxy @ git+https://github.com/flxk1/loomground-proxy@e3d42587e6070ac9f7d5a49e192b26920d0eabce
+loomground-mandate @ git+https://github.com/flxk1/loomground-mandate@ff32bea94834a74bec1fdd8e1b5cd60369b8947a
+oversight-certificate @ git+https://github.com/flxk1/oversight-certificate@b30abe2b03803fdd02e3c1b18897170ce44ba31f
+governance-certification @ git+https://github.com/flxk1/governance-certification@acc7741af98d75bf53d3b16e5babe04d64faa3c8
+norm-freshness @ git+https://github.com/flxk1/norm-freshness@8d372e0e62bc51726881f5f9925d66494e36ff69
+obligation-discharge @ git+https://github.com/flxk1/obligation-discharge@214af5da49f08151d7fce2bf61b91b0a2cfe056c
+effect-reconciliation @ git+https://github.com/flxk1/effect-reconciliation@106c1962f6c6835bd40e922b01acc438e68c6298
+enforcement-posture @ git+https://github.com/flxk1/enforcement-posture@b022a9d8c0bc7590ab10cd21250f605fc5736c16
+5d-nd @ git+https://github.com/flxk1/5d-nd@5d71a78e34ebba1abaedf79165098ffa44bb92aa
+pytest==9.1.1

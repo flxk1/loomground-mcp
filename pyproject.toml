@@ -1,0 +1,61 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 flxk1
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "loomground-mcp"
+description = "One MCP server exposing the Loomground planes as tools: versum, solver, ingest, the six operators and the assurance artifacts, over stdio or HTTP."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSES/Apache-2.0.txt", "NOTICE"]
+authors = [{ name = "Loomground Contributors" }]
+# `mcp` is the one third-party dependency. Every other name is a sibling plane,
+# ranged here and git-pinned in requirements-dev.txt until the planes are on an index.
+dependencies = [
+    "mcp>=2,<3",
+    "loomground-versum>=0.13,<0.14",
+    "loomground-solver>=0.5,<0.6",
+    "loomground-ingest>=0.2,<0.3",
+    "loomground-brief>=0.1,<0.2",
+    "loomground-collapse>=0.1,<0.2",
+    "loomground-escalation>=0.1,<0.2",
+    "loomground-falsifiability>=0.1,<0.2",
+    "loomground-proxy>=0.1,<0.2",
+    "loomground-mandate>=0.1,<0.2",
+    "oversight-certificate>=0.2,<0.3",
+    "governance-certification>=0.1,<0.2",
+    "norm-freshness>=0.3,<0.4",
+    "obligation-discharge>=0.1,<0.2",
+    "effect-reconciliation>=0.2,<0.3",
+    "enforcement-posture>=0.5,<0.6",
+    "5d-nd>=0.1,<0.2",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1"]
+
+[project.scripts]
+loomground-mcp = "loomground_mcp.server:main"
+
+[project.urls]
+Homepage = "https://github.com/flxk1/loomground-mcp"
+Repository = "https://github.com/flxk1/loomground-mcp"
+Issues = "https://github.com/flxk1/loomground-mcp/issues"
+
+[tool.setuptools.dynamic]
+version = { attr = "loomground_mcp._version.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["loomground_mcp*"]
+
+[tool.setuptools.package-data]
+loomground_mcp = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
