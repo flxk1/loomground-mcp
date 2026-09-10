@@ -22,6 +22,10 @@ jobs:
       - run: |
           sha=$(sed -n 's#^loomground-solver @ git+https://github.com/flxk1/loomground-solver@\([0-9a-f]*\).*#\1#p' requirements-dev.txt)
           git init -q solver-skills && git -C solver-skills fetch -q --depth 1 https://github.com/flxk1/loomground-solver "$sha" && git -C solver-skills checkout -q FETCH_HEAD
+      # the .lt examples live in the loomground-topos spec repo: fetch the commit the topos reader implements
+      - run: |
+          git init -q topos-spec && git -C topos-spec fetch -q --depth 1 https://github.com/flxk1/loomground-topos c71f81cb44ca419bd67451290ab07b387404f297 && git -C topos-spec checkout -q FETCH_HEAD
       - run: python -m pytest -q
         env:
           LOOMGROUND_SOLVER_SKILLS: ${{ github.workspace }}/solver-skills/skills
+          LOOMGROUND_TOPOS_EXAMPLES: ${{ github.workspace }}/topos-spec/examples

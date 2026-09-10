@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+* Tools: 4 new — the reader/writer languages: `factual_lower` (loomground-factual), `epistemic_extract` (loomground-epistemic), `norm_extract` (loomground-norm: rules lifted to deontic formulae), `topos_parse` (a statement-level reader for loomground-topos's `grammar/topos.ebnf`, implemented in `tools/topos.py`; every `.lt` block in the spec's examples parses); 38 tools.
 * Tools: 13 new — deontic (`deontic_parse`, `deontic_conflicts`), versum write/curate (`versum_capture`, `versum_suggest`, `versum_confirm`, `versum_canon`), the seven loomground-solver skill scripts as tools (`solver_analyse_risks`, `solver_estimate_liability`, `solver_litigation_risk`, `solver_opponent_model`, `solver_probability`, `solver_strategy`, `solver_advise_addons`) with script-parity tests; 34 tools.
 
 ## 0.1.0

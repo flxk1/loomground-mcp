@@ -17,7 +17,7 @@ def test_lists_every_tool_with_plane_and_function():
         async with Client(build_server()) as client:
             return (await client.list_tools()).tools
     tools = asyncio.run(go())
-    assert len(tools) == len(ALL) == 34
+    assert len(tools) == len(ALL) == 38
     assert all(t.description.startswith("[") and " · " in t.description for t in tools)
     assert "patch_lg" in next(t for t in tools if t.name == "solver_evaluate").input_schema["properties"]
 
@@ -129,6 +129,94 @@ def test_deontic_conflicts():
     assert c["predicate"] == "may-conflict-with" and c["resolution"] == "candidate-escalate"
     assert (c["operator_a"], c["operator_b"]) == ("O", "F") and c["action"] == "transfer personal data"
     assert call("deontic_conflicts", {"statements": ["O(a : x)", "F(a : ¬ x)"]})["result"]["candidates"] == []
+
+
+# the four reader/writer languages
+
+def test_factual_lower():
+    env = call("factual_lower", {"sentence": "The operator is a controller."})
+    r = env["result"]
+    assert env["plane"] == "loomground-factual" and r == {"subject": "operator", "predicate": "is", "object": "controller",
+                                                          "dimension": "structural", "negated": False, "quantification": "existential"}
+    assert call("factual_lower", {"sentence": "A processor is not a controller."})["result"]["negated"] is True
+    none = call("factual_lower", {"sentence": "The operator deletes the data."})
+    assert none["ok"] is False and none["unavailable"] is True and "copula" in none["reason"]
+
+
+def test_epistemic_extract():
+    env = call("epistemic_extract", {"sentence": "The controller knows that the data is inaccurate."})
+    r = env["result"]
+    assert env["plane"] == "loomground-epistemic" and (r["operator"], r["holder"], r["certainty"]) == ("K", "controller", "certain")
+    assert r["proposition"] == "the data is inaccurate" and r["system_id"] == "system:epistemic"
+    r = call("epistemic_extract", {"sentence": "According to the audit, the processor believes the transfer was lawful."})["result"]
+    assert r["operator"] == "B" and r["certainty"] == "probable" and r["source"]
+    none = call("epistemic_extract", {"sentence": "The controller deletes the data."})
+    assert none["ok"] is False and none["unavailable"] is True
+
+
+def test_norm_extract():
+    env = call("norm_extract", {"text": ("The operator must delete personal data within 30 days after the contract ends. "
+                                         "The operator shall delete personal data unless a legal hold applies. "
+                                         "Der Anbieter darf keine personenbezogenen Daten weitergeben.")})
+    r = env["result"]
+    assert env["plane"] == "loomground-norm" and r["n_rules"] == 3 and r["languages_detected"] == ["de", "en"]
+    first, second, third = r["rules"]
+    assert first["rule"]["modal"] == "obligation" and first["rule"]["subject"] == "the operator"
+    assert first["formula"] == "O(the operator : delete personal data within 30 days after the contract ends)"
+    assert first["formula_fields"]["operator"] == "O" and first["formula_fields"]["formula"] == first["formula"]
+    assert second["formula"] == "O(the operator : delete personal data) unless [a legal hold applies]"
+    assert third["formula"].startswith("F(der anbieter : ") and third["rule"]["language"] == "de"
+    assert call("norm_extract", {"text": "Nothing normative here."})["result"]["n_rules"] == 0
+    bad = call("norm_extract", {"text": "x", "language": "xx"})
+    assert bad["ok"] is False and bad["error"]["type"] == "ValueError"
+
+
+TOPOS = """system eu  tradition hybrid  powers separation-extended  levels eu-levels  ranks eu-ranks
+organ eu:cjeu  system eu  level eu:supranational  powers {judicial}          # Art 19 TEU
+instrument eu:regulation  system eu  rank 1  origin eu:parliament-council  directly-applicable
+instrument eu:cjeu-judgment system eu  rank null origin eu:cjeu
+level de:federal  system de  rank 0  contains de:land
+competence eu:culture  system eu  allocation supporting  holder eu:union
+rel eu:regulation  has-primacy-over  de:formal-statute
+    [resolution_mode = disapply, basis = "Costa 6/64; Simmenthal 106/77"]
+assert de:bverfg : NOT eu:primary-law has-primacy-over de:grundgesetz  [status = contested]
+assert a1: eu:directive must-be-transposed-by de:formal-statute [state=gap, deadline=2026-05-01]
+"""
+
+BROKEN = """rel de:grundgesetz overrules de:formal-statute
+organ de:bundestag system de colour red
+rel eu:regulation has-primacy-over
+instrument x system eu rank high
+treaty eu:teu system eu
+rel a outranks b [basis = "unterminated]
+"""
+
+
+def test_topos_parse():
+    env = call("topos_parse", {"text": TOPOS})
+    r = env["result"]
+    assert env["plane"] == "loomground-topos" and r["valid"] is True and r["errors"] == [] and r["n_statements"] == 9
+    assert r["counts"] == {"system": 1, "organ": 1, "instrument": 2, "level": 1, "competence": 1, "rel": 1, "assert": 2}
+    s = r["statements"]
+    assert s[0] == {"kind": "system", "id": "eu", "line": 1, "tradition": "hybrid", "powers": "separation-extended",
+                    "levels": "eu-levels", "ranks": "eu-ranks"}
+    assert s[1]["powers"] == ["judicial"] and s[1]["level"] == "eu:supranational"
+    assert s[2]["directly_applicable"] is True and s[2]["rank"] == 1 and s[3]["rank"] is None
+    assert s[4]["rank"] == 0 and s[4]["contains"] == "de:land" and s[5]["allocation"] == "supporting"
+    assert s[6] == {"kind": "rel", "line": 7, "from": "eu:regulation", "type": "has-primacy-over", "to": "de:formal-statute",
+                    "vocabulary": ["vertical", "coupling"], "props": {"resolution_mode": "disapply", "basis": "Costa 6/64; Simmenthal 106/77"}}
+    assert (s[7]["asserted_by"], s[7]["polarity"], s[7]["props"]) == ("de:bverfg", "deny", {"status": "contested"})
+    assert (s[8]["asserted_by"], s[8]["polarity"], s[8]["props"]) == ("a1", "affirm", {"state": "gap", "deadline": "2026-05-01"})
+
+    r = call("topos_parse", {"text": BROKEN})["result"]
+    assert r["valid"] is False and r["n_statements"] == 0 and [e["line"] for e in r["errors"]] == [1, 2, 3, 4, 5, 6]
+    reasons = [e["reason"] for e in r["errors"]]
+    assert "unknown relation type 'overrules'" in reasons[0] and "unknown attribute 'colour'" in reasons[1]
+    assert "expected an endpoint" in reasons[2] and "'null'" in reasons[3] and "statement keyword" in reasons[4]
+    assert reasons[5] == "unterminated string" and all(e["statement"] for e in r["errors"])
+
+    r = call("topos_parse", {"text": "rel a outranks b [state = overdue]"})["result"]
+    assert r["valid"] and r["warnings"][0]["line"] == 1 and "overdue" in r["warnings"][0]["reason"]
 
 
 # solver
