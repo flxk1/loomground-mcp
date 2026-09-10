@@ -79,13 +79,6 @@ CATALOGUE = {r["repo"]: r["skills"] for r in catalogue()["repos"]}
 BY_REPO: dict[str, list[str]] = {}
 for _e in INDEX:
     BY_REPO.setdefault(_e["repo"], []).append(_e["name"])
-# CATALOGUE.json at fbf4f46 lists no skills for the four language repositories although each pushed one; the
-# catalogue is vendored byte for byte, so these fail until it is fixed upstream and re-vendored (strict: XPASS fails).
-STALE = {"loomground-factual", "loomground-epistemic", "loomground-norm", "loomground-topos"}
-
-
-@pytest.mark.parametrize("repo", [pytest.param(r, marks=pytest.mark.xfail(strict=True, reason="CATALOGUE.json fbf4f46 predates the language skill"))
-                                  if r in STALE else r
-                                  for r in sorted(r for r in CATALOGUE if CATALOGUE[r] or r in BY_REPO)])
+@pytest.mark.parametrize("repo", sorted(r for r in CATALOGUE if CATALOGUE[r] or r in BY_REPO))
 def test_catalogue_skills_equal_index(repo):
     assert sorted(CATALOGUE[repo]) == sorted(BY_REPO.get(repo, []))

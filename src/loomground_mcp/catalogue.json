@@ -145,7 +145,8 @@
       "pipeline_position": null,
       "depends_on": [],
       "tools": [
-        "loomground_catalogue"
+        "loomground_catalogue",
+        "loomground_skill"
       ],
       "skills": [
         "loomground"
@@ -177,7 +178,9 @@
       "tools": [
         "factual_lower"
       ],
-      "skills": [],
+      "skills": [
+        "factual"
+      ],
       "install": "pip install \"loomground-factual @ git+https://github.com/flxk1/loomground-factual@factual-v0.1.0\"",
       "url": "https://github.com/flxk1/loomground-factual"
     },
@@ -210,7 +213,9 @@
       "tools": [
         "epistemic_extract"
       ],
-      "skills": [],
+      "skills": [
+        "epistemic"
+      ],
       "install": "pip install \"loomground-epistemic @ git+https://github.com/flxk1/loomground-epistemic@epistemic-v0.1.0\"",
       "url": "https://github.com/flxk1/loomground-epistemic"
     },
@@ -224,7 +229,9 @@
       "tools": [
         "topos_parse"
       ],
-      "skills": [],
+      "skills": [
+        "topos"
+      ],
       "install": "spec, read only",
       "url": "https://github.com/flxk1/loomground-topos"
     },
@@ -375,7 +382,9 @@
       "tools": [
         "norm_extract"
       ],
-      "skills": [],
+      "skills": [
+        "norm"
+      ],
       "install": "git clone https://github.com/flxk1/loomground-norm && cd loomground-norm && python3 -m pip install -e \".[dev]\" -r requirements-dev.txt",
       "url": "https://github.com/flxk1/loomground-norm"
     },

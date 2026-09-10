@@ -29,14 +29,14 @@ def test_loomground_catalogue():
     env = call("loomground_catalogue")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"repos", "pipeline", "patch_from_documents", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "fbf4f46dfee5279b19324b25a45519eba6763315"}
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "782e745be23bbd12a5a067e4b67b889d10037faf"}
     names = [x["repo"] for x in r["repos"]]
     assert len(names) == 33 and names[0] == "loomground" and "loomground-solver" in names  # the server itself is the interface, not a record
     assert {"repo", "family", "role", "description", "pipeline_position", "depends_on", "tools", "skills", "install", "url"} == set(r["repos"][0])
     assert [s["stage"] for s in r["pipeline"]][:3] == ["ingest", "versum", "solver"]
     assert [s["tool"] for s in r["patch_from_documents"]] == ["ingest_text", "versum_index", "norm_extract", "deontic_parse", None, "solver_evaluate"]
     catalogued, served = {t for x in r["repos"] for t in x["tools"]}, {t.__name__ for t in ALL}
-    assert catalogued <= served and served - catalogued == {"loomground_skill"}  # every catalogued tool is served; CATALOGUE.json fbf4f46 predates loomground_skill
+    assert catalogued == served
     by_tool = call("loomground_catalogue", {"query": "SOLVER_EVALUATE"})["result"]
     assert [x["repo"] for x in by_tool["repos"]] == ["loomground-solver"] and len(by_tool["pipeline"]) == len(r["pipeline"])
     by_family = call("loomground_catalogue", {"query": "standard/language"})["result"]["repos"]
