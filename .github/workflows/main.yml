@@ -31,8 +31,16 @@ jobs:
       - run: |
           sha=$(sed -n 's#.*"commit": "\([0-9a-f]*\)".*#\1#p' src/loomground_mcp/tools/catalogue.py)
           git init -q loomground-cat && (git -C loomground-cat fetch -q --depth 1 https://github.com/flxk1/loomground "$sha" && git -C loomground-cat checkout -q FETCH_HEAD) || echo "loomground $sha not public yet; catalogue parity test will skip"
+      # the vendored skills are checked against each repository at the commit skills/index.json pins: a guarded fetch per
+      # public repository; a repository that cannot be fetched leaves its checkout absent and its parity items skip
+      - run: |
+          mkdir -p skills-src
+          python -c 'import json; [print(e["repo"], e["commit"]) for e in json.load(open("src/loomground_mcp/skills/index.json")) if not e.get("private")]' | sort -u | while read repo sha; do
+            git init -q "skills-src/$repo" && (git -C "skills-src/$repo" fetch -q --depth 1 "https://github.com/flxk1/$repo" "$sha" || echo "$repo $sha not fetchable; its skill parity items will skip")
+          done
       - run: python -m pytest -q
         env:
           LOOMGROUND_SOLVER_SKILLS: ${{ github.workspace }}/solver-skills/skills
           LOOMGROUND_TOPOS_EXAMPLES: ${{ github.workspace }}/topos-spec/examples
           LOOMGROUND_CATALOGUE: ${{ github.workspace }}/loomground-cat/CATALOGUE.json
+          LOOMGROUND_SKILLS_ROOT: ${{ github.workspace }}/skills-src

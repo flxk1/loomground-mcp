@@ -17,7 +17,7 @@ def test_lists_every_tool_with_plane_and_function():
         async with Client(build_server()) as client:
             return (await client.list_tools()).tools
     tools = asyncio.run(go())
-    assert len(tools) == len(ALL) == 39
+    assert len(tools) == len(ALL) == 40
     assert all(t.description.startswith("[") and " · " in t.description for t in tools)
     assert "patch_lg" in next(t for t in tools if t.name == "solver_evaluate").input_schema["properties"]
     assert tools[0].name == "loomground_catalogue"
@@ -35,7 +35,8 @@ def test_loomground_catalogue():
     assert {"repo", "family", "role", "description", "pipeline_position", "depends_on", "tools", "skills", "install", "url"} == set(r["repos"][0])
     assert [s["stage"] for s in r["pipeline"]][:3] == ["ingest", "versum", "solver"]
     assert [s["tool"] for s in r["patch_from_documents"]] == ["ingest_text", "versum_index", "norm_extract", "deontic_parse", None, "solver_evaluate"]
-    assert {t for x in r["repos"] for t in x["tools"]} == {t.__name__ for t in ALL}  # every catalogued tool is served, and only those
+    catalogued, served = {t for x in r["repos"] for t in x["tools"]}, {t.__name__ for t in ALL}
+    assert catalogued <= served and served - catalogued == {"loomground_skill"}  # every catalogued tool is served; CATALOGUE.json fbf4f46 predates loomground_skill
     by_tool = call("loomground_catalogue", {"query": "SOLVER_EVALUATE"})["result"]
     assert [x["repo"] for x in by_tool["repos"]] == ["loomground-solver"] and len(by_tool["pipeline"]) == len(r["pipeline"])
     by_family = call("loomground_catalogue", {"query": "standard/language"})["result"]["repos"]

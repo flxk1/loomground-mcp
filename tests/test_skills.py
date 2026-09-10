@@ -1,0 +1,91 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 flxk1
+"""The vendored skills: the index, the ``loomground_skill`` tool, the prompts, and the catalogue's ``skills[]``
+against the index per repository."""
+import asyncio
+
+import pytest
+from mcp import Client
+
+from conftest import call
+from loomground_mcp import build_server
+from loomground_mcp.tools.catalogue import load as catalogue
+from loomground_mcp.tools.skills import body_path, header, load_index, prompt_names, split_frontmatter
+
+INDEX = load_index()
+PUBLIC = [e for e in INDEX if not e.get("private")]
+PRIVATE = [e for e in INDEX if e.get("private")]
+KEYS = {"repo", "name", "description", "allowed_tools", "commit", "path", "url"}
+
+
+def test_index_records():
+    assert len(INDEX) == 29 and len(PUBLIC) == 22 and len(PRIVATE) == 7
+    assert [(e["repo"], e["name"]) for e in INDEX] == sorted((e["repo"], e["name"]) for e in INDEX)
+    for e in INDEX:
+        assert set(e) - {"private"} == KEYS and len(e["commit"]) == 40 and e["description"]
+        assert e["path"] == f"skills/{e['name']}/SKILL.md"
+        assert e["url"] == f"https://github.com/flxk1/{e['repo']}/blob/{e['commit']}/{e['path']}"
+        assert body_path(e).is_file() is not bool(e.get("private"))
+    assert {e["repo"] for e in PRIVATE} == {"music-rights", "digital-law", "digital-law-ai", "digital-law-data-protection"}
+
+
+def test_skill_index_tool():
+    env = call("loomground_skill")
+    assert env["plane"] == "loomground"
+    rows = env["result"]
+    assert [(r["repo"], r["name"]) for r in rows] == [(e["repo"], e["name"]) for e in INDEX]
+    prompts = [r["prompt"] for r in rows]
+    assert prompts.count(None) == 7 and {"loomground/loomground", "loomground-governance/loomground", "analyse-risks"} <= set(prompts)
+    assert len(set(p for p in prompts if p)) == 22
+
+
+def test_skill_by_name():
+    r = call("loomground_skill", {"name": "analyse-risks"})["result"]
+    assert (r["repo"], r["allowed_tools"], r["prompt"]) == ("loomground-solver", ["solver_analyse_risks"], "analyse-risks")
+    assert r["body"] == split_frontmatter(body_path(r).read_text(encoding="utf-8"))[1].lstrip("\n")
+    assert not r["body"].startswith("---") and "solver_analyse_risks" in r["body"]
+
+
+def test_skill_shared_name_is_qualified():
+    env = call("loomground_skill", {"name": "loomground"})
+    assert env["unavailable"] and "loomground-governance/loomground" in env["reason"]
+    r = call("loomground_skill", {"name": "loomground-governance/loomground"})["result"]
+    assert r["allowed_tools"] == ["solver_evaluate", "solver_verify"] and r["prompt"] == "loomground-governance/loomground"
+    assert call("loomground_skill", {"name": "loomground/loomground"})["result"]["allowed_tools"] == []
+
+
+def test_skill_private_and_unknown():
+    env = call("loomground_skill", {"name": "sync-licensing"})
+    assert env["unavailable"] and "private" in env["reason"] and "music-rights" in env["reason"]
+    assert call("loomground_skill", {"name": "no-such-skill"})["unavailable"]
+
+
+def test_prompts_in_process():
+    async def go():
+        async with Client(build_server()) as c:
+            return (await c.list_prompts()).prompts, await c.get_prompt("analyse-risks")
+    listed, got = asyncio.run(go())
+    by_name = {p.name: p for p in listed}
+    assert len(listed) == 22 and set(by_name) == set(prompt_names(INDEX))
+    entry = prompt_names(INDEX)["analyse-risks"]
+    assert by_name["analyse-risks"].description == entry["description"] and by_name["analyse-risks"].arguments == []
+    assert len(got.messages) == 1 and got.messages[0].role == "user"
+    head, body = got.messages[0].content.text.split("\n\n", 1)
+    assert head == header(entry) == f"Skill analyse-risks from loomground-solver @ {entry['commit']}; tools: solver_analyse_risks"
+    assert body == call("loomground_skill", {"name": "analyse-risks"})["result"]["body"]
+
+
+CATALOGUE = {r["repo"]: r["skills"] for r in catalogue()["repos"]}
+BY_REPO: dict[str, list[str]] = {}
+for _e in INDEX:
+    BY_REPO.setdefault(_e["repo"], []).append(_e["name"])
+# CATALOGUE.json at fbf4f46 lists no skills for the four language repositories although each pushed one; the
+# catalogue is vendored byte for byte, so these fail until it is fixed upstream and re-vendored (strict: XPASS fails).
+STALE = {"loomground-factual", "loomground-epistemic", "loomground-norm", "loomground-topos"}
+
+
+@pytest.mark.parametrize("repo", [pytest.param(r, marks=pytest.mark.xfail(strict=True, reason="CATALOGUE.json fbf4f46 predates the language skill"))
+                                  if r in STALE else r
+                                  for r in sorted(r for r in CATALOGUE if CATALOGUE[r] or r in BY_REPO)])
+def test_catalogue_skills_equal_index(repo):
+    assert sorted(CATALOGUE[repo]) == sorted(BY_REPO.get(repo, []))

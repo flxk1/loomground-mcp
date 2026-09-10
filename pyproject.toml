@@ -58,7 +58,7 @@ where = ["src"]
 include = ["loomground_mcp*"]
 
 [tool.setuptools.package-data]
-loomground_mcp = ["py.typed", "catalogue.json"]
+loomground_mcp = ["py.typed", "catalogue.json", "skills/index.json", "skills/*/*/SKILL.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -13,7 +13,12 @@ from mcp import Client, ClientSession
 from mcp.client.sse import sse_client
 
 from conftest import PATCH, TRANSPORT
+from mcp.client.stdio import StdioServerParameters, stdio_client
+
 from loomground_mcp.tools import ALL
+from loomground_mcp.tools.skills import load_index, prompt_names
+
+PROMPTS = len(prompt_names(load_index()))
 
 
 def _free_port() -> int:
@@ -58,14 +63,36 @@ def test_sse_endpoint_and_tool_list(server):
                 out = await session.call_tool("solver_evaluate", {"patch_lg": PATCH, "transport_json": TRANSPORT})
                 return names, out.structured_content
     names, env = asyncio.run(go())
-    assert len(names) == len(ALL) == 39 and env["result"]["trace"]["evaluation"]["transfer"]["verdict"] == "reserved"
+    assert len(names) == len(ALL) == 40 and env["result"]["trace"]["evaluation"]["transfer"]["verdict"] == "reserved"
 
 
 @pytest.mark.parametrize("server", ["streamable-http"], indirect=True)
-def test_streamable_http_tool_list(server):
+def test_streamable_http_tool_and_prompt_list(server):
     _, port = server
 
     async def go():
         async with Client(f"http://127.0.0.1:{port}/mcp") as client:
-            return [t.name for t in (await client.list_tools()).tools]
-    assert len(asyncio.run(go())) == len(ALL) == 39
+            tools = [t.name for t in (await client.list_tools()).tools]
+            prompts = [p.name for p in (await client.list_prompts()).prompts]
+            got = await client.get_prompt("deontic")
+            return tools, prompts, got
+    tools, prompts, got = asyncio.run(go())
+    assert len(tools) == len(ALL) == 40 and len(prompts) == PROMPTS == 22
+    assert got.messages[0].content.text.startswith("Skill deontic from loomground-deontic @ ")
+
+
+def test_stdio_tool_and_prompt_list():
+    params = StdioServerParameters(command=sys.executable, args=["-m", "loomground_mcp", "serve", "--transport", "stdio"])
+
+    async def go():
+        async with stdio_client(params) as (read, write):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                tools = [t.name for t in (await session.list_tools()).tools]
+                prompts = [p.name for p in (await session.list_prompts()).prompts]
+                got = await session.get_prompt("analyse-risks")
+                return tools, prompts, got
+    tools, prompts, got = asyncio.run(go())
+    assert len(tools) == len(ALL) == 40 and len(prompts) == PROMPTS == 22
+    assert sorted(prompts) == sorted(prompt_names(load_index()))
+    assert got.messages[0].role == "user" and got.messages[0].content.text.startswith("Skill analyse-risks from loomground-solver @ ")

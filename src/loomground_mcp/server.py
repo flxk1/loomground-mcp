@@ -9,11 +9,13 @@ from mcp.server.mcpserver import MCPServer
 
 from ._version import __version__
 from .tools import ALL
+from .tools.skills import prompts
 
 INSTRUCTIONS = (
     "Tools wrap the Loomground planes one function each. Every result is an envelope "
     "{plane, function, ok, result | error | unavailable+reason}; ok=false is never a result. "
-    "Call loomground_catalogue first for the family map and pipeline order."
+    "Call loomground_catalogue first for the family map and pipeline order. The family's skills — the roles an "
+    "agent can take — are the prompts (prompts/list, one per vendored SKILL.md) and loomground_skill(name)."
 )
 
 
@@ -21,6 +23,8 @@ def build_server() -> MCPServer:
     server = MCPServer("loomground-mcp", instructions=INSTRUCTIONS, version=__version__)
     for fn in ALL:
         server.add_tool(fn)
+    for p in prompts():
+        server.add_prompt(p)
     return server
 
 
