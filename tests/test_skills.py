@@ -19,14 +19,13 @@ KEYS = {"repo", "name", "description", "allowed_tools", "commit", "path", "url"}
 
 
 def test_index_records():
-    assert len(INDEX) == 29 and len(PUBLIC) == 22 and len(PRIVATE) == 7
+    assert len(INDEX) == 22 and len(PUBLIC) == 22 and len(PRIVATE) == 0
     assert [(e["repo"], e["name"]) for e in INDEX] == sorted((e["repo"], e["name"]) for e in INDEX)
     for e in INDEX:
         assert set(e) - {"private"} == KEYS and len(e["commit"]) == 40 and e["description"]
         assert e["path"] == f"skills/{e['name']}/SKILL.md"
         assert e["url"] == f"https://github.com/flxk1/{e['repo']}/blob/{e['commit']}/{e['path']}"
         assert body_path(e).is_file() is not bool(e.get("private"))
-    assert {e["repo"] for e in PRIVATE} == {"music-rights", "digital-law", "digital-law-ai", "digital-law-data-protection"}
 
 
 def test_skill_index_tool():
@@ -35,7 +34,7 @@ def test_skill_index_tool():
     rows = env["result"]
     assert [(r["repo"], r["name"]) for r in rows] == [(e["repo"], e["name"]) for e in INDEX]
     prompts = [r["prompt"] for r in rows]
-    assert prompts.count(None) == 7 and {"loomground/loomground", "loomground-governance/loomground", "analyse-risks"} <= set(prompts)
+    assert prompts.count(None) == 0 and {"loomground/loomground", "loomground-governance/loomground", "analyse-risks"} <= set(prompts)
     assert len(set(p for p in prompts if p)) == 22
 
 
@@ -54,9 +53,7 @@ def test_skill_shared_name_is_qualified():
     assert call("loomground_skill", {"name": "loomground/loomground"})["result"]["allowed_tools"] == []
 
 
-def test_skill_private_and_unknown():
-    env = call("loomground_skill", {"name": "sync-licensing"})
-    assert env["unavailable"] and "private" in env["reason"] and "music-rights" in env["reason"]
+def test_skill_unknown():
     assert call("loomground_skill", {"name": "no-such-skill"})["unavailable"]
 
 
