@@ -18,9 +18,9 @@
       ]
     },
     "loomground-governance": {
-      "version": "0.11.0",
-      "tag": "loomground-governance-v0.11.0",
-      "commit": "cf09ad8336c0ef47e700952896314472129fa4c7",
+      "version": "0.11.1",
+      "tag": "loomground-governance-v0.11.1",
+      "commit": "270e11d0bbded46c810b2fe56559323d6dcd969a",
       "package": "loomground-governance",
       "pypi": false,
       "family": "Standard",
@@ -44,9 +44,9 @@
       ]
     },
     "loomground-deontic": {
-      "version": "0.2.0",
-      "tag": "loomground-deontic-v0.2.0",
-      "commit": "b6ea34e90b67d655b8abadceb6c280b2ed8e26f1",
+      "version": "0.2.1",
+      "tag": "loomground-deontic-v0.2.1",
+      "commit": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
       "package": "loomground-deontic",
       "pypi": false,
       "family": "Standard/language planes",
@@ -141,9 +141,9 @@
       ]
     },
     "loomground-versum": {
-      "version": "0.13.0",
-      "tag": "loomground-versum-v0.13.0",
-      "commit": "d79a0828283e22b4baeb028dcb26800603d4f91e",
+      "version": "0.14.0",
+      "tag": "loomground-versum-v0.14.0",
+      "commit": "15e7bfc4fcfc942ba4d18f91b769ecfbbd092f47",
       "package": "loomground-versum",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -167,9 +167,9 @@
       ]
     },
     "loomground-solver": {
-      "version": "0.5.0",
-      "tag": "solver-v0.5.0",
-      "commit": "afe2fa0be7089163735bdd73b20bbb3464ade25d",
+      "version": "0.6.0",
+      "tag": "solver-v0.6.0",
+      "commit": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
       "package": "loomground-solver",
       "pypi": false,
       "family": "Evidence pipeline",
