@@ -38,9 +38,9 @@ dependencies = [
     "enforcement-posture>=0.5,<0.6",
     "5d-nd>=0.1,<0.3",
     "loomground-audit-chain>=0.1,<0.2",
-    "loomground-lock>=0.1,<0.2",
+    "loomground-lock>=0.1,<0.3",
     "loomground-lane>=0.1,<0.2",
-    "loomground-drift>=0.1,<0.2",
+    "loomground-drift>=0.1,<0.3",
     "loomground-erasure>=0.1,<0.2",
 ]
 dynamic = ["version"]
