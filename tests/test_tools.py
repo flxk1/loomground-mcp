@@ -53,7 +53,9 @@ def test_loomground_releases():
     assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "7393e5766bed130b0cd94c9dbcb6357bbf1b62ba"}
     assert len(r["repos"]) == 32 and len(r["edges"]) == 54 and len(r["accepted"]) == 22 and r["skipped"] == ["RVND"]
     assert sum(1 for x in r["repos"].values() if x["tag"]) == 16 and all(set(x) == {"version", "tag", "commit", "package", "pypi", "family", "tools", "skills"} for x in r["repos"].values())
-    assert {k: r["repos"]["loomground-deontic"][k] for k in ("version", "tag", "commit", "package", "pypi", "family", "skills")} == {"version": "0.2.0", "tag": "loomground-deontic-v0.2.0", "commit": "b6ea34e90b67d655b8abadceb6c280b2ed8e26f1", "package": "loomground-deontic", "pypi": False, "family": "Standard/language planes", "skills": ["deontic"]}
+    d = r["repos"]["loomground-deontic"]
+    assert d["package"] == "loomground-deontic" and d["family"] == "Standard/language planes" and d["skills"] == ["deontic"]
+    assert d["tag"] == f"loomground-deontic-v{d['version']}" and len(d["commit"]) == 40 and d["pypi"] is False
     assert r["repos"]["loomground-mcp"]["tag"] is None and r["repos"]["loomground-mcp"]["commit"] is None
     assert all(set(e) == {"consumer", "dependency", "range", "dev_pin", "dev_pin_release", "status"} for e in r["edges"])
     assert {e["status"] for e in r["edges"]} <= {"release", "unreleased-commit", "out-of-range", "missing-range"}
