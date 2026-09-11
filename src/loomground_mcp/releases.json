@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-11",
+  "generated": "2026-09-12",
   "repos": {
     "loomground": {
       "version": null,
@@ -304,9 +304,9 @@
       "skills": []
     },
     "governance-certification": {
-      "version": "0.1.0",
-      "tag": null,
-      "commit": null,
+      "version": "0.2.0",
+      "tag": "v0.2.0",
+      "commit": "9eb3f2bd79130e72bd700ba8dc44c175ffdff935",
       "package": "governance-certification",
       "pypi": false,
       "family": "Assurance artifacts",
@@ -316,9 +316,9 @@
       "skills": []
     },
     "5d-nd": {
-      "version": "0.1.0",
-      "tag": null,
-      "commit": null,
+      "version": "0.2.0",
+      "tag": "v0.2.0",
+      "commit": "82a7d4bf0e3e18c8dd28068143fe78b6a510a4d5",
       "package": "5d-nd",
       "pypi": false,
       "family": "Assurance artifacts",
@@ -817,10 +817,10 @@
     {
       "consumer": "loomground-mcp",
       "dependency": "5d-nd",
-      "range": ">=0.1,<0.2",
-      "dev_pin": "5d71a78e34ebba1abaedf79165098ffa44bb92aa",
-      "dev_pin_release": null,
-      "status": "unreleased-commit"
+      "range": ">=0.1,<0.3",
+      "dev_pin": "82a7d4bf0e3e18c8dd28068143fe78b6a510a4d5",
+      "dev_pin_release": "v0.2.0",
+      "status": "release"
     },
     {
       "consumer": "loomground-mcp",
@@ -841,10 +841,18 @@
     {
       "consumer": "loomground-mcp",
       "dependency": "governance-certification",
+      "range": ">=0.1,<0.3",
+      "dev_pin": "9eb3f2bd79130e72bd700ba8dc44c175ffdff935",
+      "dev_pin_release": "v0.2.0",
+      "status": "release"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "loomground-audit-chain",
       "range": ">=0.1,<0.2",
-      "dev_pin": "acc7741af98d75bf53d3b16e5babe04d64faa3c8",
-      "dev_pin_release": null,
-      "status": "unreleased-commit"
+      "dev_pin": "7a6e7a4dab006862391d35309c1a65a3023992b3",
+      "dev_pin_release": "loomground-audit-chain-v0.1.0",
+      "status": "release"
     },
     {
       "consumer": "loomground-mcp",
@@ -872,10 +880,26 @@
     },
     {
       "consumer": "loomground-mcp",
+      "dependency": "loomground-drift",
+      "range": ">=0.1,<0.3",
+      "dev_pin": "f7de9456fccb8c76843eee260db2955cc6ee6444",
+      "dev_pin_release": "loomground-drift-v0.2.0",
+      "status": "release"
+    },
+    {
+      "consumer": "loomground-mcp",
       "dependency": "loomground-epistemic",
       "range": ">=0.1,<0.2",
       "dev_pin": "2c1dc8ea8278fe3d1aeffa470319573c53dee932",
       "dev_pin_release": "epistemic-v0.1.0",
+      "status": "release"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "loomground-erasure",
+      "range": ">=0.1,<0.2",
+      "dev_pin": "df098be5815e5dc418d36d397a8d9b24697279e7",
+      "dev_pin_release": "loomground-erasure-v0.1.0",
       "status": "release"
     },
     {
@@ -920,6 +944,22 @@
     },
     {
       "consumer": "loomground-mcp",
+      "dependency": "loomground-lane",
+      "range": ">=0.1,<0.2",
+      "dev_pin": "9bac236ed7034b6183470e2a49137fde477d9b59",
+      "dev_pin_release": "loomground-lane-v0.1.0",
+      "status": "release"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "loomground-lock",
+      "range": ">=0.1,<0.3",
+      "dev_pin": "b8a26930fd301d0181139fbb5665342fd614ef8e",
+      "dev_pin_release": "loomground-lock-v0.2.0",
+      "status": "release"
+    },
+    {
+      "consumer": "loomground-mcp",
       "dependency": "loomground-mandate",
       "range": ">=0.1,<0.3",
       "dev_pin": "e96c59dcbb52822418ed7035cc8bd4d44c3fd3ec",
@@ -957,6 +997,14 @@
       "dev_pin": "15e7bfc4fcfc942ba4d18f91b769ecfbbd092f47",
       "dev_pin_release": "loomground-versum-v0.14.0",
       "status": "release"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "loomground-workspace",
+      "range": null,
+      "dev_pin": "e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad",
+      "dev_pin_release": "v0.1.0",
+      "status": "missing-range"
     },
     {
       "consumer": "loomground-mcp",
@@ -1131,13 +1179,8 @@
     },
     {
       "consumer": "loomground-mcp",
-      "dependency": "5d-nd",
-      "reason": "no-release: 5d-nd has no release yet; pinned at its main commit"
-    },
-    {
-      "consumer": "loomground-mcp",
-      "dependency": "governance-certification",
-      "reason": "no-release: governance-certification has no release yet; pinned at its main commit"
+      "dependency": "loomground-workspace",
+      "reason": "transitive: via loomground-solver; not imported by loomground-mcp; pinned at release v0.1.0"
     },
     {
       "consumer": "loomground-norm",
