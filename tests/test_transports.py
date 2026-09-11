@@ -63,7 +63,7 @@ def test_sse_endpoint_and_tool_list(server):
                 out = await session.call_tool("solver_evaluate", {"patch_lg": PATCH, "transport_json": TRANSPORT})
                 return names, out.structured_content
     names, env = asyncio.run(go())
-    assert len(names) == len(ALL) == 40 and env["result"]["trace"]["evaluation"]["transfer"]["verdict"] == "reserved"
+    assert len(names) == len(ALL) == 41 and env["result"]["trace"]["evaluation"]["transfer"]["verdict"] == "reserved"
 
 
 @pytest.mark.parametrize("server", ["streamable-http"], indirect=True)
@@ -77,7 +77,7 @@ def test_streamable_http_tool_and_prompt_list(server):
             got = await client.get_prompt("deontic")
             return tools, prompts, got
     tools, prompts, got = asyncio.run(go())
-    assert len(tools) == len(ALL) == 40 and len(prompts) == PROMPTS == 22
+    assert len(tools) == len(ALL) == 41 and len(prompts) == PROMPTS == 22
     assert got.messages[0].content.text.startswith("Skill deontic from loomground-deontic @ ")
 
 
@@ -93,6 +93,6 @@ def test_stdio_tool_and_prompt_list():
                 got = await session.get_prompt("analyse-risks")
                 return tools, prompts, got
     tools, prompts, got = asyncio.run(go())
-    assert len(tools) == len(ALL) == 40 and len(prompts) == PROMPTS == 22
+    assert len(tools) == len(ALL) == 41 and len(prompts) == PROMPTS == 22
     assert sorted(prompts) == sorted(prompt_names(load_index()))
     assert got.messages[0].role == "user" and got.messages[0].content.text.startswith("Skill analyse-risks from loomground-solver @ ")

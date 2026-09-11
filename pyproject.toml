@@ -16,8 +16,9 @@ authors = [{ name = "Loomground Contributors" }]
 # ranged here and git-pinned in requirements-dev.txt until the planes are on an index.
 dependencies = [
     "mcp>=2,<3",
+    "loomground-governance>=0.11,<0.12",
     "loomground-versum>=0.13,<0.14",
-    "loomground-deontic>=0.1,<0.2",
+    "loomground-deontic>=0.1,<0.3",
     "loomground-factual>=0.1,<0.2",
     "loomground-epistemic>=0.1,<0.2",
     "loomground-norm>=0.1,<0.2",
@@ -58,7 +59,7 @@ where = ["src"]
 include = ["loomground_mcp*"]
 
 [tool.setuptools.package-data]
-loomground_mcp = ["py.typed", "catalogue.json", "skills/index.json", "skills/*/*/SKILL.md"]
+loomground_mcp = ["py.typed", "catalogue.json", "releases.json", "skills/index.json", "skills/*/*/SKILL.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

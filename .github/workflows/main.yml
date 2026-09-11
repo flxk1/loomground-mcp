@@ -31,6 +31,11 @@ jobs:
       - run: |
           sha=$(sed -n 's#.*"commit": "\([0-9a-f]*\)".*#\1#p' src/loomground_mcp/tools/catalogue.py)
           git init -q loomground-cat && (git -C loomground-cat fetch -q --depth 1 https://github.com/flxk1/loomground "$sha" && git -C loomground-cat checkout -q FETCH_HEAD) || echo "loomground $sha not public yet; catalogue parity test will skip"
+      # the vendored releases.json is checked the same way against RELEASES.json at the loomground commit
+      # tools/releases.py SOURCE names; not public yet → the file stays absent and the parity test skips
+      - run: |
+          sha=$(sed -n 's#.*"commit": "\([0-9a-f]*\)".*#\1#p' src/loomground_mcp/tools/releases.py)
+          git init -q loomground-rel && (git -C loomground-rel fetch -q --depth 1 https://github.com/flxk1/loomground "$sha" && git -C loomground-rel checkout -q FETCH_HEAD) || echo "loomground $sha not public yet; releases parity test will skip"
       # the vendored skills are checked against each repository at the commit skills/index.json pins: a guarded fetch per
       # public repository; a repository that cannot be fetched leaves its checkout absent and its parity items skip
       - run: |
@@ -43,4 +48,5 @@ jobs:
           LOOMGROUND_SOLVER_SKILLS: ${{ github.workspace }}/solver-skills/skills
           LOOMGROUND_TOPOS_EXAMPLES: ${{ github.workspace }}/topos-spec/examples
           LOOMGROUND_CATALOGUE: ${{ github.workspace }}/loomground-cat/CATALOGUE.json
+          LOOMGROUND_RELEASES: ${{ github.workspace }}/loomground-rel/RELEASES.json
           LOOMGROUND_SKILLS_ROOT: ${{ github.workspace }}/skills-src
