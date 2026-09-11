@@ -19,7 +19,7 @@ KEYS = {"repo", "name", "description", "allowed_tools", "commit", "path", "url"}
 
 
 def test_index_records():
-    assert len(INDEX) == 22 and len(PUBLIC) == 22 and len(PRIVATE) == 0
+    assert len(INDEX) == 33 and len(PUBLIC) == 26 and len(PRIVATE) == 7
     assert [(e["repo"], e["name"]) for e in INDEX] == sorted((e["repo"], e["name"]) for e in INDEX)
     for e in INDEX:
         assert set(e) - {"private"} == KEYS and len(e["commit"]) == 40 and e["description"]
@@ -34,8 +34,8 @@ def test_skill_index_tool():
     rows = env["result"]
     assert [(r["repo"], r["name"]) for r in rows] == [(e["repo"], e["name"]) for e in INDEX]
     prompts = [r["prompt"] for r in rows]
-    assert prompts.count(None) == 0 and {"loomground/loomground", "loomground-governance/loomground", "analyse-risks"} <= set(prompts)
-    assert len(set(p for p in prompts if p)) == 22
+    assert prompts.count(None) == 7 and {"loomground/loomground", "loomground-governance/loomground", "analyse-risks"} <= set(prompts)
+    assert len(set(p for p in prompts if p)) == 26
 
 
 def test_skill_by_name():
@@ -63,7 +63,7 @@ def test_prompts_in_process():
             return (await c.list_prompts()).prompts, await c.get_prompt("analyse-risks")
     listed, got = asyncio.run(go())
     by_name = {p.name: p for p in listed}
-    assert len(listed) == 22 and set(by_name) == set(prompt_names(INDEX))
+    assert len(listed) == 26 and set(by_name) == set(prompt_names(INDEX))
     entry = prompt_names(INDEX)["analyse-risks"]
     assert by_name["analyse-risks"].description == entry["description"] and by_name["analyse-risks"].arguments == []
     assert len(got.messages) == 1 and got.messages[0].role == "user"
@@ -79,12 +79,7 @@ for _e in INDEX:
 # A repository whose skills this server vendors must agree with the catalogue exactly.
 # A catalogued skill this server does not vendor is a gap in the index, named below, not a
 # disagreement: NOT_VENDORED lists why each is absent, so an omission cannot pass silently.
-NOT_VENDORED = {
-    "evidence-emitter": "skill description does not say when to use it (skills_lint)",
-    "policy-compiler": "skill description does not say when to use it (skills_lint)",
-    "privacy-shield": "skill description does not say when to use it (skills_lint)",
-    "a2a-compliance": "skill description is 1357 characters, over the 1024 limit (skills_lint)",
-}
+NOT_VENDORED: dict[str, str] = {}  # every conformant public skill is vendored
 
 
 @pytest.mark.parametrize("repo", sorted(r for r in CATALOGUE if CATALOGUE[r] or r in BY_REPO))
@@ -95,3 +90,11 @@ def test_catalogue_skills_equal_index(repo):
             "vendor it and drop the entry")
         return
     assert sorted(CATALOGUE[repo]) == sorted(BY_REPO.get(repo, []))
+
+
+def test_a_folded_description_is_read():
+    """`description: >-` starts empty; its indented lines still belong to it."""
+    from loomground_mcp.tools.skills import frontmatter_fields
+    fm = frontmatter_fields("---\nname: demo\ndescription: >-\n  First half\n  and second half.\nallowed-tools: a b\n---\n\n# demo\n")
+    assert fm["description"] == "First half and second half."
+    assert fm["name"] == "demo" and fm["allowed-tools"] == "a b"

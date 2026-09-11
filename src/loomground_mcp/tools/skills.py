@@ -40,13 +40,16 @@ def frontmatter_fields(text: str) -> dict[str, str]:
     raw, _ = split_frontmatter(text)
     fields: dict[str, str] = {}
     key = None
+    folded = False
     for line in (raw or "").splitlines():
         m = re.match(r"^([A-Za-z_-]+):\s*(.*)$", line)
         if m:
             key, value = m.group(1), m.group(2).strip()
-            fields[key] = "" if value in (">", ">-", "|", "|-") else value
-        elif key and fields[key] and line[:1] in (" ", "\t"):
-            fields[key] = f"{fields[key]} {line.strip()}"
+            folded = value in (">", ">-", "|", "|-")
+            fields[key] = "" if folded else value
+        elif key and line[:1] in (" ", "\t") and (folded or fields[key]):
+            # a folded block starts empty, so an indented line still belongs to it
+            fields[key] = f"{fields[key]} {line.strip()}".strip()
     for k, v in fields.items():
         if len(v) >= 2 and v[0] == v[-1] and v[0] in "'\"":
             fields[k] = v[1:-1].replace("''", "'") if v[0] == "'" else v[1:-1].replace('\\"', '"')

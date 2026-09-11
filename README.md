@@ -49,7 +49,7 @@ Interface: exposes the planes over MCP. Pipeline position: beside `source → lo
 
 ## Status
 
-0.1.0 · 46 tools · 22 prompts · 109 tests · Python >=3.10 · mcp 2.x. What the suite covers: [docs/testing.md](docs/testing.md).
+0.1.0 · 46 tools · 26 prompts · 126 tests · Python >=3.10 · mcp 2.x. What the suite covers: [docs/testing.md](docs/testing.md).
 
 ## License
 
