@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "loomground-mcp"
-description = "One MCP server exposing the Loomground planes as tools: versum, the four languages, solver and its skills, ingest, operators, assurance; stdio or HTTP."
+description = "One MCP server exposing the Loomground planes as tools: versum, the four languages, solver and its skills, ingest, operators, assurance, controls; stdio or HTTP."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
@@ -37,6 +37,11 @@ dependencies = [
     "effect-reconciliation>=0.2,<0.3",
     "enforcement-posture>=0.5,<0.6",
     "5d-nd>=0.1,<0.2",
+    "loomground-audit-chain>=0.1,<0.2",
+    "loomground-lock>=0.1,<0.2",
+    "loomground-lane>=0.1,<0.2",
+    "loomground-drift>=0.1,<0.2",
+    "loomground-erasure>=0.1,<0.2",
 ]
 dynamic = ["version"]
 

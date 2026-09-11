@@ -49,6 +49,11 @@ Every result is one envelope in `structuredContent` (and as JSON text):
 | `effect_reconcile(auths, effects, since, until, match_window_s=0)` | effect-reconciliation | `reconcile` | status, matched, the three mismatches, rates |
 | `enforcement_compare(a, b)` | enforcement-posture | `compare` | unchanged, hardened, weakened, incomparable |
 | `nd_digest(ref)` | 5d-nd | `canonicalize` / `digest` / `validate` | canonical bytes, sha256, validity |
+| `audit_chain_verify(folder, log_root?, subject?, entry_ref?)` | loomground-audit-chain | `mutation_log.MutationLog.verify_chain` / `pillar.intact_attestation` | folder → `folder_id`, `count`, `head_hash`, `verification` (`ok`, `total_events`, `legacy_events`, `broken_links`, `malformed_lines`, `unsigned_events`, `signature_failures`, `purged_with_tombstone`, `host_divergence_warning`, `key_pin`) and the `intact` pillar attestation a certification cites; `subject` defaults to the folder id |
+| `lock_text(text, context="", mode="standard", source="document", moderation_rules?)` | loomground-lock | `lock_text` / `verdicts.verdict_for_action` | text → `action` ∈ `allow` · `minimise` · `refuse`, the `.lg` `verdict`, `reason`, `findings` (`tier` B · C · M, `type`, `severity`, `detail`, `confidence`, `remediation_actions`) and `redacted_text`; `mode` ∈ `standard` · `strict` · `permissive` · `audit_only`; a semantic tier that cannot run adds `tier_c_unavailable` and refuses |
+| `lane_evaluate(lane, request, use_case_id="", connector_id="", policy_fingerprint="")` | loomground-lane | `evaluate_lane` | lane `{lane_id, agent, max_grade, action_classes, footprints?, folder?, use_cases?, connectors?, policy_fingerprint?, version?, approved_by, rationale}` + request `{agent, action_class, autonomy_grade, footprint[], folder?}` → `lane_id`, `allowed`, `violations`; `lane` = null fails closed on `no approved governance lane` |
+| `drift_breaker(lease, tripwires?, metrics?, now?)` | loomground-drift | `Breaker.status` | lease `{agent, granted_grade, expires_at, ttl_seconds?, granted_at?}` + readings → `agent`, `state` ∈ `RUNNING` · `DECAYED` · `QUARANTINED`, `effective_grade`, `reasons`, `tripped`, `verdict`; `tripwires` omitted → the drift tripwire alone; a null metric is a gap, never a trip |
+| `erasure_sweep(folder, subject, cascade=false, log_root?)` | loomground-erasure | `sweep` | preview → `hits_by_kind`, `hits_by_folder`, `estimated_tombstone`, `drafts_sealed`, `cards_sealed`, `versum_sealed`, `pending_erase_queued`, `blind_spots` (the host ports no one wired); `execute` is not served |
 
 `loomground_catalogue` is the family map, to be called first: every repository as one record, the pipeline order `source → ingest → versum → solver → applied | diagnostic` with the tool at each step, and `patch_from_documents` (ingest_text → versum_index → norm_extract / deontic_parse → author the `.lg` patch → solver_evaluate). It reads `catalogue.json`, vendored from `CATALOGUE.json` in the loomground repository at the commit the envelope's `source` names; `tests/test_catalogue_parity.py` asserts byte-equality against a checkout of that commit. `query` never touches `pipeline` or `patch_from_documents`.
 
@@ -59,6 +64,15 @@ Every result is one envelope in `structuredContent` (and as JSON text):
 `topos_parse` is the one tool whose function lives in this repository: the loomground-topos spec ships the grammar (`grammar/topos.ebnf`, normative) and no package, so the reader is implemented here. It parses only — any id parses; ladder/catalogue membership and the well-formedness invariants are apply-time. An indented line continues the statement above it; a prop block on a node declaration is kept with a warning; an off-vocabulary `resolution_mode`/`state`/`status` value is a warning, not an error. Every rejected statement is one error with its line.
 
 The seven `solver_*` skill tools take the JSON their script reads on stdin as named arguments and return what it prints (`{method, result}`). `method` overrides the kernel method (any name in `loomground_solver.METHODS`); `extra` carries an overridden method's further keyword arguments (`{"alpha": 0.3}` for `hurwicz`). The scripts stay in the skills as the shell fallback; `tests/test_solver_parity.py` feeds both the same JSON and asserts the same output.
+
+The audit chain and the four runtime controls are served read-only, and each is optional: a plane that is
+not installed answers `unavailable`, never an error. `audit_chain_verify` walks a log, `lock_text` decides,
+`lane_evaluate` and `drift_breaker` are pure evaluations, `erasure_sweep` previews. Approving a lane,
+renewing a lease, clearing a quarantine, sealing a folder and `execute` stay the host's own acts. The two
+folder-addressed tools resolve their log root from `log_root`, else `RVND_LOG_ROOT`, else `~/.workspace/log`,
+read their keys under `WORKSPACE_KEY_DIR` -- `audit_chain_verify` mints a host identity key there when the
+host has none -- and refuse a folder outside the known-workspaces allowlist.
+`drift_breaker` evaluates a fresh breaker per call: quarantine stickiness is the host's to persist.
 
 Enum arguments take the plane's own names (`PRESENT`, `decided`, `editorial`, …). Keys are passed in per call as PEM and never generated or stored. Canonicalisation uses `rfc8785` when installed, else sorted compact JSON; the envelope names which.
 
@@ -74,7 +88,8 @@ Enum arguments take the plane's own names (`PRESENT`, `decided`, `editorial`, �
 | loomground-solver | `solver_evaluate` · `solver_verify` · `solver_manifest` · `solver_analyse_risks` · `solver_estimate_liability` · `solver_litigation_risk` · `solver_opponent_model` · `solver_probability` · `solver_strategy` · `solver_advise_addons` |
 | loomground-ingest | `ingest_text` |
 | operators | `collapse` · `escalation` · `falsifiability` · `proxy` · `mandate` · `brief` |
-| assurance | `oversight_issue` · `oversight_verify` · `govcert_verify` · `norm_freshness` · `obligation_admit` · `effect_reconcile` · `enforcement_compare` · `nd_digest` |
+| assurance | `oversight_issue` · `oversight_verify` · `govcert_verify` · `norm_freshness` · `obligation_admit` · `effect_reconcile` · `enforcement_compare` · `nd_digest` · `audit_chain_verify` |
+| runtime controls | `lock_text` · `lane_evaluate` · `drift_breaker` · `erasure_sweep` |
 
 `loomground_catalogue` is the one to call first: it carries the family map, the pipeline order and
 how documents become an `.lg` patch. `loomground_releases` is the family's release and pin

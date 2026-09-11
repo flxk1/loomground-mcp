@@ -22,4 +22,14 @@ obligation-discharge @ git+https://github.com/flxk1/obligation-discharge@45058bc
 effect-reconciliation @ git+https://github.com/flxk1/effect-reconciliation@a5164fb54cc9c29ff38baa68dd0499336c1684ab
 enforcement-posture @ git+https://github.com/flxk1/enforcement-posture@5e0096cff629e44d51c4f1b2db5116820b3f1a1b
 5d-nd @ git+https://github.com/flxk1/5d-nd@5d71a78e34ebba1abaedf79165098ffa44bb92aa
+# Runtime controls and the signed audit chain, at their release tags. `loomground-lock-v0.2.0` and
+# `loomground-drift-v0.2.0` tag commits whose `_version.py` still reads 0.1.0 (release-please bumped the
+# manifest, not the version source), so the declared ranges follow the version pip actually installs.
+loomground-audit-chain @ git+https://github.com/flxk1/loomground-audit-chain@7a6e7a4dab006862391d35309c1a65a3023992b3
+loomground-lock @ git+https://github.com/flxk1/loomground-lock@b8a26930fd301d0181139fbb5665342fd614ef8e
+loomground-lane @ git+https://github.com/flxk1/loomground-lane@9bac236ed7034b6183470e2a49137fde477d9b59
+loomground-drift @ git+https://github.com/flxk1/loomground-drift@f7de9456fccb8c76843eee260db2955cc6ee6444
+loomground-erasure @ git+https://github.com/flxk1/loomground-erasure@df098be5815e5dc418d36d397a8d9b24697279e7
+# transitive: audit-chain, lock and erasure consume it; no index, so it is pinned here too (tag v0.1.0).
+loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad
 pytest==9.1.1

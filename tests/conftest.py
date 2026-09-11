@@ -53,6 +53,18 @@ def keypair():
             priv.public_key().public_bytes(s.Encoding.PEM, s.PublicFormat.SubjectPublicKeyInfo).decode())
 
 
+@pytest.fixture
+def chain(tmp_path, monkeypatch):
+    """A registered folder with its own log root and key dir: the chain planes write nothing under $HOME."""
+    monkeypatch.setenv("WORKSPACE_KEY_DIR", str(tmp_path / "keys"))
+    monkeypatch.setenv("WORKSPACE_HOST_ID", "test-host")
+    folder, log_root = tmp_path / "ws", tmp_path / "log"
+    folder.mkdir()
+    from loomground_workspace.workspace_registry import add_known_workspace
+    add_known_workspace(str(folder), log_root=log_root)
+    return str(folder), str(log_root)
+
+
 CORPUS = {
     "a.md": ("The operator must delete personal data within 30 days after the contract ends. "
              "The operator must not transfer personal data outside the EU. "

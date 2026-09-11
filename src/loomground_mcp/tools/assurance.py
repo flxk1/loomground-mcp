@@ -1,14 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 flxk1
 """The assurance artifacts: oversight-certificate, governance-certification, norm-freshness,
-obligation-discharge, effect-reconciliation, enforcement-posture, 5d-nd.
+obligation-discharge, effect-reconciliation, enforcement-posture, 5d-nd, loomground-audit-chain.
 
-Keys are passed in per call as PEM text and used once; the server generates and stores none.
+Keys are passed in per call as PEM text and used once; the server generates and stores none —
+except the audit chain, which verifies against the host's own identity key where it already lives.
 """
 import json
 from typing import Any, Callable, Optional
 
-from ._result import enum_of, tool
+from ._result import enum_of, import_plane, tool
 
 
 def _canonicalizer() -> tuple[Callable[[dict], bytes], str]:
@@ -120,5 +121,20 @@ def nd_digest(ref: dict[str, Any]) -> dict[str, Any]:
     return {"scheme": nd.SCHEME, "ref": ref, "valid": nd.validate(ref), "canonical": nd.canonicalize(ref), "digest": nd.digest(ref)}
 
 
+@tool("loomground-audit-chain", "mutation_log.MutationLog.verify_chain / pillar.intact_attestation")
+def audit_chain_verify(folder: str, log_root: Optional[str] = None, subject: str = "", entry_ref: str = "") -> dict[str, Any]:
+    """Walk a folder's append-only log: hash links, Ed25519 signatures, purge tombstones, the head anchor, the
+    key pin. `log_root` defaults to the plane's own (`RVND_LOG_ROOT`, else `~/.workspace/log`). Returns the
+    verification (`ok`, counts, `broken_links`, `signature_failures`, …), `head_hash`, `count`, and the `intact`
+    pillar attestation for `subject` (default: the folder id) that a certification cites. Verification reads the
+    host identity key under `WORKSPACE_KEY_DIR` and mints one there when the host has none."""
+    ac = import_plane("loomground_audit_chain")
+    log = ac.MutationLog(folder, log_root=log_root)
+    verification = log.verify_chain()
+    return {"folder_id": log.folder_id, "count": log.count(), "head_hash": log.head_hash(),
+            "verification": verification,
+            "intact": ac.intact_attestation(verification, subject=subject or log.folder_id, entry_ref=entry_ref)}
+
+
 TOOLS = [oversight_issue, oversight_verify, govcert_verify, norm_freshness, obligation_admit, effect_reconcile,
-         enforcement_compare, nd_digest]
+         enforcement_compare, nd_digest, audit_chain_verify]

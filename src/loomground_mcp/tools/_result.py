@@ -12,6 +12,7 @@ fake result.
 import dataclasses
 import enum
 import functools
+import importlib
 import inspect
 import json
 from typing import Any, Callable
@@ -21,6 +22,14 @@ from mcp import types
 
 class Unavailable(Exception):
     """The plane cannot answer this call; ``reason`` says why."""
+
+
+def import_plane(module: str) -> Any:
+    """Import an optional plane package; one that is not installed is ``unavailable``, never an error."""
+    try:
+        return importlib.import_module(module)
+    except ImportError as exc:
+        raise Unavailable(f"{module} is not installed: {exc}") from exc
 
 
 def plain(value: Any) -> Any:

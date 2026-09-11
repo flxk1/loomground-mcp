@@ -36,6 +36,17 @@ the table below is a reading of them.
 | `effect-reconciliation` | `>=0.2,<0.3` | `a5164fb` |
 | `enforcement-posture` | `>=0.5,<0.6` | `5e0096c` |
 | `5d-nd` | `>=0.1,<0.2` | `5d71a78` |
+| `loomground-audit-chain` | `>=0.1,<0.2` | `7a6e7a4` |
+| `loomground-lock` | `>=0.1,<0.2` | `b8a2693` |
+| `loomground-lane` | `>=0.1,<0.2` | `9bac236` |
+| `loomground-drift` | `>=0.1,<0.2` | `f7de945` |
+| `loomground-erasure` | `>=0.1,<0.2` | `df098be` |
+
+The five runtime-control pins are release tags. `loomground-lock-v0.2.0` and `loomground-drift-v0.2.0` tag
+commits whose `_version.py` still reads `0.1.0` -- release-please bumped the manifest, not the version
+source -- so their ranges follow the version pip installs, not the tag name. `loomground-workspace`
+(`e6e5e7d`, tag `v0.1.0`) is pinned in `requirements-dev.txt` as well: the audit chain, the lock and
+erasure consume it, and there is no index to resolve it from.
 
 The `loomground` catalogue and release register are consumed as data, not as a package:
 `CATALOGUE.json` and `RELEASES.json` are vendored as `catalogue.json` and `releases.json`, and

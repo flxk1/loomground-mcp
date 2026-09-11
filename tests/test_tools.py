@@ -4,14 +4,18 @@
 import asyncio
 import base64
 import json
+import sys
 
+import pytest
 from mcp import Client
 
 from conftest import PATCH, SOLVER_SAMPLES, TRANSPORT, call
 from loomground_mcp import build_server
 from loomground_mcp.tools import ALL
 
-# served here, not yet in CATALOGUE.json at the vendored commit: the loomground record follows in that repository
+# served here, not yet in CATALOGUE.json at the vendored commit: the five runtime-control and audit-chain
+# records carry empty `tools` there, and the catalogue entry follows in the loomground repository
+AHEAD_OF_CATALOGUE = {"audit_chain_verify", "lock_text", "lane_evaluate", "drift_breaker", "erasure_sweep"}
 
 
 def test_lists_every_tool_with_plane_and_function():
@@ -19,7 +23,7 @@ def test_lists_every_tool_with_plane_and_function():
         async with Client(build_server()) as client:
             return (await client.list_tools()).tools
     tools = asyncio.run(go())
-    assert len(tools) == len(ALL) == 41
+    assert len(tools) == len(ALL) == 46
     assert all(t.description.startswith("[") and " · " in t.description for t in tools)
     assert "patch_lg" in next(t for t in tools if t.name == "solver_evaluate").input_schema["properties"]
     assert tools[0].name == "loomground_catalogue"
@@ -38,7 +42,7 @@ def test_loomground_catalogue():
     assert [s["stage"] for s in r["pipeline"]][:3] == ["ingest", "versum", "solver"]
     assert [s["tool"] for s in r["patch_from_documents"]] == ["ingest_text", "versum_index", "norm_extract", "deontic_parse", None, "solver_evaluate"]
     catalogued, served = {t for x in r["repos"] for t in x["tools"]}, {t.__name__ for t in ALL}
-    assert catalogued == served
+    assert served - catalogued == AHEAD_OF_CATALOGUE and not catalogued - served
     by_tool = call("loomground_catalogue", {"query": "SOLVER_EVALUATE"})["result"]
     assert [x["repo"] for x in by_tool["repos"]] == ["loomground-solver"] and len(by_tool["pipeline"]) == len(r["pipeline"])
     by_family = call("loomground_catalogue", {"query": "standard/language"})["result"]["repos"]
@@ -481,3 +485,96 @@ def test_nd_digest():
     r = env["result"]
     assert r["valid"] is True and r["digest"] == {"sha256": "4da8b3468ad57b8a4e6c6d2a741876e1b3f00eb8c974df29e540c9517e2a88d2"}
     assert call("nd_digest", {"ref": {"dimensions": ["spooky"], "anchor": "x"}})["result"]["valid"] is False
+
+
+# the signed audit chain and the runtime controls
+
+LEASE = {"agent": "bot", "granted_grade": "L3", "expires_at": 1000.0}
+LANE = {"lane_id": "lane-research", "agent": "bot", "max_grade": "L2", "action_classes": ["summarise"],
+        "footprints": ["personal-data"], "approved_by": "alice", "rationale": "bounded research assistant"}
+
+
+def _append(folder, log_root, *pair_ids, note=""):
+    from loomground_audit_chain import LogEvent, MutationLog
+    log = MutationLog(folder, log_root=log_root)
+    for pair_id in pair_ids:
+        log.append(LogEvent(event="ingest", folder_path=folder, pair_id=pair_id, extra={"note": note}))
+    return log
+
+
+def test_audit_chain_verify(chain):
+    folder, log_root = chain
+    log = _append(folder, log_root, "doc:0", "doc:1", "doc:2")
+    env = call("audit_chain_verify", {"folder": folder, "log_root": log_root})
+    r = env["result"]
+    assert env["plane"] == "loomground-audit-chain" and r["count"] == 3 and r["head_hash"] == log.head_hash()
+    assert r["verification"]["ok"] is True and r["verification"]["total_events"] == 3
+    assert r["intact"]["verified"] is True and r["intact"]["intact"]["type"] == "native-chain"
+    lines = (log.log_file).read_text(encoding="utf-8").splitlines()
+    log.log_file.write_text("\n".join(lines[:1] + lines[2:]) + "\n", encoding="utf-8")
+    broken = call("audit_chain_verify", {"folder": folder, "log_root": log_root})["result"]
+    assert broken["verification"]["ok"] is False and broken["intact"]["verified"] is False
+    assert [b["reason"] for b in broken["verification"]["broken_links"]] == ["prev_hash_mismatch"]
+
+
+def test_lock_text():
+    env = call("lock_text", {"text": "mail alex@example.com the project atlas plan", "context": "- project atlas"})
+    r = env["result"]
+    assert env["plane"] == "loomground-lock" and r["action"] == "refuse" and r["verdict"] == "refused"
+    assert [f["tier"] for f in r["findings"]] == ["B", "C"]
+    clear = call("lock_text", {"text": "the weather is fine"})["result"]
+    assert clear["action"] == "allow" and clear["verdict"] == "auto" and clear["findings"] == []
+
+
+def test_lane_evaluate():
+    inside = call("lane_evaluate", {"lane": LANE, "request": {
+        "agent": "bot", "action_class": "summarise", "autonomy_grade": "L2", "footprint": ["personal-data"]}})
+    assert inside["result"] == {"lane_id": "lane-research", "allowed": True, "violations": []}
+    outside = call("lane_evaluate", {"lane": LANE, "request": {
+        "agent": "bot", "action_class": "publish", "autonomy_grade": "L3", "footprint": ["personal-data", "web"]}})
+    assert outside["result"]["allowed"] is False and outside["result"]["violations"] == [
+        "grade L3 exceeds L2", "action_class 'publish' is outside the lane", "footprints outside lane: web"]
+    unapproved = call("lane_evaluate", {"lane": None, "request": {
+        "agent": "bot", "action_class": "summarise", "autonomy_grade": "L0", "footprint": []}})
+    assert unapproved["result"] == {"lane_id": "", "allowed": False, "violations": ["no approved governance lane"]}
+
+
+def test_drift_breaker():
+    live = call("drift_breaker", {"lease": LEASE, "now": 990.0})["result"]
+    assert live["state"] == "RUNNING" and live["effective_grade"] == "L3" and live["verdict"] == ""
+    lapsed = call("drift_breaker", {"lease": LEASE, "now": 1001.0})["result"]
+    assert lapsed["state"] == "DECAYED" and lapsed["effective_grade"] == "L0"
+    tripped = call("drift_breaker", {"lease": LEASE, "metrics": {"drift_structural": True}, "now": 990.0})["result"]
+    assert tripped["state"] == "QUARANTINED" and tripped["verdict"] == "refused"
+    assert tripped["tripped"][0].startswith("tripwire 'drift'")
+    gap = call("drift_breaker", {"lease": LEASE, "metrics": {"drift_structural": None}, "now": 990.0})["result"]
+    assert gap["state"] == "RUNNING"
+
+
+def test_erasure_sweep(chain):
+    folder, log_root = chain
+    _append(folder, log_root, "doc:0", note="Jane Doe")
+    env = call("erasure_sweep", {"folder": folder, "subject": "Jane Doe", "log_root": log_root})
+    r = env["result"]
+    assert env["plane"] == "loomground-erasure" and r["subject"] == "Jane Doe"
+    assert sum(len(v) for v in r["hits_by_kind"].values()) == 1
+    assert r["estimated_tombstone"]["affected_pair_count"] == 1 and r["estimated_tombstone"]["subject_preview"] == "[REDACTED]"
+    assert "scan_cards" in r["blind_spots"] and "pair_from_event" in r["blind_spots"]
+    clean = call("erasure_sweep", {"folder": folder, "subject": "Someone Else", "log_root": log_root})["result"]
+    assert clean["estimated_tombstone"]["affected_pair_count"] == 0
+
+
+ABSENT = [("audit_chain_verify", {"folder": "."}, "loomground_audit_chain"),
+          ("lock_text", {"text": "hello"}, "loomground_lock"),
+          ("lane_evaluate", {"lane": None, "request": {"agent": "bot", "action_class": "summarise",
+                                                       "autonomy_grade": "L0", "footprint": []}}, "loomground_lane"),
+          ("drift_breaker", {"lease": LEASE}, "loomground_drift"),
+          ("erasure_sweep", {"folder": ".", "subject": "Jane Doe"}, "loomground_erasure")]
+
+
+@pytest.mark.parametrize("name, arguments, module", ABSENT, ids=[m for _, _, m in ABSENT])
+def test_absent_plane_is_unavailable(monkeypatch, name, arguments, module):
+    """The plane's package is not installed: the tool degrades to `unavailable` and never raises."""
+    monkeypatch.setitem(sys.modules, module, None)
+    env = call(name, arguments)
+    assert env["ok"] is False and env["unavailable"] is True and env["reason"].startswith(f"{module} is not installed")
