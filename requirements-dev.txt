@@ -2,7 +2,7 @@
 # A pin is the dependency's release tag (RELEASES.json in loomground) where the family's declared ranges let pip
 # resolve the set together; otherwise a commit on the dependency's public main (see CHANGELOG for which and why).
 loomground-governance @ git+https://github.com/flxk1/loomground-governance@cf09ad8336c0ef47e700952896314472129fa4c7
-loomground-deontic @ git+https://github.com/flxk1/loomground-deontic@f53b2434098ff2cb846c60e1ae75038cc4f8ea51
+loomground-deontic @ git+https://github.com/flxk1/loomground-deontic@c93f4de657f04546f687966d4978d40e25693c2d
 loomground-factual @ git+https://github.com/flxk1/loomground-factual@db60a0592eb7741732944f05279b27def0c9685b
 loomground-epistemic @ git+https://github.com/flxk1/loomground-epistemic@2c1dc8ea8278fe3d1aeffa470319573c53dee932
 loomground-solver @ git+https://github.com/flxk1/loomground-solver@351608303311c4016fcd5439ad23e5b4cbeb6226

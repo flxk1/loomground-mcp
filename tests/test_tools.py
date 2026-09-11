@@ -12,7 +12,6 @@ from loomground_mcp import build_server
 from loomground_mcp.tools import ALL
 
 # served here, not yet in CATALOGUE.json at the vendored commit: the loomground record follows in that repository
-PENDING_CATALOGUE = {"loomground_releases"}
 
 
 def test_lists_every_tool_with_plane_and_function():
@@ -32,14 +31,14 @@ def test_loomground_catalogue():
     env = call("loomground_catalogue")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"repos", "pipeline", "patch_from_documents", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "965198c71372ab26413588eca592110e8284d1f4"}
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "52c4666f6d6bb71a189d977a388a3216f0ac7ffa"}
     names = [x["repo"] for x in r["repos"]]
     assert len(names) == 33 and names[0] == "loomground" and "loomground-mcp" in names
     assert {"repo", "family", "role", "description", "pipeline_position", "depends_on", "tools", "skills", "install", "url"} == set(r["repos"][0])
     assert [s["stage"] for s in r["pipeline"]][:3] == ["ingest", "versum", "solver"]
     assert [s["tool"] for s in r["patch_from_documents"]] == ["ingest_text", "versum_index", "norm_extract", "deontic_parse", None, "solver_evaluate"]
     catalogued, served = {t for x in r["repos"] for t in x["tools"]}, {t.__name__ for t in ALL}
-    assert catalogued <= served and served - catalogued == PENDING_CATALOGUE
+    assert catalogued == served
     by_tool = call("loomground_catalogue", {"query": "SOLVER_EVALUATE"})["result"]
     assert [x["repo"] for x in by_tool["repos"]] == ["loomground-solver"] and len(by_tool["pipeline"]) == len(r["pipeline"])
     by_family = call("loomground_catalogue", {"query": "standard/language"})["result"]["repos"]
@@ -51,10 +50,10 @@ def test_loomground_releases():
     env = call("loomground_releases")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"generated", "repos", "edges", "accepted", "skipped", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "6acdf1fa4f8355f814c329f88d23085439de9707"}
-    assert len(r["repos"]) == 27 and len(r["edges"]) == 54 and r["accepted"] == [] and r["skipped"] == ["RVND"]
-    assert sum(1 for x in r["repos"].values() if x["tag"]) == 16 and all(set(x) == {"version", "tag", "commit", "package", "pypi"} for x in r["repos"].values())
-    assert r["repos"]["loomground-deontic"] == {"version": "0.2.0", "tag": "loomground-deontic-v0.2.0", "commit": "b6ea34e90b67d655b8abadceb6c280b2ed8e26f1", "package": "loomground-deontic", "pypi": False}
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "52c4666f6d6bb71a189d977a388a3216f0ac7ffa"}
+    assert len(r["repos"]) == 32 and len(r["edges"]) == 54 and len(r["accepted"]) == 22 and r["skipped"] == ["RVND"]
+    assert sum(1 for x in r["repos"].values() if x["tag"]) == 16 and all(set(x) == {"version", "tag", "commit", "package", "pypi", "family", "tools", "skills"} for x in r["repos"].values())
+    assert {k: r["repos"]["loomground-deontic"][k] for k in ("version", "tag", "commit", "package", "pypi", "family", "skills")} == {"version": "0.2.0", "tag": "loomground-deontic-v0.2.0", "commit": "b6ea34e90b67d655b8abadceb6c280b2ed8e26f1", "package": "loomground-deontic", "pypi": False, "family": "Standard/language planes", "skills": ["deontic"]}
     assert r["repos"]["loomground-mcp"]["tag"] is None and r["repos"]["loomground-mcp"]["commit"] is None
     assert all(set(e) == {"consumer", "dependency", "range", "dev_pin", "dev_pin_release", "status"} for e in r["edges"])
     assert {e["status"] for e in r["edges"]} <= {"release", "unreleased-commit", "out-of-range", "missing-range"}

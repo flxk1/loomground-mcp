@@ -146,7 +146,8 @@
       "depends_on": [],
       "tools": [
         "loomground_catalogue",
-        "loomground_skill"
+        "loomground_skill",
+        "loomground_releases"
       ],
       "skills": [
         "loomground"
