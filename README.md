@@ -22,6 +22,8 @@ loomground-mcp serve --transport stdio|sse|streamable-http [--port 8765]
 loomground-mcp tools      # the tool table as JSON
 ```
 
+`--token <str>` / `LOOMGROUND_MCP_TOKEN` (flag wins): bearer auth for the HTTP transports — every request to the MCP endpoints without `Authorization: Bearer <token>` is answered `401 {"error": "unauthorized"}`; stdio is unaffected; required before exposing the server beyond localhost.
+
 
 ## Example
 
@@ -68,7 +70,7 @@ Interface: exposes the planes over MCP. Pipeline position: beside `source → lo
 
 ## Status
 
-0.1.0 · 41 tools · 22 prompts · 93 tests (one per tool, script parity for the seven solver skill tools, the loomground-topos examples corpus, catalogue and release-register parity against the loomground repository, skill parity against every repository at its pinned commit, catalogue–index consistency, stdio, SSE and streamable-HTTP smokes) · Python >=3.10 · mcp 2.x
+0.1.0 · 41 tools · 22 prompts · 96 tests (one per tool, script parity for the seven solver skill tools, the loomground-topos examples corpus, catalogue and release-register parity against the loomground repository, skill parity against every repository at its pinned commit, catalogue–index consistency, stdio, SSE and streamable-HTTP smokes, bearer-token gate on both HTTP transports) · Python >=3.10 · mcp 2.x
 
 ## License
 
