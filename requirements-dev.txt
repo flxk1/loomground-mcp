@@ -16,12 +16,12 @@ loomground-falsifiability @ git+https://github.com/flxk1/loomground-falsifiabili
 loomground-proxy @ git+https://github.com/flxk1/loomground-proxy@dccef6f96ad135a0bd79a9e3e0b77003fb4b331c
 loomground-mandate @ git+https://github.com/flxk1/loomground-mandate@e96c59dcbb52822418ed7035cc8bd4d44c3fd3ec
 oversight-certificate @ git+https://github.com/flxk1/oversight-certificate@8dbb4fa46042f12eeecaf37cb1ad095b838d7185
-governance-certification @ git+https://github.com/flxk1/governance-certification@acc7741af98d75bf53d3b16e5babe04d64faa3c8
+governance-certification @ git+https://github.com/flxk1/governance-certification@9eb3f2bd79130e72bd700ba8dc44c175ffdff935
 norm-freshness @ git+https://github.com/flxk1/norm-freshness@e2951a6db30e0773742d4bf15a915d983ee30216
 obligation-discharge @ git+https://github.com/flxk1/obligation-discharge@45058bcce230cc3e96171762afd9b13b450fa6c7
 effect-reconciliation @ git+https://github.com/flxk1/effect-reconciliation@a5164fb54cc9c29ff38baa68dd0499336c1684ab
 enforcement-posture @ git+https://github.com/flxk1/enforcement-posture@5e0096cff629e44d51c4f1b2db5116820b3f1a1b
-5d-nd @ git+https://github.com/flxk1/5d-nd@5d71a78e34ebba1abaedf79165098ffa44bb92aa
+5d-nd @ git+https://github.com/flxk1/5d-nd@82a7d4bf0e3e18c8dd28068143fe78b6a510a4d5
 # Runtime controls and the signed audit chain, at their release tags. `loomground-lock-v0.2.0` and
 # `loomground-drift-v0.2.0` tag commits whose `_version.py` still reads 0.1.0 (release-please bumped the
 # manifest, not the version source), so the declared ranges follow the version pip actually installs.
