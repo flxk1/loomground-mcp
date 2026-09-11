@@ -600,6 +600,81 @@
       "url": "https://github.com/flxk1/obligation-discharge"
     },
     {
+      "repo": "loomground-audit-chain",
+      "family": "Assurance artifacts",
+      "role": "append-only, hash-chained, Ed25519-signed event log with chain verification (pillar: intact)",
+      "description": "Append-only, hash-chained, Ed25519-signed events with chain verification and witness-escape records.",
+      "pipeline_position": null,
+      "depends_on": [
+        "loomground-workspace"
+      ],
+      "tools": [],
+      "skills": [],
+      "install": "pip install git+https://github.com/flxk1/loomground-audit-chain",
+      "url": "https://github.com/flxk1/loomground-audit-chain"
+    },
+    {
+      "repo": "loomground-lock",
+      "family": "Runtime controls",
+      "role": "egress and ingress locks, capability tokens, at-rest seal of a folder's memory",
+      "description": "Egress and ingress locks with capability tokens, and at-rest sealing of a folder's memory.",
+      "pipeline_position": null,
+      "depends_on": [
+        "loomground-governance",
+        "loomground-workspace"
+      ],
+      "tools": [],
+      "skills": [],
+      "install": "pip install git+https://github.com/flxk1/loomground-lock",
+      "url": "https://github.com/flxk1/loomground-lock"
+    },
+    {
+      "repo": "loomground-lane",
+      "family": "Runtime controls",
+      "role": "durable approval envelopes (actions, data, connectors, folder, policy) per graded agent",
+      "description": "Durable approval envelopes for governed agents: what a grade covers, checked each iteration, appended to the signed audit chain.",
+      "pipeline_position": null,
+      "depends_on": [
+        "loomground-governance",
+        "loomground-audit-chain"
+      ],
+      "tools": [],
+      "skills": [],
+      "install": "pip install git+https://github.com/flxk1/loomground-lane",
+      "url": "https://github.com/flxk1/loomground-lane"
+    },
+    {
+      "repo": "loomground-drift",
+      "family": "Runtime controls",
+      "role": "leased autonomy, tripwires, quarantine; drift against a recorded baseline",
+      "description": "Leased autonomy that decays unless renewed, tripwires that quarantine, drift measured against a baseline.",
+      "pipeline_position": null,
+      "depends_on": [
+        "loomground-governance",
+        "loomground-audit-chain"
+      ],
+      "tools": [],
+      "skills": [],
+      "install": "pip install git+https://github.com/flxk1/loomground-drift",
+      "url": "https://github.com/flxk1/loomground-drift"
+    },
+    {
+      "repo": "loomground-erasure",
+      "family": "Runtime controls",
+      "role": "controller-signed erasure sweeps, pending-erase markers, forgotten-subjects ledger",
+      "description": "Controller-signed erasure over a signed audit chain: sweep, composite tombstone, pending markers for sealed stores, a ledger that refuses re-ingestion.",
+      "pipeline_position": null,
+      "depends_on": [
+        "loomground-audit-chain",
+        "loomground-lock",
+        "loomground-governance"
+      ],
+      "tools": [],
+      "skills": [],
+      "install": "pip install git+https://github.com/flxk1/loomground-erasure",
+      "url": "https://github.com/flxk1/loomground-erasure"
+    },
+    {
       "repo": "loomground-patchbay",
       "family": "Interfaces and authoring",
       "role": "reusable presentation contract and console shell",
