@@ -35,9 +35,9 @@ def test_loomground_catalogue():
     env = call("loomground_catalogue")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"repos", "pipeline", "patch_from_documents", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "ba48b40540bb8788b92d03064ce6adc710139c0b"}
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "ec5d8ecf57d63bef4b3a52efbc4100ea03c4b18d"}
     names = [x["repo"] for x in r["repos"]]
-    assert len(names) == 38 and names[0] == "loomground" and "loomground-mcp" in names
+    assert len(names) == 43 and names[0] == "loomground" and "loomground-mcp" in names
     assert {"repo", "family", "role", "description", "pipeline_position", "depends_on", "tools", "skills", "install", "url"} == set(r["repos"][0])
     assert [s["stage"] for s in r["pipeline"]][:3] == ["ingest", "versum", "solver"]
     assert [s["tool"] for s in r["patch_from_documents"]] == ["ingest_text", "versum_index", "norm_extract", "deontic_parse", None, "solver_evaluate"]
@@ -54,8 +54,8 @@ def test_loomground_releases():
     env = call("loomground_releases")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"generated", "repos", "edges", "accepted", "skipped", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "ba48b40540bb8788b92d03064ce6adc710139c0b"}
-    assert len(r["repos"]) == 37 and len(r["edges"]) == 67 and len(r["accepted"]) == 18 and r["skipped"] == ["RVND"]
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "ec5d8ecf57d63bef4b3a52efbc4100ea03c4b18d"}
+    assert len(r["repos"]) == 42 and len(r["edges"]) == 67 and len(r["accepted"]) == 18 and r["skipped"] == ["RVND"]
     assert sum(1 for x in r["repos"].values() if x["tag"]) == 25 and all(set(x) == {"version", "tag", "commit", "package", "pypi", "family", "tools", "skills"} for x in r["repos"].values())
     d = r["repos"]["loomground-deontic"]
     assert d["package"] == "loomground-deontic" and d["family"] == "Standard/language planes" and d["skills"] == ["deontic"]

@@ -219,6 +219,18 @@
       "tools": [],
       "skills": []
     },
+    "policy-compiler": {
+      "version": "0.1.0",
+      "tag": null,
+      "commit": null,
+      "package": "policy-compiler",
+      "pypi": false,
+      "family": "Applied reasoning",
+      "tools": [],
+      "skills": [
+        "policy-compiler"
+      ]
+    },
     "loomground-brief": {
       "version": "0.2.0",
       "tag": "loomground-brief-v0.2.0",
@@ -386,6 +398,28 @@
       "tools": [],
       "skills": []
     },
+    "oversight-ladder": {
+      "version": "0.1.0",
+      "tag": null,
+      "commit": null,
+      "package": "oversight-ladder",
+      "pypi": false,
+      "family": "Assurance artifacts",
+      "tools": [],
+      "skills": []
+    },
+    "evidence-emitter": {
+      "version": "0.1.0",
+      "tag": null,
+      "commit": null,
+      "package": "evidence-emitter",
+      "pypi": false,
+      "family": "Assurance artifacts",
+      "tools": [],
+      "skills": [
+        "evidence-emitter"
+      ]
+    },
     "loomground-lock": {
       "version": "0.1.0",
       "tag": null,
@@ -425,6 +459,30 @@
       "family": "Runtime controls",
       "tools": [],
       "skills": []
+    },
+    "privacy-shield": {
+      "version": "1.0.0",
+      "tag": null,
+      "commit": null,
+      "package": "privacy-shield",
+      "pypi": false,
+      "family": "Runtime controls",
+      "tools": [],
+      "skills": [
+        "privacy-shield"
+      ]
+    },
+    "a2a-compliance": {
+      "version": "0.1.0",
+      "tag": null,
+      "commit": null,
+      "package": "a2a-compliance",
+      "pypi": false,
+      "family": "Runtime controls",
+      "tools": [],
+      "skills": [
+        "compliance-fleet"
+      ]
     },
     "loomground-patchbay": {
       "version": null,

@@ -405,6 +405,20 @@
       "url": "https://github.com/flxk1/loomground-legal"
     },
     {
+      "repo": "policy-compiler",
+      "family": "Applied reasoning",
+      "role": "compiles written policy into deontic norms, surfacing conflicts, undetermined rules, and residual spans",
+      "description": "Read a written policy and produce executable governance norms.",
+      "pipeline_position": null,
+      "depends_on": [],
+      "tools": [],
+      "skills": [
+        "policy-compiler"
+      ],
+      "install": "pip install git+https://github.com/flxk1/policy-compiler",
+      "url": "https://github.com/flxk1/policy-compiler"
+    },
+    {
       "repo": "loomground-brief",
       "family": "Diagnostic operators",
       "role": "selects the minimum unresolved material required for human review",
@@ -614,6 +628,32 @@
       "url": "https://github.com/flxk1/loomground-audit-chain"
     },
     {
+      "repo": "oversight-ladder",
+      "family": "Assurance artifacts",
+      "role": "human-oversight obligations keyed to the L0-L6 autonomy ladder (pillar: oversight obligation)",
+      "description": "A human-oversight obligation standard keyed to loomground's ratified L0-L6 autonomy ladder.",
+      "pipeline_position": null,
+      "depends_on": [],
+      "tools": [],
+      "skills": [],
+      "install": "pip install git+https://github.com/flxk1/oversight-ladder",
+      "url": "https://github.com/flxk1/oversight-ladder"
+    },
+    {
+      "repo": "evidence-emitter",
+      "family": "Assurance artifacts",
+      "role": "composes the installed assurance components into one signed, offline-verifiable evidence package",
+      "description": "A governance evidence exporter for ctrl-plane agents: an offline-checkable package proving what governance an agent applied to an action or a piece of work.",
+      "pipeline_position": null,
+      "depends_on": [],
+      "tools": [],
+      "skills": [
+        "evidence-emitter"
+      ],
+      "install": "pip install git+https://github.com/flxk1/evidence-emitter",
+      "url": "https://github.com/flxk1/evidence-emitter"
+    },
+    {
       "repo": "loomground-lock",
       "family": "Runtime controls",
       "role": "egress and ingress locks, capability tokens, at-rest seal of a folder's memory",
@@ -673,6 +713,34 @@
       "skills": [],
       "install": "pip install git+https://github.com/flxk1/loomground-erasure",
       "url": "https://github.com/flxk1/loomground-erasure"
+    },
+    {
+      "repo": "privacy-shield",
+      "family": "Runtime controls",
+      "role": "span-by-span PII-cleaned overlay and egress guard; only the overlay leaves the machine",
+      "description": "Local-first PII/PHI detection and clean-overlay pipeline for governed folders.",
+      "pipeline_position": null,
+      "depends_on": [],
+      "tools": [],
+      "skills": [
+        "privacy-shield"
+      ],
+      "install": "pip install git+https://github.com/flxk1/privacy-shield",
+      "url": "https://github.com/flxk1/privacy-shield"
+    },
+    {
+      "repo": "a2a-compliance",
+      "family": "Runtime controls",
+      "role": "agent-to-agent compliance-control protocol and compliance-fleet contract; loomground grounding optional",
+      "description": "An agent-to-agent control protocol and compliance-fleet contract: compliance agents watch the maker agents and keep them aligned to the operator's values.",
+      "pipeline_position": null,
+      "depends_on": [],
+      "tools": [],
+      "skills": [
+        "compliance-fleet"
+      ],
+      "install": "pip install git+https://github.com/flxk1/a2a-compliance",
+      "url": "https://github.com/flxk1/a2a-compliance"
     },
     {
       "repo": "loomground-patchbay",

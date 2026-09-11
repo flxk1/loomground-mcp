@@ -76,6 +76,22 @@ CATALOGUE = {r["repo"]: r["skills"] for r in catalogue()["repos"]}
 BY_REPO: dict[str, list[str]] = {}
 for _e in INDEX:
     BY_REPO.setdefault(_e["repo"], []).append(_e["name"])
+# A repository whose skills this server vendors must agree with the catalogue exactly.
+# A catalogued skill this server does not vendor is a gap in the index, named below, not a
+# disagreement: NOT_VENDORED lists why each is absent, so an omission cannot pass silently.
+NOT_VENDORED = {
+    "evidence-emitter": "skill description does not say when to use it (skills_lint)",
+    "policy-compiler": "skill description does not say when to use it (skills_lint)",
+    "privacy-shield": "skill description does not say when to use it (skills_lint)",
+    "a2a-compliance": "skill description is 1357 characters, over the 1024 limit (skills_lint)",
+}
+
+
 @pytest.mark.parametrize("repo", sorted(r for r in CATALOGUE if CATALOGUE[r] or r in BY_REPO))
 def test_catalogue_skills_equal_index(repo):
+    if repo in NOT_VENDORED:
+        assert CATALOGUE[repo] and repo not in BY_REPO, (
+            f"{repo} is listed as not vendored ({NOT_VENDORED[repo]}) but the index carries it — "
+            "vendor it and drop the entry")
+        return
     assert sorted(CATALOGUE[repo]) == sorted(BY_REPO.get(repo, []))
