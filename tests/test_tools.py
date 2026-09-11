@@ -578,3 +578,12 @@ def test_absent_plane_is_unavailable(monkeypatch, name, arguments, module):
     monkeypatch.setitem(sys.modules, module, None)
     env = call(name, arguments)
     assert env["ok"] is False and env["unavailable"] is True and env["reason"].startswith(f"{module} is not installed")
+
+
+def test_audit_chain_verify_is_read_only(tmp_path, monkeypatch):
+    """A verification must not mint a signing identity: no key, no write, `unavailable`."""
+    keys = tmp_path / "keys"
+    monkeypatch.setenv("WORKSPACE_KEY_DIR", str(keys))
+    env = call("audit_chain_verify", {"folder": str(tmp_path)})
+    assert env["unavailable"] and "will not mint" in env["reason"]
+    assert not keys.exists()

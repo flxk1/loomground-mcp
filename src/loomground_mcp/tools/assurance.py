@@ -7,9 +7,11 @@ Keys are passed in per call as PEM text and used once; the server generates and 
 except the audit chain, which verifies against the host's own identity key where it already lives.
 """
 import json
+import os
+from pathlib import Path
 from typing import Any, Callable, Optional
 
-from ._result import enum_of, import_plane, tool
+from ._result import Unavailable, enum_of, import_plane, tool
 
 
 def _canonicalizer() -> tuple[Callable[[dict], bytes], str]:
@@ -126,9 +128,13 @@ def audit_chain_verify(folder: str, log_root: Optional[str] = None, subject: str
     """Walk a folder's append-only log: hash links, Ed25519 signatures, purge tombstones, the head anchor, the
     key pin. `log_root` defaults to the plane's own (`RVND_LOG_ROOT`, else `~/.workspace/log`). Returns the
     verification (`ok`, counts, `broken_links`, `signature_failures`, …), `head_hash`, `count`, and the `intact`
-    pillar attestation for `subject` (default: the folder id) that a certification cites. Verification reads the
-    host identity key under `WORKSPACE_KEY_DIR` and mints one there when the host has none."""
+    pillar attestation for `subject` (default: the folder id) that a certification cites. Read-only: signatures are
+    checked against the host identity key already under `WORKSPACE_KEY_DIR`; a host with none is `unavailable`."""
     ac = import_plane("loomground_audit_chain")
+    keys = Path(os.environ.get("WORKSPACE_KEY_DIR") or Path.home() / ".workspace" / "keys")
+    if not (keys.is_dir() and any(keys.glob("*/identity.pub"))):
+        raise Unavailable(f"no host identity key under {keys}; verification is read-only and will not mint "
+                          "one — create the host key out of band first")
     log = ac.MutationLog(folder, log_root=log_root)
     verification = log.verify_chain()
     return {"folder_id": log.folder_id, "count": log.count(), "head_hash": log.head_hash(),
