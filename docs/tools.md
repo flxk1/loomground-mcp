@@ -62,3 +62,22 @@ The seven `solver_*` skill tools take the JSON their script reads on stdin as na
 
 Enum arguments take the plane's own names (`PRESENT`, `decided`, `editorial`, …). Keys are passed in per call as PEM and never generated or stored. Canonicalisation uses `rfc8785` when installed, else sorted compact JSON; the envelope names which.
 
+
+## One plane, its tools
+
+| plane | tools |
+|---|---|
+| loomground | `loomground_catalogue` · `loomground_releases` · `loomground_skill` |
+| loomground-versum | `versum_index` · `versum_claims` · `versum_search` · `versum_capture` · `versum_suggest` · `versum_confirm` · `versum_canon` |
+| loomground-deontic | `deontic_parse` · `deontic_conflicts` |
+| loomground-factual · -epistemic · -norm · -topos | `factual_lower` · `epistemic_extract` · `norm_extract` · `topos_parse` |
+| loomground-solver | `solver_evaluate` · `solver_verify` · `solver_manifest` · `solver_analyse_risks` · `solver_estimate_liability` · `solver_litigation_risk` · `solver_opponent_model` · `solver_probability` · `solver_strategy` · `solver_advise_addons` |
+| loomground-ingest | `ingest_text` |
+| operators | `collapse` · `escalation` · `falsifiability` · `proxy` · `mandate` · `brief` |
+| assurance | `oversight_issue` · `oversight_verify` · `govcert_verify` · `norm_freshness` · `obligation_admit` · `effect_reconcile` · `enforcement_compare` · `nd_digest` |
+
+`loomground_catalogue` is the one to call first: it carries the family map, the pipeline order and
+how documents become an `.lg` patch. `loomground_releases` is the family's release and pin
+register — every catalogued repository with version, tag, commit, family, tools and skills; range,
+pin and status per dependency edge; accepted transitive pins — vendored from `RELEASES.json` the
+same way as the catalogue.
