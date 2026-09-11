@@ -31,7 +31,7 @@ def test_loomground_catalogue():
     env = call("loomground_catalogue")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"repos", "pipeline", "patch_from_documents", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "f78136f0997d782cc2f69a4bd2f961a2f5fd45f2"}
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "7c0c95bb184620097d76fc517e57037aba2e465c"}
     names = [x["repo"] for x in r["repos"]]
     assert len(names) == 33 and names[0] == "loomground" and "loomground-mcp" in names
     assert {"repo", "family", "role", "description", "pipeline_position", "depends_on", "tools", "skills", "install", "url"} == set(r["repos"][0])
@@ -50,8 +50,8 @@ def test_loomground_releases():
     env = call("loomground_releases")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"generated", "repos", "edges", "accepted", "skipped", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "f78136f0997d782cc2f69a4bd2f961a2f5fd45f2"}
-    assert len(r["repos"]) == 32 and len(r["edges"]) == 54 and len(r["accepted"]) == 22 and r["skipped"] == ["RVND"]
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "7c0c95bb184620097d76fc517e57037aba2e465c"}
+    assert len(r["repos"]) == 32 and len(r["edges"]) == 54 and len(r["accepted"]) == 24 and r["skipped"] == ["RVND"]
     assert sum(1 for x in r["repos"].values() if x["tag"]) == 16 and all(set(x) == {"version", "tag", "commit", "package", "pypi", "family", "tools", "skills"} for x in r["repos"].values())
     d = r["repos"]["loomground-deontic"]
     assert d["package"] == "loomground-deontic" and d["family"] == "Standard/language planes" and d["skills"] == ["deontic"]

@@ -855,112 +855,122 @@
     {
       "consumer": "loomground-brief",
       "dependency": "loomground-deontic",
-      "reason": "transitive via loomground-solver; not imported by loomground-brief; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-brief; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-brief",
       "dependency": "loomground-governance",
-      "reason": "transitive via loomground-solver; not imported by loomground-brief; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-brief; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-collapse",
       "dependency": "loomground-deontic",
-      "reason": "transitive via loomground-solver; not imported by loomground-collapse; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-collapse; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-collapse",
       "dependency": "loomground-governance",
-      "reason": "transitive via loomground-solver; not imported by loomground-collapse; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-collapse; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-escalation",
       "dependency": "loomground-deontic",
-      "reason": "transitive via loomground-solver; not imported by loomground-escalation; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-escalation; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-escalation",
       "dependency": "loomground-governance",
-      "reason": "transitive via loomground-solver; not imported by loomground-escalation; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-escalation; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-falsifiability",
       "dependency": "loomground-deontic",
-      "reason": "transitive via loomground-solver; not imported by loomground-falsifiability; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-falsifiability; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-falsifiability",
       "dependency": "loomground-governance",
-      "reason": "transitive via loomground-solver; not imported by loomground-falsifiability; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-falsifiability; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-legal",
       "dependency": "loomground-governance",
-      "reason": "transitive via loomground-solver; not imported by loomground-legal; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-legal; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-mandate",
       "dependency": "loomground-deontic",
-      "reason": "transitive via loomground-solver; not imported by loomground-mandate; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-mandate; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-mandate",
       "dependency": "loomground-governance",
-      "reason": "transitive via loomground-solver; not imported by loomground-mandate; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-mandate; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "5d-nd",
-      "reason": "5d-nd has no release yet; pinned at its main commit"
+      "reason": "no-release: 5d-nd has no release yet; pinned at its main commit"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "governance-certification",
-      "reason": "governance-certification has no release yet; pinned at its main commit"
+      "reason": "no-release: governance-certification has no release yet; pinned at its main commit"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-brief",
-      "reason": "loomground-brief has no release yet; pinned at its main commit"
+      "reason": "no-release: loomground-brief has no release yet; pinned at its main commit"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-collapse",
-      "reason": "loomground-collapse has no release yet; pinned at its main commit"
+      "reason": "no-release: loomground-collapse has no release yet; pinned at its main commit"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-escalation",
-      "reason": "loomground-escalation has no release yet; pinned at its main commit"
+      "reason": "no-release: loomground-escalation has no release yet; pinned at its main commit"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-falsifiability",
-      "reason": "loomground-falsifiability has no release yet; pinned at its main commit"
+      "reason": "no-release: loomground-falsifiability has no release yet; pinned at its main commit"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-mandate",
-      "reason": "loomground-mandate has no release yet; pinned at its main commit"
+      "reason": "no-release: loomground-mandate has no release yet; pinned at its main commit"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-proxy",
-      "reason": "loomground-proxy has no release yet; pinned at its main commit"
+      "reason": "no-release: loomground-proxy has no release yet; pinned at its main commit"
     },
     {
       "consumer": "loomground-norm",
       "dependency": "loomground-governance",
-      "reason": "transitive via loomground-solver; not imported by loomground-norm; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-norm; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-proxy",
       "dependency": "loomground-deontic",
-      "reason": "transitive via loomground-solver; not imported by loomground-proxy; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-proxy; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-proxy",
       "dependency": "loomground-governance",
-      "reason": "transitive via loomground-solver; not imported by loomground-proxy; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: transitive via loomground-solver; not imported by loomground-proxy; pinned at release loomground-governance-v0.11.1"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "loomground-ingest",
+      "reason": "incompatible-release: ingest 0.2.0 declares deontic <0.2 and solver <0.3; main 305fafc admits deontic 0.2 and solver 0.6"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "loomground-norm",
+      "reason": "incompatible-release: norm 0.1.0 declares solver <0.6; main ae7a903 admits solver 0.6"
     }
   ],
   "skipped": [

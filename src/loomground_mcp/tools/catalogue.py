@@ -13,7 +13,7 @@ from typing import Any, Optional
 from ._result import tool
 
 PLANE = "loomground"
-SOURCE = {"repo": "https://github.com/flxk1/loomground", "commit": "f78136f0997d782cc2f69a4bd2f961a2f5fd45f2"}
+SOURCE = {"repo": "https://github.com/flxk1/loomground", "commit": "7c0c95bb184620097d76fc517e57037aba2e465c"}
 FIELDS = ("repo", "family", "role", "tools", "skills")
 
 
