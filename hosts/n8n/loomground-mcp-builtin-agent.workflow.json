@@ -1,0 +1,123 @@
+{
+  "id": "lgmcpbuiltin0001",
+  "name": "loomground-mcp via built-in AI Agent + MCP Client Tool (needs your model credential)",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "nodes": [
+    {
+      "id": "b1",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "options": {}
+      },
+      "webhookId": "loomground-mcp-builtin-chat"
+    },
+    {
+      "id": "b2",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        260,
+        0
+      ],
+      "parameters": {
+        "promptType": "auto",
+        "options": {
+          "systemMessage": "You are wired to loomground-mcp. Call loomground_catalogue first for the family map and pipeline order. Every tool result is an envelope {plane, function, ok, result | error | unavailable}; ok=false is never a result. To evaluate a governance patch call solver_evaluate with {\"patch_lg\": \"<.lg text>\", \"transport_json\": {\"activations\": [...]}} and report the verdict from result.trace.evaluation.<gate>.verdict."
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.6,
+      "position": [
+        200,
+        220
+      ],
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5"
+        },
+        "options": {}
+      },
+      "credentials": {
+        "anthropicApi": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "Anthropic account (placeholder)"
+        }
+      }
+    },
+    {
+      "id": "b4",
+      "name": "loomground-mcp",
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        420,
+        220
+      ],
+      "parameters": {
+        "endpointUrl": "http://127.0.0.1:8765/mcp",
+        "serverTransport": "httpStreamable",
+        "authentication": "none",
+        "include": "selected",
+        "includeTools": [
+          "loomground_catalogue",
+          "solver_evaluate",
+          "solver_manifest",
+          "deontic_parse",
+          "deontic_conflicts"
+        ],
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "loomground-mcp": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -24,6 +24,7 @@ loomground-mcp tools      # the tool table as JSON
 
 `--token <str>` / `LOOMGROUND_MCP_TOKEN` (flag wins): bearer auth for the HTTP transports — every request to the MCP endpoints without `Authorization: Bearer <token>` is answered `401 {"error": "unauthorized"}`; stdio is unaffected; required before exposing the server beyond localhost.
 
+Attaching it to Claude Code, Codex, n8n or Langdock — config per host, the SKILL.md converter, two n8n workflows, what each proof covers: `hosts/README.md`.
 
 ## Example
 
@@ -70,7 +71,7 @@ Interface: exposes the planes over MCP. Pipeline position: beside `source → lo
 
 ## Status
 
-0.1.0 · 41 tools · 22 prompts · 96 tests (one per tool, script parity for the seven solver skill tools, the loomground-topos examples corpus, catalogue and release-register parity against the loomground repository, skill parity against every repository at its pinned commit, catalogue–index consistency, stdio, SSE and streamable-HTTP smokes, bearer-token gate on both HTTP transports) · Python >=3.10 · mcp 2.x
+0.1.0 · 41 tools · 22 prompts · 99 tests (one per tool, script parity for the seven solver skill tools, the loomground-topos examples corpus, catalogue and release-register parity against the loomground repository, skill parity against every repository at its pinned commit, catalogue–index consistency, stdio, SSE and streamable-HTTP smokes, bearer-token gate on both HTTP transports, the hosts converter for both targets) · Python >=3.10 · mcp 2.x
 
 ## License
 

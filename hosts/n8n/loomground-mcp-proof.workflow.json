@@ -1,0 +1,144 @@
+{
+  "id": "lgmcpproof000001",
+  "name": "loomground-mcp proof (community node, streamable HTTP)",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "nodes": [
+    {
+      "id": "n1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n2",
+      "name": "List Tools",
+      "type": "n8n-nodes-mcp.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "connectionType": "http",
+        "operation": "listTools"
+      },
+      "credentials": {
+        "mcpClientHttpApi": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "loomground-mcp streamable HTTP"
+        }
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Catalogue",
+      "type": "n8n-nodes-mcp.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "connectionType": "http",
+        "operation": "executeTool",
+        "toolName": "loomground_catalogue",
+        "toolParameters": "{}"
+      },
+      "credentials": {
+        "mcpClientHttpApi": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "loomground-mcp streamable HTTP"
+        }
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Evaluate",
+      "type": "n8n-nodes-mcp.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        660,
+        0
+      ],
+      "parameters": {
+        "connectionType": "http",
+        "operation": "executeTool",
+        "toolName": "solver_evaluate",
+        "toolParameters": "{\"patch_lg\": \"actor  agent\\nhuman  dpo  role legal\\ngate   transfer  risk high  grant agent\\nreserve data_transfer by legal when risk >= high\\ncord agent    -> transfer\\ncord transfer -> master\\n\", \"transport_json\": {\"activations\": [{\"actor\": \"agent\", \"source\": \"transfer\", \"token\": {\"id\": \"t1\", \"kind\": \"data_transfer\", \"risk\": \"high\", \"party\": \"customer-42\", \"provenance\": [\"urn:dls:sha256:b3421929b6310f99781cd8fe287294d0a152acc15ee6b3cfcdcbdde340812d40#para-1:150-240\"]}}]}}"
+      },
+      "credentials": {
+        "mcpClientHttpApi": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "loomground-mcp streamable HTTP"
+        }
+      }
+    },
+    {
+      "id": "n5",
+      "name": "Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const env = r => (r.structuredContent && r.structuredContent.result) ? r.structuredContent.result : JSON.parse(r.content[0].text).result;\nconst tools = $('List Tools').first().json.tools;\nconst cat = env($('Catalogue').first().json.result);\nconst ev = env($('Evaluate').first().json.result);\nreturn [{ json: {\n  tool_count: tools.length,\n  catalogue_record_count: cat.repos.length,\n  catalogue_source: cat.source,\n  verdict: ev.trace.evaluation.transfer.verdict,\n  status: ev.status,\n  undecided: ev.undecided,\n  first_tools: tools.slice(0, 3).map(t => t.name),\n} }];"
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "List Tools",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Tools": {
+      "main": [
+        [
+          {
+            "node": "Catalogue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Catalogue": {
+      "main": [
+        [
+          {
+            "node": "Evaluate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate": {
+      "main": [
+        [
+          {
+            "node": "Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
