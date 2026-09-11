@@ -127,9 +127,9 @@
       "skills": []
     },
     "loomground-ingest": {
-      "version": "0.2.0",
-      "tag": "ingest-v0.2.0",
-      "commit": "b6f3e8aed5148e1abd450501dd8d29cbd0218a2c",
+      "version": "0.3.0",
+      "tag": "loomground-ingest-v0.3.0",
+      "commit": "ce9639b9ea18d90c5ee386135ccce526a66b8e45",
       "package": "loomground-ingest",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -196,9 +196,9 @@
       ]
     },
     "loomground-norm": {
-      "version": "0.1.0",
-      "tag": "norm-v0.1.0",
-      "commit": "72f3962e0495027b083c66962b4de78198bea7a4",
+      "version": "0.1.1",
+      "tag": "norm-v0.1.1",
+      "commit": "104a3ca2272e34898b23fa43ba164e968d8f1001",
       "package": "loomground-norm",
       "pypi": false,
       "family": "Applied reasoning",
@@ -220,9 +220,9 @@
       "skills": []
     },
     "loomground-brief": {
-      "version": "0.1.0",
-      "tag": null,
-      "commit": null,
+      "version": "0.2.0",
+      "tag": "loomground-brief-v0.2.0",
+      "commit": "80a4fc4aca7f54422ca49a639a9e5f878e55e1da",
       "package": "loomground-brief",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -232,9 +232,9 @@
       "skills": []
     },
     "loomground-collapse": {
-      "version": "0.1.0",
-      "tag": null,
-      "commit": null,
+      "version": "0.2.0",
+      "tag": "loomground-collapse-v0.2.0",
+      "commit": "f0214d9a25a920e27c29968b3c829d4e1ee564e8",
       "package": "loomground-collapse",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -244,9 +244,9 @@
       "skills": []
     },
     "loomground-escalation": {
-      "version": "0.1.0",
-      "tag": null,
-      "commit": null,
+      "version": "0.2.0",
+      "tag": "loomground-escalation-v0.2.0",
+      "commit": "e97f1fbcd7f1bbef0781e54a571345a475518577",
       "package": "loomground-escalation",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -256,9 +256,9 @@
       "skills": []
     },
     "loomground-falsifiability": {
-      "version": "0.1.0",
-      "tag": null,
-      "commit": null,
+      "version": "0.2.0",
+      "tag": "loomground-falsifiability-v0.2.0",
+      "commit": "98e60ed4d2db3d6b950ba5c71d2b10b6427fb069",
       "package": "loomground-falsifiability",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -268,9 +268,9 @@
       "skills": []
     },
     "loomground-mandate": {
-      "version": "0.1.0",
-      "tag": null,
-      "commit": null,
+      "version": "0.2.0",
+      "tag": "loomground-mandate-v0.2.0",
+      "commit": "e96c59dcbb52822418ed7035cc8bd4d44c3fd3ec",
       "package": "loomground-mandate",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -280,9 +280,9 @@
       "skills": []
     },
     "loomground-proxy": {
-      "version": "0.1.0",
-      "tag": null,
-      "commit": null,
+      "version": "0.2.0",
+      "tag": "loomground-proxy-v0.2.0",
+      "commit": "dccef6f96ad135a0bd79a9e3e0b77003fb4b331c",
       "package": "loomground-proxy",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -637,18 +637,18 @@
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-brief",
-      "range": ">=0.1,<0.2",
-      "dev_pin": "8d1706b1387b329f1dae9cf22062f662c104a49d",
-      "dev_pin_release": null,
-      "status": "unreleased-commit"
+      "range": ">=0.1,<0.3",
+      "dev_pin": "80a4fc4aca7f54422ca49a639a9e5f878e55e1da",
+      "dev_pin_release": "loomground-brief-v0.2.0",
+      "status": "release"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-collapse",
-      "range": ">=0.1,<0.2",
-      "dev_pin": "5a5968a9aa76e297bc53bda3aa0f7338c5e7f9a4",
-      "dev_pin_release": null,
-      "status": "unreleased-commit"
+      "range": ">=0.1,<0.3",
+      "dev_pin": "f0214d9a25a920e27c29968b3c829d4e1ee564e8",
+      "dev_pin_release": "loomground-collapse-v0.2.0",
+      "status": "release"
     },
     {
       "consumer": "loomground-mcp",
@@ -669,10 +669,10 @@
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-escalation",
-      "range": ">=0.1,<0.2",
-      "dev_pin": "0a4272c2fd77c8eefaf011bc73412b81ba17b7f3",
-      "dev_pin_release": null,
-      "status": "unreleased-commit"
+      "range": ">=0.1,<0.3",
+      "dev_pin": "e97f1fbcd7f1bbef0781e54a571345a475518577",
+      "dev_pin_release": "loomground-escalation-v0.2.0",
+      "status": "release"
     },
     {
       "consumer": "loomground-mcp",
@@ -685,10 +685,10 @@
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-falsifiability",
-      "range": ">=0.1,<0.2",
-      "dev_pin": "f55f2f11d8bff652924d1e75f7d2fa4106ee88da",
-      "dev_pin_release": null,
-      "status": "unreleased-commit"
+      "range": ">=0.1,<0.3",
+      "dev_pin": "98e60ed4d2db3d6b950ba5c71d2b10b6427fb069",
+      "dev_pin_release": "loomground-falsifiability-v0.2.0",
+      "status": "release"
     },
     {
       "consumer": "loomground-mcp",
@@ -701,34 +701,34 @@
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-ingest",
-      "range": ">=0.2,<0.3",
-      "dev_pin": "305fafcffde39a2cb4281bc5015d2ade418357d5",
-      "dev_pin_release": null,
-      "status": "unreleased-commit"
+      "range": ">=0.2,<0.4",
+      "dev_pin": "ce9639b9ea18d90c5ee386135ccce526a66b8e45",
+      "dev_pin_release": "loomground-ingest-v0.3.0",
+      "status": "release"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-mandate",
-      "range": ">=0.1,<0.2",
-      "dev_pin": "797d2b3a58015960131c9209c64e8700ce211301",
-      "dev_pin_release": null,
-      "status": "unreleased-commit"
+      "range": ">=0.1,<0.3",
+      "dev_pin": "e96c59dcbb52822418ed7035cc8bd4d44c3fd3ec",
+      "dev_pin_release": "loomground-mandate-v0.2.0",
+      "status": "release"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-norm",
       "range": ">=0.1,<0.2",
-      "dev_pin": "ae7a903d0f77a055731c3dfe45580d78b19ff786",
-      "dev_pin_release": null,
-      "status": "unreleased-commit"
+      "dev_pin": "104a3ca2272e34898b23fa43ba164e968d8f1001",
+      "dev_pin_release": "norm-v0.1.1",
+      "status": "release"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-proxy",
-      "range": ">=0.1,<0.2",
-      "dev_pin": "6ac484d967d9591e1b7ce71c8d3e6dc8dc2429c1",
-      "dev_pin_release": null,
-      "status": "unreleased-commit"
+      "range": ">=0.1,<0.3",
+      "dev_pin": "dccef6f96ad135a0bd79a9e3e0b77003fb4b331c",
+      "dev_pin_release": "loomground-proxy-v0.2.0",
+      "status": "release"
     },
     {
       "consumer": "loomground-mcp",
@@ -855,57 +855,57 @@
     {
       "consumer": "loomground-brief",
       "dependency": "loomground-deontic",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-brief; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-brief; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-brief",
       "dependency": "loomground-governance",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-brief; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-brief; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-collapse",
       "dependency": "loomground-deontic",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-collapse; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-collapse; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-collapse",
       "dependency": "loomground-governance",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-collapse; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-collapse; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-escalation",
       "dependency": "loomground-deontic",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-escalation; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-escalation; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-escalation",
       "dependency": "loomground-governance",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-escalation; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-escalation; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-falsifiability",
       "dependency": "loomground-deontic",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-falsifiability; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-falsifiability; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-falsifiability",
       "dependency": "loomground-governance",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-falsifiability; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-falsifiability; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-legal",
       "dependency": "loomground-governance",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-legal; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-legal; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-mandate",
       "dependency": "loomground-deontic",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-mandate; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-mandate; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-mandate",
       "dependency": "loomground-governance",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-mandate; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-mandate; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-mcp",
@@ -918,59 +918,19 @@
       "reason": "no-release: governance-certification has no release yet; pinned at its main commit"
     },
     {
-      "consumer": "loomground-mcp",
-      "dependency": "loomground-brief",
-      "reason": "no-release: loomground-brief has no release yet; pinned at its main commit"
-    },
-    {
-      "consumer": "loomground-mcp",
-      "dependency": "loomground-collapse",
-      "reason": "no-release: loomground-collapse has no release yet; pinned at its main commit"
-    },
-    {
-      "consumer": "loomground-mcp",
-      "dependency": "loomground-escalation",
-      "reason": "no-release: loomground-escalation has no release yet; pinned at its main commit"
-    },
-    {
-      "consumer": "loomground-mcp",
-      "dependency": "loomground-falsifiability",
-      "reason": "no-release: loomground-falsifiability has no release yet; pinned at its main commit"
-    },
-    {
-      "consumer": "loomground-mcp",
-      "dependency": "loomground-mandate",
-      "reason": "no-release: loomground-mandate has no release yet; pinned at its main commit"
-    },
-    {
-      "consumer": "loomground-mcp",
-      "dependency": "loomground-proxy",
-      "reason": "no-release: loomground-proxy has no release yet; pinned at its main commit"
-    },
-    {
       "consumer": "loomground-norm",
       "dependency": "loomground-governance",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-norm; pinned at release loomground-governance-v0.11.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-norm; pinned at release loomground-governance-v0.11.1"
     },
     {
       "consumer": "loomground-proxy",
       "dependency": "loomground-deontic",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-proxy; pinned at release loomground-deontic-v0.2.1"
+      "reason": "transitive: via loomground-solver; not imported by loomground-proxy; pinned at release loomground-deontic-v0.2.1"
     },
     {
       "consumer": "loomground-proxy",
       "dependency": "loomground-governance",
-      "reason": "transitive: transitive via loomground-solver; not imported by loomground-proxy; pinned at release loomground-governance-v0.11.1"
-    },
-    {
-      "consumer": "loomground-mcp",
-      "dependency": "loomground-ingest",
-      "reason": "incompatible-release: ingest 0.2.0 declares deontic <0.2 and solver <0.3; main 305fafc admits deontic 0.2 and solver 0.6"
-    },
-    {
-      "consumer": "loomground-mcp",
-      "dependency": "loomground-norm",
-      "reason": "incompatible-release: norm 0.1.0 declares solver <0.6; main ae7a903 admits solver 0.6"
+      "reason": "transitive: via loomground-solver; not imported by loomground-proxy; pinned at release loomground-governance-v0.11.1"
     }
   ],
   "skipped": [
