@@ -762,6 +762,32 @@
       "url": "https://github.com/flxk1/a2a-compliance"
     },
     {
+      "repo": "loomground-plugins",
+      "family": "Interfaces and authoring",
+      "role": "multi-host skill catalogue and package builder",
+      "description": "Distribute Loomground skills to Claude Code, Codex, and generic Agent Skills hosts from their canonical repositories.",
+      "pipeline_position": null,
+      "depends_on": [
+        "a2a-compliance",
+        "evidence-emitter",
+        "loomground-deontic",
+        "loomground-epistemic",
+        "loomground-factual",
+        "loomground-governance",
+        "loomground-ingest",
+        "loomground-norm",
+        "loomground-solver",
+        "loomground-topos",
+        "loomground-versum",
+        "policy-compiler",
+        "privacy-shield"
+      ],
+      "tools": [],
+      "skills": [],
+      "install": "git clone https://github.com/flxk1/loomground-plugins",
+      "url": "https://github.com/flxk1/loomground-plugins"
+    },
+    {
       "repo": "loomground-patchbay",
       "family": "Interfaces and authoring",
       "role": "reusable presentation contract and console shell",

@@ -484,6 +484,16 @@
         "compliance-fleet"
       ]
     },
+    "loomground-plugins": {
+      "version": "0.1.0",
+      "tag": null,
+      "commit": null,
+      "package": null,
+      "pypi": false,
+      "family": "Interfaces and authoring",
+      "tools": [],
+      "skills": []
+    },
     "loomground-patchbay": {
       "version": null,
       "tag": null,
