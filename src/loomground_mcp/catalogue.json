@@ -159,7 +159,7 @@
       "repo": "loomground-governance",
       "family": "Standard",
       "role": "installable governance-language plane and conformance distribution (lockstep copy of the standard, own release axis)",
-      "description": "The governance-language plane: the Loomground standard as a package, with roles, protocol, conformance tooling, and the authoring skill.",
+      "description": "Installable distribution of the Loomground governance language: grammar, schemas, vocabulary, conformance vectors, and a data-only Python kit.",
       "pipeline_position": null,
       "depends_on": [],
       "tools": [],
@@ -408,14 +408,17 @@
       "repo": "policy-compiler",
       "family": "Applied reasoning",
       "role": "compiles written policy into deontic norms, surfacing conflicts, undetermined rules, and residual spans",
-      "description": "Compile a written policy into grounded deontic norms (O/P/F with bearer, action, conditions, cross-references), surfacing conflicts, undetermined rules, and unplaceable spans, and running test cases. Stops at a validated draft; activation is reserved. Delegates lowering to the loomground deontic/norm planes when present, degrading to advisory when absent. Output matches the compliance-fleet grounding seam.",
+      "description": "Read a written policy and produce executable governance norms.",
       "pipeline_position": null,
       "depends_on": [
         "loomground-governance",
         "loomground-deontic",
         "loomground-norm"
       ],
-      "tools": [],
+      "tools": [
+        "policy_compile",
+        "policy_check"
+      ],
       "skills": [
         "policy-compiler"
       ],
@@ -626,7 +629,9 @@
       "depends_on": [
         "loomground-workspace"
       ],
-      "tools": [],
+      "tools": [
+        "audit_chain_verify"
+      ],
       "skills": [],
       "install": "pip install git+https://github.com/flxk1/loomground-audit-chain",
       "url": "https://github.com/flxk1/loomground-audit-chain"
@@ -635,7 +640,7 @@
       "repo": "oversight-ladder",
       "family": "Assurance artifacts",
       "role": "human-oversight obligations keyed to the L0-L6 autonomy ladder (pillar: oversight obligation)",
-      "description": "A human-oversight obligation standard keyed to loomground's ratified L0-L6 autonomy ladder. This is a consumer: it reads the ladder and the grammar from loomground-governance read-only, and reads the ceiling calculus from loomground-escalation read-only. It mints no ladder of its own.",
+      "description": "Human-oversight obligations keyed to loomground's L0-L6 autonomy ladder.",
       "pipeline_position": null,
       "depends_on": [
         "loomground-governance",
@@ -650,12 +655,15 @@
       "repo": "evidence-emitter",
       "family": "Assurance artifacts",
       "role": "composes the installed assurance components into one signed, offline-verifiable evidence package",
-      "description": "Emit and verify a signed, offline-verifiable governance-evidence package: compose the installed loomground assurance components (enforcement posture, effect reconciliation, norm freshness, obligation discharge, oversight certificate, governance certification, 5d-nd) into one DSSE/in-toto statement whose subject is digest-bound; absent components are marked, not faked. Attests a compliance-fleet decision or a privacy-shield scan report. Default dev signer has zero authenticity; production Ed25519 takes host key material — no key is minted or embedded.",
+      "description": "Compose loomground assurance components into one signed, offline-verifiable governance evidence package.",
       "pipeline_position": null,
       "depends_on": [
         "loomground-governance"
       ],
-      "tools": [],
+      "tools": [
+        "evidence_emit",
+        "evidence_verify"
+      ],
       "skills": [
         "evidence-emitter"
       ],
@@ -672,7 +680,9 @@
         "loomground-governance",
         "loomground-workspace"
       ],
-      "tools": [],
+      "tools": [
+        "lock_text"
+      ],
       "skills": [],
       "install": "pip install git+https://github.com/flxk1/loomground-lock",
       "url": "https://github.com/flxk1/loomground-lock"
@@ -687,7 +697,9 @@
         "loomground-governance",
         "loomground-audit-chain"
       ],
-      "tools": [],
+      "tools": [
+        "lane_evaluate"
+      ],
       "skills": [],
       "install": "pip install git+https://github.com/flxk1/loomground-lane",
       "url": "https://github.com/flxk1/loomground-lane"
@@ -702,7 +714,9 @@
         "loomground-governance",
         "loomground-audit-chain"
       ],
-      "tools": [],
+      "tools": [
+        "drift_breaker"
+      ],
       "skills": [],
       "install": "pip install git+https://github.com/flxk1/loomground-drift",
       "url": "https://github.com/flxk1/loomground-drift"
@@ -718,7 +732,9 @@
         "loomground-lock",
         "loomground-governance"
       ],
-      "tools": [],
+      "tools": [
+        "erasure_sweep"
+      ],
       "skills": [],
       "install": "pip install git+https://github.com/flxk1/loomground-erasure",
       "url": "https://github.com/flxk1/loomground-erasure"
@@ -732,7 +748,9 @@
       "depends_on": [
         "loomground-governance"
       ],
-      "tools": [],
+      "tools": [
+        "privacy_scan"
+      ],
       "skills": [
         "privacy-shield"
       ],
@@ -754,7 +772,9 @@
         "loomground-proxy",
         "loomground-falsifiability"
       ],
-      "tools": [],
+      "tools": [
+        "a2a_ground"
+      ],
       "skills": [
         "compliance-fleet"
       ],

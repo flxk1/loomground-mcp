@@ -3,10 +3,12 @@
     "repo": "a2a-compliance",
     "name": "compliance-fleet",
     "description": "Compliance agents steer maker agents over an agent-to-agent control channel, keeping them aligned to the operator's values: query a maker's state, issue a directive, hold, resume or halt; receive report-state, ack and escalate back. Authority is role-based, and a directive stays within the boundary that maker declares in its own governance block. Works in bare mode with zero Loomground and zero external enforcement, where the steering criterion is the compliance role's advisory judgement. Loomground is optional enrichment — where a value plane is present the criterion is drawn from the grounded value graph, degrading to advisory per dimension when that plane is absent. External enforcement is an optional adapter that adds a verdict and a signed chain to a directive. Triggers on \"control my agents\", \"keep the makers aligned\", \"steer/hold/halt this maker\", \"watch the fleet for value drift\", \"issue a compliance directive\".",
-    "allowed_tools": [],
-    "commit": "d9060b89a39126a8dd51b4a1dab2cfa843ef6559",
+    "allowed_tools": [
+      "a2a_ground"
+    ],
+    "commit": "9d8d6d1ebd368cf8ed579e16d780f30ad9f6ed07",
     "path": "skills/compliance-fleet/SKILL.md",
-    "url": "https://github.com/flxk1/a2a-compliance/blob/d9060b89a39126a8dd51b4a1dab2cfa843ef6559/skills/compliance-fleet/SKILL.md"
+    "url": "https://github.com/flxk1/a2a-compliance/blob/9d8d6d1ebd368cf8ed579e16d780f30ad9f6ed07/skills/compliance-fleet/SKILL.md"
   },
   {
     "repo": "digital-law",
@@ -56,11 +58,14 @@
   {
     "repo": "evidence-emitter",
     "name": "evidence-emitter",
-    "description": "Emit a signed, offline-verifiable governance-evidence package proving what governance was applied to an action or piece of work, and verify such a package offline. It composes whichever loomground assurance components are installed (enforcement posture, effect reconciliation, norm freshness, obligation discharge, oversight certificate, governance certification, 5d-nd) into one DSSE / in-toto statement whose subject is digest-bound; absent components are marked absent, never faked. It attests a compliance-fleet decision or a privacy-shield scan report. The default signer is a clearly-labelled dev HMAC key with zero authenticity; a production Ed25519 signer takes host-supplied key material — no key is ever minted or embedded. Triggers on \"prove this was governed\", \"emit a governance certificate\", \"make an audit-evidence package\", \"verify this evidence package\", \"attest this decision\".",
-    "allowed_tools": [],
-    "commit": "07af3e3f76e070afcfaf933b194f43f3cc5bfc93",
+    "description": "Compose loomground assurance components into one signed, offline-verifiable governance evidence package. Use when asked to prove what governance was applied to an action or a piece of work, emit a governance certificate or an audit-evidence package, attest a compliance-fleet decision or a privacy-shield scan report, or verify such a package offline.",
+    "allowed_tools": [
+      "evidence_emit",
+      "evidence_verify"
+    ],
+    "commit": "4869b1f90ad12bee25cd19da3bb8b56d69de598c",
     "path": "skills/evidence-emitter/SKILL.md",
-    "url": "https://github.com/flxk1/evidence-emitter/blob/07af3e3f76e070afcfaf933b194f43f3cc5bfc93/skills/evidence-emitter/SKILL.md"
+    "url": "https://github.com/flxk1/evidence-emitter/blob/4869b1f90ad12bee25cd19da3bb8b56d69de598c/skills/evidence-emitter/SKILL.md"
   },
   {
     "repo": "loomground",
@@ -375,19 +380,24 @@
   {
     "repo": "policy-compiler",
     "name": "policy-compiler",
-    "description": "Read a written policy and compile it to grounded deontic norms — obligations, permissions, and prohibitions (O/P/F) with bearer, action, conditions, and cross-references — surfacing conflicts, undetermined rules, and the spans it could not place (residuals), and running test cases against the result. It stops at a validated draft: activation is a reserved human step, never automatic. When the loomground deontic/norm planes are present the lowering is grounded via them; absent, it degrades to an advisory extraction marked ungrounded. Its output matches the compliance-fleet grounding seam, so the compiled norms are the policy the fleet steers against. Triggers on \"turn this policy into rules\", \"compile this contract's obligations\", \"find the conflicts in this policy\", \"what does this policy require or forbid\", \"make a checkable policy\".",
-    "allowed_tools": [],
-    "commit": "41f65f639fb5d5e408a164c76a20a6aa68581f39",
+    "description": "Read a written policy and produce executable governance norms. Use when the user asks to turn a policy into rules, compile a contract's obligations, find the conflicts in a policy, or ask what a policy requires or forbids.",
+    "allowed_tools": [
+      "policy_compile",
+      "policy_check"
+    ],
+    "commit": "74e7fc4c9180b53179272ba5ddc3f591f3ee09d0",
     "path": "skills/policy-compiler/SKILL.md",
-    "url": "https://github.com/flxk1/policy-compiler/blob/41f65f639fb5d5e408a164c76a20a6aa68581f39/skills/policy-compiler/SKILL.md"
+    "url": "https://github.com/flxk1/policy-compiler/blob/74e7fc4c9180b53179272ba5ddc3f591f3ee09d0/skills/policy-compiler/SKILL.md"
   },
   {
     "repo": "privacy-shield",
     "name": "privacy-shield",
     "description": "Local-first PII/PHI detection and clean-overlay pipeline for governed folders. Scan a folder, file, or text span by span, produce the PII-cleaned overlay — the only thing meant to leave the machine — then decide whether egress to an external service is allowed, by source classification. Personal data is found with a regex/lexicon floor plus an optional local embedding/LLM layer; the value<->placeholder map stays local; every decision is written to a local audit trail. Works standalone with every Loomground plane optional. An external enforcement host can attach behind the neutral sink interface that no-ops when absent. \"Cleared\" means the source class is allowed to egress, NOT a zero-residual certificate. Use when the user says \"redact this\", \"clean this before I send it to the cloud\", \"is this safe for an external LLM\", \"scan this folder for personal data\", \"make a privacy overlay\", \"lock this folder's egress\".",
-    "allowed_tools": [],
-    "commit": "c08d9720fa714ba142b288657d24fc13ed6c5f52",
+    "allowed_tools": [
+      "privacy_scan"
+    ],
+    "commit": "a774b39e64a9aff19dc08c03d5216edaa9eb327d",
     "path": "skills/privacy-shield/SKILL.md",
-    "url": "https://github.com/flxk1/privacy-shield/blob/c08d9720fa714ba142b288657d24fc13ed6c5f52/skills/privacy-shield/SKILL.md"
+    "url": "https://github.com/flxk1/privacy-shield/blob/a774b39e64a9aff19dc08c03d5216edaa9eb327d/skills/privacy-shield/SKILL.md"
   }
 ]

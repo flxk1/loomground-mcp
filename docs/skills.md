@@ -2,7 +2,7 @@
 <!-- Copyright 2026 flxk1 -->
 # Prompts and skills
 
-The server serves 22 skills as MCP prompts, one per vendored SKILL.md.
+The server serves 26 public skills as MCP prompts, one per vendored SKILL.md.
 
 - `prompts/list` — one prompt per skill.
 - `prompts/get` — the skill body under one header line:
@@ -13,16 +13,17 @@ The server serves 22 skills as MCP prompts, one per vendored SKILL.md.
 
 ## The index
 
-The index carries 22 records — the family's conformant Agent Skills in public repositories, each
-at its repository's pushed main commit. A record is `repo`, `name`, `description`,
-`allowed_tools`, `commit`, `path`, `url`, `prompt`.
+The index carries 33 records: 26 conformant public Agent Skills with vendored
+bodies and seven metadata-only records from private domain repositories. A record
+is `repo`, `name`, `description`, `allowed_tools`, `commit`, `path`, `url`,
+`prompt`; private records expose no body and cannot be returned as prompts.
 
 The one shared skill name is qualified: `loomground/loomground` and
 `loomground-governance/loomground`.
 
 ## Vendoring and parity
 
-Every body is vendored at `src/loomground_mcp/skills/<repo>/<name>/SKILL.md`, and
+Every public body is vendored at `src/loomground_mcp/skills/<repo>/<name>/SKILL.md`, and
 `tests/test_skills_parity.py` checks each one byte for byte against its repository at the commit
 `skills/index.json` pins. A repository that cannot be fetched leaves its checkout absent and its
 parity items skip, so a missing checkout is never a false green.

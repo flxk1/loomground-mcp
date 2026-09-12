@@ -13,9 +13,7 @@ from conftest import PATCH, SOLVER_SAMPLES, TRANSPORT, call
 from loomground_mcp import build_server
 from loomground_mcp.tools import ALL
 
-# served here, not yet in CATALOGUE.json at the vendored commit: the five runtime-control and audit-chain
-# records carry empty `tools` there, and the catalogue entry follows in the loomground repository
-AHEAD_OF_CATALOGUE = {"audit_chain_verify", "lock_text", "lane_evaluate", "drift_breaker", "erasure_sweep"}
+AHEAD_OF_CATALOGUE: set[str] = set()
 
 
 def test_lists_every_tool_with_plane_and_function():
@@ -23,7 +21,7 @@ def test_lists_every_tool_with_plane_and_function():
         async with Client(build_server()) as client:
             return (await client.list_tools()).tools
     tools = asyncio.run(go())
-    assert len(tools) == len(ALL) == 46
+    assert len(tools) == len(ALL) == 52
     assert all(t.description.startswith("[") and " · " in t.description for t in tools)
     assert "patch_lg" in next(t for t in tools if t.name == "solver_evaluate").input_schema["properties"]
     assert tools[0].name == "loomground_catalogue"
@@ -35,7 +33,7 @@ def test_loomground_catalogue():
     env = call("loomground_catalogue")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"repos", "pipeline", "patch_from_documents", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "810ded741a4c7d2ecb9c4d30877287264c3f08ae"}
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "1d70d2e7aac071a474ea4af2fb593bed15852ee8"}
     names = [x["repo"] for x in r["repos"]]
     assert len(names) == 41 and names[0] == "loomground" and "loomground-mcp" in names
     assert {"repo", "family", "role", "description", "pipeline_position", "depends_on", "tools", "skills", "install", "url"} == set(r["repos"][0])
@@ -54,7 +52,7 @@ def test_loomground_releases():
     env = call("loomground_releases")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"generated", "repos", "edges", "accepted", "skipped", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "810ded741a4c7d2ecb9c4d30877287264c3f08ae"}
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "1d70d2e7aac071a474ea4af2fb593bed15852ee8"}
     assert len(r["repos"]) == 41 and len(r["edges"]) == 73 and len(r["accepted"]) == 17 and r["skipped"] == []
     assert sum(1 for x in r["repos"].values() if x["tag"]) == 34 and all(set(x) == {"version", "tag", "commit", "package", "pypi", "family", "tools", "skills"} for x in r["repos"].values())
     d = r["repos"]["loomground-deontic"]
@@ -178,6 +176,50 @@ def test_deontic_conflicts():
     c = r["candidates"][0]
     assert c["predicate"] == "may-conflict-with" and c["resolution"] == "candidate-escalate"
     assert (c["operator_a"], c["operator_b"]) == ("O", "F") and c["action"] == "transfer personal data"
+
+
+# applied skill runtimes
+
+def test_policy_compile_and_check():
+    text = "The operator must delete expired records."
+    compiled = call("policy_compile", {"policy": text})
+    assert compiled["ok"] and compiled["plane"] == "policy-compiler"
+    assert compiled["result"]["draft"]["norms"][0]["operator"] == "O"
+    assert compiled["result"]["grounding_seam"]["norms"][0]["bearer"] == "operator"
+    checked = call("policy_check", {"policy": text, "cases": [
+        {"actor": "operator", "action": "delete expired records", "expect": "obligatory"},
+    ]})
+    assert checked["result"]["ok"] and checked["result"]["passed"] == 1
+
+
+def test_evidence_emit_and_verify():
+    subject = {
+        "id": "msg-001", "ts": "2026-09-12T10:00:00Z",
+        "from_": {"actor": "compliance", "role": "policy-compliance"},
+        "to": {"actor": "maker", "role": "maker"},
+        "verb": "issue-directive", "body": {"instruction": "hold", "kind": "write"},
+        "authority": {"basis": "role", "role": "policy-compliance", "reserved": False},
+        "protocol": "a2a-compliance/0.1",
+    }
+    emitted = call("evidence_emit", {"subject": subject, "issued_at": "2026-09-12T10:00:00Z"})
+    assert emitted["ok"] and emitted["result"]["signer_production"] is False
+    verified = call("evidence_verify", {"envelope": emitted["result"]["envelope"]})
+    assert verified["result"]["ok"] and verified["result"]["signer_production"] is False
+
+
+def test_privacy_scan_text(tmp_path):
+    env = call("privacy_scan", {
+        "text": "Contact Ada at ada@example.com.", "mode": "regex_only",
+        "audit_log_path": str(tmp_path / "privacy.jsonl"),
+    })
+    doc = env["result"]["documents"][0]
+    assert env["ok"] and doc["pii_detected"] and "ada@example.com" not in doc["overlay"]
+
+
+def test_a2a_ground_is_derivation_only():
+    env = call("a2a_ground", {"context": {"maker_id": "maker-1"}, "planes": []})
+    assert env["ok"] and env["result"]["recommended_action"] == "no-steer"
+    assert env["result"]["findings"] == [] and env["result"]["directive"] is None
     assert call("deontic_conflicts", {"statements": ["O(a : x)", "F(a : ¬ x)"]})["result"]["candidates"] == []
 
 

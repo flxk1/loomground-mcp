@@ -226,7 +226,10 @@
       "package": "policy-compiler",
       "pypi": false,
       "family": "Applied reasoning",
-      "tools": [],
+      "tools": [
+        "policy_compile",
+        "policy_check"
+      ],
       "skills": [
         "policy-compiler"
       ]
@@ -395,7 +398,9 @@
       "package": "loomground-audit-chain",
       "pypi": false,
       "family": "Assurance artifacts",
-      "tools": [],
+      "tools": [
+        "audit_chain_verify"
+      ],
       "skills": []
     },
     "oversight-ladder": {
@@ -415,7 +420,10 @@
       "package": "evidence-emitter",
       "pypi": false,
       "family": "Assurance artifacts",
-      "tools": [],
+      "tools": [
+        "evidence_emit",
+        "evidence_verify"
+      ],
       "skills": [
         "evidence-emitter"
       ]
@@ -427,7 +435,9 @@
       "package": "loomground-lock",
       "pypi": false,
       "family": "Runtime controls",
-      "tools": [],
+      "tools": [
+        "lock_text"
+      ],
       "skills": []
     },
     "loomground-lane": {
@@ -437,7 +447,9 @@
       "package": "loomground-lane",
       "pypi": false,
       "family": "Runtime controls",
-      "tools": [],
+      "tools": [
+        "lane_evaluate"
+      ],
       "skills": []
     },
     "loomground-drift": {
@@ -447,7 +459,9 @@
       "package": "loomground-drift",
       "pypi": false,
       "family": "Runtime controls",
-      "tools": [],
+      "tools": [
+        "drift_breaker"
+      ],
       "skills": []
     },
     "loomground-erasure": {
@@ -457,7 +471,9 @@
       "package": "loomground-erasure",
       "pypi": false,
       "family": "Runtime controls",
-      "tools": [],
+      "tools": [
+        "erasure_sweep"
+      ],
       "skills": []
     },
     "privacy-shield": {
@@ -467,7 +483,9 @@
       "package": "privacy-shield",
       "pypi": false,
       "family": "Runtime controls",
-      "tools": [],
+      "tools": [
+        "privacy_scan"
+      ],
       "skills": [
         "privacy-shield"
       ]
@@ -479,13 +497,15 @@
       "package": "a2a-compliance",
       "pypi": false,
       "family": "Runtime controls",
-      "tools": [],
+      "tools": [
+        "a2a_ground"
+      ],
       "skills": [
         "compliance-fleet"
       ]
     },
     "loomground-plugins": {
-      "version": "0.1.0",
+      "version": null,
       "tag": null,
       "commit": null,
       "package": null,

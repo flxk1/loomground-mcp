@@ -54,7 +54,7 @@ The six-line patch is the one from the `loomground` README; the transport activa
 risk `high`, at gate `transfer`. Output:
 
 ```
-46 tools
+52 tools
 {"plane": "loomground-solver", "function": "loomground_solver.loomground.reason", "ok": true, "result": {"method": "loomground", "language": "loomground", "language_version": "0.11.1", "status": "escalate", "accepted": [], "undecided": ["t1"], "rejected": {}, "trace": {"observation": {"nodes": [{"id": "agent", "class": "actor"}, {"id": "dpo", "class": "human", "role": "legal"}, {"id": "transfer", "class": "gate", "risk_floor": "high"}, {"id": "master", "class": "master"}], "cords": [{"from": "agent", "to": "transfer", "type": "authority"}, {"from": "transfer", "to": "master", "type": "egress"}], "reservations": [{"kind": "data_transfer", "by": "legal", "when": "risk >= high"}]}, "evaluation": {"transfer": {"verdict": "reserved", "master": "withhold"}}, "log": [{"gate": "transfer", "verdict": "reserved"}]}}}
 ```
 

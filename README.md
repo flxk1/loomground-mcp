@@ -28,12 +28,12 @@ loomground-mcp tools      # the tool table as JSON
 
 ```
 in:  loomground-mcp tools | python -c 'import json,sys; t=json.load(sys.stdin); print(len(t), t[0]["tool"])'
-out: 46 loomground_catalogue
+out: 52 loomground_catalogue
 ```
 
 ## Interface
 
-46 tools, one per plane function; the seven solver skill scripts count as functions, and the topos reader, the catalogue, the release register and the skill index are this repository's. The audit chain and the four runtime controls are served read-only: they decide, they do not write. Signatures, envelopes, enums and the tool table per plane: [docs/tools.md](docs/tools.md).
+52 tools, one per plane function; the seven solver skill scripts count as functions, and the topos reader, the catalogue, the release register and the skill index are this repository's. Policy compilation, development-signed evidence, local privacy scanning and A2A grounding expose the four applied skill runtimes without activating policy, handling production keys or dispatching agent directives. The audit chain and the four runtime controls are served read-only: they decide, they do not write. Signatures, envelopes, enums and the tool table per plane: [docs/tools.md](docs/tools.md).
 
 Call `loomground_catalogue` first: the family map, the pipeline order, how documents become an `.lg` patch. `loomground_releases` is the family's release and pin register, vendored from `RELEASES.json`. `loomground_skill` returns the vendored skill index; the same 26 skills are served as MCP prompts, every body checked byte for byte against its repository: [docs/skills.md](docs/skills.md).
 
@@ -49,7 +49,7 @@ Interface: exposes the planes over MCP. Pipeline position: beside `source → lo
 
 ## Status
 
-0.1.0 · 46 tools · 26 prompts · 126 tests · Python >=3.10 · mcp 2.x. What the suite covers: [docs/testing.md](docs/testing.md).
+0.1.0 · 52 tools · 26 prompts · Python >=3.10 · mcp 2.x. What the suite covers: [docs/testing.md](docs/testing.md).
 
 ## License
 
