@@ -126,7 +126,7 @@ def nd_digest(ref: dict[str, Any]) -> dict[str, Any]:
 @tool("loomground-audit-chain", "mutation_log.MutationLog.verify_chain / pillar.intact_attestation")
 def audit_chain_verify(folder: str, log_root: Optional[str] = None, subject: str = "", entry_ref: str = "") -> dict[str, Any]:
     """Walk a folder's append-only log: hash links, Ed25519 signatures, purge tombstones, the head anchor, the
-    key pin. `log_root` defaults to the plane's own (`RVND_LOG_ROOT`, else `~/.workspace/log`). Returns the
+    key pin. `log_root` defaults to the plane's own (`LOOMGROUND_LOG_ROOT`, else `~/.workspace/log`). Returns the
     verification (`ok`, counts, `broken_links`, `signature_failures`, …), `head_hash`, `count`, and the `intact`
     pillar attestation for `subject` (default: the folder id) that a certification cites. Read-only: signatures are
     checked against the host identity key already under `WORKSPACE_KEY_DIR`; a host with none is `unavailable`."""

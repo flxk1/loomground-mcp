@@ -36,7 +36,7 @@ the table below is a reading of them.
 | `effect-reconciliation` | `>=0.2,<0.3` | `a5164fb` |
 | `enforcement-posture` | `>=0.5,<0.6` | `5e0096c` |
 | `5d-nd` | `>=0.1,<0.2` | `5d71a78` |
-| `loomground-audit-chain` | `>=0.1,<0.2` | `7a6e7a4` |
+| `loomground-audit-chain` | `>=0.1,<0.2` | `fd9b604` |
 | `loomground-lock` | `>=0.1,<0.2` | `b8a2693` |
 | `loomground-lane` | `>=0.1,<0.2` | `9bac236` |
 | `loomground-drift` | `>=0.1,<0.2` | `f7de945` |

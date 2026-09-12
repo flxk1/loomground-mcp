@@ -2,11 +2,11 @@
   {
     "repo": "a2a-compliance",
     "name": "compliance-fleet",
-    "description": "Control a fleet of maker agents and keep them aligned to the operator's values, over an A2A (agent-to-agent) control channel: query a maker's state, issue a directive, hold, resume or halt; receive report-state, ack and escalate back. Works with no loomground and no RVND: in bare mode the steering criteria are the compliance role's advisory judgement and authority is role-based. loomground is optional enrichment — where a value plane is present the criteria are drawn from the grounded value graph, degrading to advisory per dimension when it is absent. RVND is an optional enforcement skin that adds a verdict and a signed chain to a directive and no-ops when absent. A directive steers a maker within the boundary that maker declares in its own governance block. Triggers on \"control my agents\", \"keep the makers aligned\", \"steer/hold/halt this maker\", \"watch the fleet for value drift\", \"issue a compliance directive\".",
+    "description": "Compliance agents steer maker agents over an agent-to-agent control channel, keeping them aligned to the operator's values: query a maker's state, issue a directive, hold, resume or halt; receive report-state, ack and escalate back. Authority is role-based, and a directive stays within the boundary that maker declares in its own governance block. Works in bare mode with zero Loomground and zero external enforcement, where the steering criterion is the compliance role's advisory judgement. Loomground is optional enrichment — where a value plane is present the criterion is drawn from the grounded value graph, degrading to advisory per dimension when that plane is absent. External enforcement is an optional adapter that adds a verdict and a signed chain to a directive. Triggers on \"control my agents\", \"keep the makers aligned\", \"steer/hold/halt this maker\", \"watch the fleet for value drift\", \"issue a compliance directive\".",
     "allowed_tools": [],
-    "commit": "e3be8cca395e41c34cef67ede026bc619d83faec",
+    "commit": "d9060b89a39126a8dd51b4a1dab2cfa843ef6559",
     "path": "skills/compliance-fleet/SKILL.md",
-    "url": "https://github.com/flxk1/a2a-compliance/blob/e3be8cca395e41c34cef67ede026bc619d83faec/skills/compliance-fleet/SKILL.md"
+    "url": "https://github.com/flxk1/a2a-compliance/blob/d9060b89a39126a8dd51b4a1dab2cfa843ef6559/skills/compliance-fleet/SKILL.md"
   },
   {
     "repo": "digital-law",
@@ -384,10 +384,10 @@
   {
     "repo": "privacy-shield",
     "name": "privacy-shield",
-    "description": "Scan a folder, file, or text span-by-span and produce a PII-cleaned overlay — the only thing meant to leave the machine — then decide whether egress to an external service is allowed, by source classification. Personal data is found with a regex/lexicon floor plus an optional local embedding/LLM layer; the value<->placeholder map stays local; every decision is written to a local audit trail. Works fully standalone with ZERO loomground and ZERO RVND; RVND is an OPTIONAL enforcement skin (permit/hold/deny + signed chain) behind an adapter that no-ops when absent. \"Cleared\" means the source class is allowed to egress, NOT a zero-residual certificate. Triggers on \"redact this\", \"clean this before I send it to the cloud\", \"is this safe for an external LLM\", \"scan this folder for personal data\", \"make a privacy overlay\", \"lock this folder's egress\".",
+    "description": "Local-first PII/PHI detection and clean-overlay pipeline for governed folders. Scan a folder, file, or text span by span, produce the PII-cleaned overlay — the only thing meant to leave the machine — then decide whether egress to an external service is allowed, by source classification. Personal data is found with a regex/lexicon floor plus an optional local embedding/LLM layer; the value<->placeholder map stays local; every decision is written to a local audit trail. Works standalone with every Loomground plane optional. An external enforcement host can attach behind the neutral sink interface that no-ops when absent. \"Cleared\" means the source class is allowed to egress, NOT a zero-residual certificate. Use when the user says \"redact this\", \"clean this before I send it to the cloud\", \"is this safe for an external LLM\", \"scan this folder for personal data\", \"make a privacy overlay\", \"lock this folder's egress\".",
     "allowed_tools": [],
-    "commit": "957458ec035d382aa6a11c0c6ceaa6cac6437aa5",
+    "commit": "c08d9720fa714ba142b288657d24fc13ed6c5f52",
     "path": "skills/privacy-shield/SKILL.md",
-    "url": "https://github.com/flxk1/privacy-shield/blob/957458ec035d382aa6a11c0c6ceaa6cac6437aa5/skills/privacy-shield/SKILL.md"
+    "url": "https://github.com/flxk1/privacy-shield/blob/c08d9720fa714ba142b288657d24fc13ed6c5f52/skills/privacy-shield/SKILL.md"
   }
 ]
