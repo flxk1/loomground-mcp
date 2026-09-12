@@ -73,7 +73,7 @@ def test_sse_endpoint_and_tool_list(server):
                 out = await session.call_tool("solver_evaluate", {"patch_lg": PATCH, "transport_json": TRANSPORT})
                 return names, out.structured_content
     names, env = asyncio.run(go())
-    assert len(names) == len(ALL) == 52 and env["result"]["trace"]["evaluation"]["transfer"]["verdict"] == "reserved"
+    assert len(names) == len(ALL) == 55 and env["result"]["trace"]["evaluation"]["transfer"]["verdict"] == "reserved"
 
 
 @pytest.mark.parametrize("server", ["streamable-http"], indirect=True)
@@ -87,7 +87,7 @@ def test_streamable_http_tool_and_prompt_list(server):
             got = await client.get_prompt("deontic")
             return tools, prompts, got
     tools, prompts, got = asyncio.run(go())
-    assert len(tools) == len(ALL) == 52 and len(prompts) == PROMPTS == 26
+    assert len(tools) == len(ALL) == 55 and len(prompts) == PROMPTS == 26
     assert got.messages[0].content.text.startswith("Skill deontic from loomground-deontic @ ")
 
 
@@ -103,7 +103,7 @@ def test_stdio_tool_and_prompt_list():
                 got = await session.get_prompt("analyse-risks")
                 return tools, prompts, got
     tools, prompts, got = asyncio.run(go())
-    assert len(tools) == len(ALL) == 52 and len(prompts) == PROMPTS == 26
+    assert len(tools) == len(ALL) == 55 and len(prompts) == PROMPTS == 26
     assert sorted(prompts) == sorted(prompt_names(load_index()))
     assert got.messages[0].role == "user" and got.messages[0].content.text.startswith("Skill analyse-risks from loomground-solver @ ")
 
@@ -137,7 +137,7 @@ def test_sse_token_gate(server):
             async with ClientSession(read, write) as session:
                 await session.initialize()
                 return [t.name for t in (await session.list_tools()).tools]
-    assert len(asyncio.run(go())) == len(ALL) == 52
+    assert len(asyncio.run(go())) == len(ALL) == 55
 
 
 @pytest.mark.parametrize("server", [("streamable-http", [], {"LOOMGROUND_MCP_TOKEN": TOKEN})], indirect=True)
@@ -151,7 +151,7 @@ def test_streamable_http_token_gate_from_env(server):
     async def go(headers):
         async with Client(streamable_http_client(url, http_client=create_mcp_http_client(headers=headers))) as client:
             return [t.name for t in (await client.list_tools()).tools]
-    assert len(asyncio.run(go(BEARER))) == len(ALL) == 52
+    assert len(asyncio.run(go(BEARER))) == len(ALL) == 55
     with pytest.raises(Exception):
         asyncio.run(go(WRONG))
 
@@ -165,4 +165,4 @@ def test_streamable_http_flag_wins_over_env(server):
     async def go():
         async with Client(streamable_http_client(url, http_client=create_mcp_http_client(headers=BEARER))) as client:
             return [t.name for t in (await client.list_tools()).tools]
-    assert len(asyncio.run(go())) == len(ALL) == 52
+    assert len(asyncio.run(go())) == len(ALL) == 55
