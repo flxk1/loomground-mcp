@@ -499,7 +499,9 @@
       "family": "Runtime controls",
       "tools": [
         "a2a_ground",
-        "a2a_plan"
+        "a2a_plan",
+        "a2a_admission_preview",
+        "a2a_reconcile"
       ],
       "skills": [
         "compliance-fleet"

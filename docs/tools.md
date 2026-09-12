@@ -61,6 +61,8 @@ Every result is one envelope in `structuredContent` (and as JSON text):
 | `privacy_scan(text, mode="standard", destination="external_llm", redaction_mode="redact", min_confidence="medium", audit_log_path?, tenant_id="", user_id="")` | privacy-shield | `scan` | raw text → local span findings, clean overlay and source-classification egress verdict |
 | `a2a_ground(context, planes?)` | a2a-compliance | `ground` | maker state + optional value-plane selection → grounded/advisory findings and bounded recommendation; never dispatches |
 | `a2a_plan(context, target_kind, governance, planes?, profile?)` | a2a-compliance | `ComplianceTeam.plan` | inert eight-role plan covering all 41 public family repositories; consumes this server's published tools, public skills and contracts; never dispatches |
+| `a2a_admission_preview(context, target_kind, governance, receipts, planes?, profile?)` | a2a-compliance | `enforce_preview` | fold role-owned, action-digest-bound preflight receipts into admitted/hold/route-human/refuse; never dispatches |
+| `a2a_reconcile(context, target_kind, governance, preflight_receipts, control_receipt, postflight_receipts, planes?, profile?)` | a2a-compliance | `reconcile` | require prior admission and consume postflight receipts into reconciled/certified; performs no effect |
 
 `loomground_catalogue` is the family map, to be called first: every repository as one record, the pipeline order `source → ingest → versum → solver → applied | diagnostic` with the tool at each step, and `patch_from_documents` (ingest_text → versum_index → norm_extract / deontic_parse → author the `.lg` patch → solver_evaluate). It reads `catalogue.json`, vendored from `CATALOGUE.json` in the loomground repository at the commit the envelope's `source` names; `tests/test_catalogue_parity.py` asserts byte-equality against a checkout of that commit. `query` never touches `pipeline` or `patch_from_documents`.
 
@@ -97,7 +99,7 @@ Enum arguments take the plane's own names (`PRESENT`, `decided`, `editorial`, �
 | operators | `collapse` · `escalation` · `falsifiability` · `proxy` · `mandate` · `brief` |
 | assurance | `oversight_issue` · `oversight_verify` · `govcert_verify` · `norm_freshness` · `obligation_admit` · `effect_reconcile` · `enforcement_compare` · `nd_digest` · `audit_chain_verify` |
 | runtime controls | `lock_text` · `lane_evaluate` · `drift_breaker` · `erasure_sweep` |
-| applied skill runtimes | `policy_compile` · `policy_check` · `evidence_emit` · `evidence_verify` · `privacy_scan` · `a2a_ground` · `a2a_plan` |
+| applied skill runtimes | `policy_compile` · `policy_check` · `evidence_emit` · `evidence_verify` · `privacy_scan` · `a2a_ground` · `a2a_plan` · `a2a_admission_preview` · `a2a_reconcile` |
 
 `loomground_catalogue` is the one to call first: it carries the family map, the pipeline order and
 how documents become an `.lg` patch. `loomground_releases` is the family's release and pin

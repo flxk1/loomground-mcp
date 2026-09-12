@@ -4,7 +4,7 @@
 
 109 tests:
 
-- one per tool, across all 53;
+- one per tool, across all 55;
 - the graceful degradation of each optional plane, with its package absent;
 - script parity for the seven solver skill tools;
 - the loomground-topos examples corpus;

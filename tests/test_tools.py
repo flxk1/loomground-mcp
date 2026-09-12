@@ -251,6 +251,42 @@ def test_a2a_plan_respects_maker_boundary():
     assert env["result"]["plan"]["disposition"] == "refuse"
 
 
+def test_a2a_admission_preview_fails_closed_without_stage_receipts():
+    env = call("a2a_admission_preview", {
+        "context": {"maker_id": "maker-1", "proposed_action": {
+            "bearer": "maker-1", "action": "edit module X"}},
+        "target_kind": "edit",
+        "governance": {"actions": [{"kind": "edit"}]},
+        "planes": [],
+        "receipts": [],
+    })
+    preview = env["result"]["preview"]
+    assert env["ok"] and preview["state"] == "ROUTED_HUMAN"
+    assert len(preview["missing_receipts"]) == 22
+    assert preview["dispatch_performed"] is False
+    assert env["result"]["dispatch_performed"] is False
+
+
+def test_a2a_reconcile_cannot_certify_without_prior_admission():
+    planned = call("a2a_plan", {
+        "context": {"maker_id": "maker-1"}, "target_kind": "edit",
+        "governance": {"actions": [{"kind": "edit"}]}, "planes": [],
+    })["result"]["plan"]
+    env = call("a2a_reconcile", {
+        "context": {"maker_id": "maker-1"}, "target_kind": "edit",
+        "governance": {"actions": [{"kind": "edit"}]}, "planes": [],
+        "preflight_receipts": [], "postflight_receipts": [],
+        "control_receipt": {
+            "action_digest": planned["action_digest"],
+            "dispatch_id": "dispatch-1", "observed_effects_digest": "effects-1",
+        },
+    })
+    result = env["result"]["reconciliation"]
+    assert env["ok"] and result["state"] == "ROUTED_HUMAN"
+    assert result["certified"] is False
+    assert result["invalid_receipts"] == ["enforcement-preview:not-admitted"]
+
+
 # the four reader/writer languages
 
 def test_factual_lower():

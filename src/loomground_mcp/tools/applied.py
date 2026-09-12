@@ -111,14 +111,9 @@ def _declared_team_inventory(a2a: Any) -> Any:
     )
 
 
-@tool("a2a-compliance", "a2a_compliance.ComplianceTeam.plan")
-def a2a_plan(context: dict[str, Any], target_kind: str, governance: dict[str, Any],
-             planes: Optional[list[str]] = None, profile: str = "loomground") -> Any:
-    """Build the inert compliance-team plan over the MCP server's declared
-    tools, public skills and family contracts.  In the Loomground profile it
-    also binds the current six-plane grounding result.  ``ready`` means ready
-    for the host to run the named hand-offs, never permission to dispatch or
-    proof that those tools have already succeeded."""
+def _build_a2a_plan(context: dict[str, Any], target_kind: str,
+                    governance: dict[str, Any], planes: Optional[list[str]],
+                    profile: str) -> tuple[Any, Any]:
     a2a = import_plane("a2a_compliance")
     ctx = a2a.GroundingContext(**context)
     request = a2a.ControlRequest(
@@ -134,9 +129,62 @@ def a2a_plan(context: dict[str, Any], target_kind: str, governance: dict[str, An
     plan = a2a.ComplianceTeam(_declared_team_inventory(a2a)).plan(
         request, grounding_result=grounding_result,
     )
+    return a2a, plan
+
+
+def _stage_receipts(a2a: Any, values: list[dict[str, Any]]) -> list[Any]:
+    return [a2a.StageReceipt(
+        role=value["role"], capability=value["capability"],
+        status=a2a.ReceiptStatus(value["status"]),
+        action_digest=value["action_digest"], input_digest=value["input_digest"],
+        output_digest=value.get("output_digest"), reason=value.get("reason", ""),
+    ) for value in values]
+
+
+@tool("a2a-compliance", "a2a_compliance.ComplianceTeam.plan")
+def a2a_plan(context: dict[str, Any], target_kind: str, governance: dict[str, Any],
+             planes: Optional[list[str]] = None, profile: str = "loomground") -> Any:
+    """Build the inert compliance-team plan over the MCP server's declared
+    tools, public skills and family contracts.  In the Loomground profile it
+    also binds the current six-plane grounding result.  ``ready`` means ready
+    for the host to run the named hand-offs, never permission to dispatch or
+    proof that those tools have already succeeded."""
+    _, plan = _build_a2a_plan(context, target_kind, governance, planes, profile)
     return {"plan": plan, "inventory_source": "loomground-mcp published surface",
             "dispatch_performed": False}
 
 
+@tool("a2a-compliance", "a2a_compliance.enforce_preview")
+def a2a_admission_preview(
+    context: dict[str, Any], target_kind: str, governance: dict[str, Any],
+    receipts: list[dict[str, Any]], planes: Optional[list[str]] = None,
+    profile: str = "loomground",
+) -> Any:
+    """Fold role-owned, action-digest-bound preflight receipts into an inert
+    admission preview.  Never dispatches and never calls an enforcement effect."""
+    a2a, plan = _build_a2a_plan(context, target_kind, governance, planes, profile)
+    preview = a2a.enforce_preview(plan, _stage_receipts(a2a, receipts))
+    return {"plan": plan, "preview": preview, "dispatch_performed": False}
+
+
+@tool("a2a-compliance", "a2a_compliance.reconcile")
+def a2a_reconcile(
+    context: dict[str, Any], target_kind: str, governance: dict[str, Any],
+    preflight_receipts: list[dict[str, Any]], control_receipt: dict[str, Any],
+    postflight_receipts: list[dict[str, Any]], planes: Optional[list[str]] = None,
+    profile: str = "loomground",
+) -> Any:
+    """Reconcile a host dispatch from supplied postflight tool receipts.  It
+    consumes receipt verdicts only; it does not observe effects or emit evidence."""
+    a2a, plan = _build_a2a_plan(context, target_kind, governance, planes, profile)
+    preview = a2a.enforce_preview(plan, _stage_receipts(a2a, preflight_receipts))
+    control = a2a.ControlReceipt(**control_receipt)
+    result = a2a.reconcile(
+        plan, preview, control, _stage_receipts(a2a, postflight_receipts),
+    )
+    return {"plan": plan, "preview": preview, "reconciliation": result,
+            "dispatch_performed": False}
+
+
 TOOLS = [policy_compile, policy_check, evidence_emit, evidence_verify, privacy_scan,
-         a2a_ground, a2a_plan]
+         a2a_ground, a2a_plan, a2a_admission_preview, a2a_reconcile]
