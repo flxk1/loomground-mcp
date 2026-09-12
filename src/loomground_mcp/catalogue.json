@@ -726,8 +726,8 @@
     {
       "repo": "privacy-shield",
       "family": "Runtime controls",
-      "role": "span-by-span PII-cleaned overlay and egress guard; only the overlay leaves the machine",
-      "description": "Span-by-span PII-cleaned overlay maker and egress lock: scan a folder, file, or text, produce an overlay that is the only thing meant to leave the machine, and decide egress by source classification. Regex/lexicon floor plus an optional local embedding/LLM layer; the value<->placeholder map stays local; every decision is audited. Works standalone; external enforcement can attach through a neutral sink interface.",
+      "role": "local PII/PHI detection, clean overlays, and egress control",
+      "description": "Detect PII and PHI locally, produce a clean overlay, and block unsafe egress before content reaches an external model.",
       "pipeline_position": null,
       "depends_on": [
         "loomground-governance"
@@ -742,8 +742,8 @@
     {
       "repo": "a2a-compliance",
       "family": "Runtime controls",
-      "role": "agent-to-agent compliance-control protocol and compliance-fleet contract; loomground grounding optional",
-      "description": "An A2A (agent-to-agent) compliance-control protocol + a loomground-grounded compliance-fleet contract: compliance agents steer maker agents to keep them aligned to the operator's values, over query-state/issue-directive/hold/resume/halt (and report-state/ack/escalate back). Works standalone; Loomground value-grounding and external enforcement are optional enrichment planes.",
+      "role": "A2A maker control with role authority and optional Loomground grounding",
+      "description": "Control maker agents over an A2A protocol with role authority and optional Loomground value grounding.",
       "pipeline_position": null,
       "depends_on": [
         "loomground-governance",
