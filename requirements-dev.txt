@@ -25,7 +25,7 @@ enforcement-posture @ git+https://github.com/flxk1/enforcement-posture@5e0096cff
 # Runtime controls and the signed audit chain, at their release tags. `loomground-lock-v0.2.0` and
 # `loomground-drift-v0.2.0` tag commits whose `_version.py` still reads 0.1.0 (release-please bumped the
 # manifest, not the version source), so the declared ranges follow the version pip actually installs.
-loomground-audit-chain @ git+https://github.com/flxk1/loomground-audit-chain@fd9b6044484cfd643073b609fdfdcffacd9dad5d
+loomground-audit-chain @ git+https://github.com/flxk1/loomground-audit-chain@7a6e7a4dab006862391d35309c1a65a3023992b3
 loomground-lock @ git+https://github.com/flxk1/loomground-lock@b8a26930fd301d0181139fbb5665342fd614ef8e
 loomground-lane @ git+https://github.com/flxk1/loomground-lane@9bac236ed7034b6183470e2a49137fde477d9b59
 loomground-drift @ git+https://github.com/flxk1/loomground-drift@f7de9456fccb8c76843eee260db2955cc6ee6444

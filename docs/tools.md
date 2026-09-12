@@ -69,7 +69,7 @@ The audit chain and the four runtime controls are served read-only, and each is 
 not installed answers `unavailable`, never an error. `audit_chain_verify` walks a log, `lock_text` decides,
 `lane_evaluate` and `drift_breaker` are pure evaluations, `erasure_sweep` previews. Approving a lane,
 renewing a lease, clearing a quarantine, sealing a folder and `execute` stay the host's own acts. The two
-folder-addressed tools resolve their log root from `log_root`, else `LOOMGROUND_LOG_ROOT`, else `~/.workspace/log`,
+folder-addressed tools resolve their log root from `log_root`, then the installed plane's configured default,
 read their keys under `WORKSPACE_KEY_DIR` -- `audit_chain_verify` mints a host identity key there when the
 host has none -- and refuse a folder outside the known-workspaces allowlist.
 `drift_breaker` evaluates a fresh breaker per call: quarantine stickiness is the host's to persist.
