@@ -6,6 +6,8 @@ Each wrapper calls the public package API.  It does not reproduce a plane inside
 the MCP server, activate policy, dispatch a directive, or handle production key
 material.
 """
+import json
+from importlib.resources import files
 from typing import Any, Optional
 
 from ._result import enum_of, import_plane, tool
@@ -89,4 +91,52 @@ def a2a_ground(context: dict[str, Any], planes: Optional[list[str]] = None) -> A
     return a2a.ground(ctx, selected)
 
 
-TOOLS = [policy_compile, policy_check, evidence_emit, evidence_verify, privacy_scan, a2a_ground]
+def _declared_team_inventory(a2a: Any) -> Any:
+    """Read the surfaces this MCP distribution actually publishes.
+
+    This proves discoverability, not successful execution: every later tool call
+    can still return its normal fail-closed ``unavailable`` envelope.
+    """
+    from loomground_mcp.tools import ALL
+
+    root = files("loomground_mcp")
+    catalogue = json.loads(root.joinpath("catalogue.json").read_text(encoding="utf-8"))
+    skill_index = json.loads(root.joinpath("skills/index.json").read_text(encoding="utf-8"))
+    repos = {item["repo"] for item in catalogue["repos"]}
+    return a2a.CapabilityInventory.from_iterables(
+        tools=(fn.__name__ for fn in ALL),
+        skills=(item["name"] for item in skill_index if not item.get("private")),
+        contracts=repos,
+        distributions={"loomground-plugins", "loomground-patchbay", "loomground-mcp"} & repos,
+    )
+
+
+@tool("a2a-compliance", "a2a_compliance.ComplianceTeam.plan")
+def a2a_plan(context: dict[str, Any], target_kind: str, governance: dict[str, Any],
+             planes: Optional[list[str]] = None, profile: str = "loomground") -> Any:
+    """Build the inert compliance-team plan over the MCP server's declared
+    tools, public skills and family contracts.  In the Loomground profile it
+    also binds the current six-plane grounding result.  ``ready`` means ready
+    for the host to run the named hand-offs, never permission to dispatch or
+    proof that those tools have already succeeded."""
+    a2a = import_plane("a2a_compliance")
+    ctx = a2a.GroundingContext(**context)
+    request = a2a.ControlRequest(
+        context=ctx,
+        target_kind=target_kind,
+        governance=a2a.GovernanceBlock.from_dict(governance),
+        profile=a2a.TeamProfile(profile),
+    )
+    grounding_result = None
+    if request.profile is a2a.TeamProfile.LOOMGROUND:
+        selected = tuple(planes) if planes is not None else tuple(a2a.ALL_PLANES)
+        grounding_result = a2a.ground(ctx, selected)
+    plan = a2a.ComplianceTeam(_declared_team_inventory(a2a)).plan(
+        request, grounding_result=grounding_result,
+    )
+    return {"plan": plan, "inventory_source": "loomground-mcp published surface",
+            "dispatch_performed": False}
+
+
+TOOLS = [policy_compile, policy_check, evidence_emit, evidence_verify, privacy_scan,
+         a2a_ground, a2a_plan]

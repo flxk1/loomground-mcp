@@ -1,16 +1,17 @@
 ---
 name: compliance-fleet
 description: >-
-  Compliance agents steer maker agents over an agent-to-agent control channel, keeping them aligned to the
+  A compliance team plans a maker action across Loomground, then compliance agents steer maker agents over an agent-to-agent control channel, keeping them aligned to the
   operator's values: query a maker's state, issue a directive, hold, resume or halt; receive report-state,
   ack and escalate back. Authority is role-based, and a directive stays within the boundary that maker
   declares in its own governance block. Works in bare mode with zero Loomground and zero external enforcement, where the
-  steering criterion is the compliance role's advisory judgement. Loomground is optional enrichment — where
+  steering criterion is the compliance role's advisory judgement. The full Loomground profile consumes the
+  published orchestration, tools, skills and contracts as a fail-closed pipeline; where
   a value plane is present the criterion is drawn from the grounded value graph, degrading to advisory per
   dimension when that plane is absent. External enforcement is an optional adapter that adds a verdict and a signed
   chain to a directive. Triggers on "control my agents", "keep the makers aligned", "steer/hold/halt this
   maker", "watch the fleet for value drift", "issue a compliance directive".
-allowed-tools: a2a_ground
+allowed-tools: a2a_plan a2a_ground
 governance:
   grade: L1
   actions:
@@ -44,10 +45,20 @@ governance:
 
 # compliance-fleet
 
-Primary path: call `a2a_ground` with the maker state and the requested value
-planes. It returns the grounded/advisory findings and the bounded action. Message
+Primary full-family path: call `a2a_plan` with the maker state, target action kind
+and declared governance block. It returns the eight-role orchestration plan and
+the bounded grounding result over the MCP server's published capability surface.
+Use `a2a_ground` for the narrower six-plane derivation. Message
 dispatch remains a host act: the skill must surface reserved directives instead
 of sending them through an undeclared channel.
+
+For a full-family run, build `ControlRequest(profile=TeamProfile.LOOMGROUND)`, supply the
+host's actual `CapabilityInventory`, and call `ComplianceTeam.plan` before
+grounding. Consume the named capabilities in the returned role order; do not
+reimplement them inside this skill. Bind the `a2a_ground` result with
+`ComplianceTeam.assess`. A missing required capability, absent assessment,
+reserved action, or `OPEN` result routes to the human. A plan never authorizes
+the skill to dispatch, erase, certify, or write evidence by itself.
 
 The A2A control-message contract (both directions, all three modes), the maker
 control-participant contract, the value-plane consumption seam, the

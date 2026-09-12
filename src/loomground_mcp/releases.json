@@ -498,7 +498,8 @@
       "pypi": false,
       "family": "Runtime controls",
       "tools": [
-        "a2a_ground"
+        "a2a_ground",
+        "a2a_plan"
       ],
       "skills": [
         "compliance-fleet"

@@ -223,6 +223,34 @@ def test_a2a_ground_is_derivation_only():
     assert call("deontic_conflicts", {"statements": ["O(a : x)", "F(a : ¬ x)"]})["result"]["candidates"] == []
 
 
+def test_a2a_plan_consumes_full_family_surface_without_dispatch():
+    env = call("a2a_plan", {
+        "context": {"maker_id": "maker-1"},
+        "target_kind": "edit",
+        "governance": {"actions": [{"kind": "edit"}], "obligations": ["record_effects"]},
+        "planes": [],
+    })
+    result = env["result"]
+    plan = result["plan"]
+    assert env["ok"] and result["dispatch_performed"] is False
+    assert result["inventory_source"] == "loomground-mcp published surface"
+    assert len(plan["repository_coverage"]) == 41
+    assert len(plan["steps"]) == 8
+    assert plan["missing_required"] == []
+    assert plan["ready"] is True
+
+
+def test_a2a_plan_respects_maker_boundary():
+    env = call("a2a_plan", {
+        "context": {"maker_id": "maker-1"},
+        "target_kind": "push",
+        "governance": {"actions": [{"kind": "edit"}], "prohibited": ["push"]},
+        "planes": [],
+    })
+    assert env["result"]["plan"]["ready"] is False
+    assert env["result"]["plan"]["disposition"] == "refuse"
+
+
 # the four reader/writer languages
 
 def test_factual_lower():

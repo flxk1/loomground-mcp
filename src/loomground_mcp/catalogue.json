@@ -760,8 +760,8 @@
     {
       "repo": "a2a-compliance",
       "family": "Runtime controls",
-      "role": "A2A maker control with role authority and optional Loomground grounding",
-      "description": "Control maker agents over an A2A protocol with role authority and optional Loomground value grounding.",
+      "role": "full-family compliance-team planning and A2A maker control",
+      "description": "Plan a governed maker action across all 41 public Loomground repositories, then control maker agents over an A2A protocol; the protocol profile stays dependency-free and the full-family profile fails closed.",
       "pipeline_position": null,
       "depends_on": [
         "loomground-governance",
@@ -773,7 +773,8 @@
         "loomground-falsifiability"
       ],
       "tools": [
-        "a2a_ground"
+        "a2a_ground",
+        "a2a_plan"
       ],
       "skills": [
         "compliance-fleet"

@@ -37,5 +37,5 @@ loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@e6e5e7d
 policy-compiler @ git+https://github.com/flxk1/policy-compiler@74e7fc4c9180b53179272ba5ddc3f591f3ee09d0
 evidence-emitter @ git+https://github.com/flxk1/evidence-emitter@4869b1f90ad12bee25cd19da3bb8b56d69de598c
 privacy-shield @ git+https://github.com/flxk1/privacy-shield@a774b39e64a9aff19dc08c03d5216edaa9eb327d
-a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@9d8d6d1ebd368cf8ed579e16d780f30ad9f6ed07
+a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@c21decf
 pytest==9.1.1
