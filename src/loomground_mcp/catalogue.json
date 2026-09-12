@@ -727,7 +727,7 @@
       "repo": "privacy-shield",
       "family": "Runtime controls",
       "role": "span-by-span PII-cleaned overlay and egress guard; only the overlay leaves the machine",
-      "description": "Span-by-span PII-cleaned overlay maker and egress lock: scan a folder, file, or text, produce an overlay that is the only thing meant to leave the machine, and decide egress by source classification. Regex/lexicon floor plus an optional local embedding/LLM layer; the value<->placeholder map stays local; every decision is audited. Works standalone with zero loomground and zero RVND; RVND enforcement is an optional skin.",
+      "description": "Span-by-span PII-cleaned overlay maker and egress lock: scan a folder, file, or text, produce an overlay that is the only thing meant to leave the machine, and decide egress by source classification. Regex/lexicon floor plus an optional local embedding/LLM layer; the value<->placeholder map stays local; every decision is audited. Works standalone; external enforcement can attach through a neutral sink interface.",
       "pipeline_position": null,
       "depends_on": [
         "loomground-governance"
@@ -743,7 +743,7 @@
       "repo": "a2a-compliance",
       "family": "Runtime controls",
       "role": "agent-to-agent compliance-control protocol and compliance-fleet contract; loomground grounding optional",
-      "description": "An A2A (agent-to-agent) compliance-control protocol + a loomground-grounded compliance-fleet contract: compliance agents steer maker agents to keep them aligned to the operator's values, over query-state/issue-directive/hold/resume/halt (and report-state/ack/escalate back). Works fully with zero loomground and zero RVND; loomground value-grounding and RVND enforcement are both optional, universal enrichment planes.",
+      "description": "An A2A (agent-to-agent) compliance-control protocol + a loomground-grounded compliance-fleet contract: compliance agents steer maker agents to keep them aligned to the operator's values, over query-state/issue-directive/hold/resume/halt (and report-state/ack/escalate back). Works standalone; Loomground value-grounding and external enforcement are optional enrichment planes.",
       "pipeline_position": null,
       "depends_on": [
         "loomground-governance",
@@ -772,56 +772,6 @@
       "skills": [],
       "install": "git clone https://github.com/flxk1/loomground-patchbay",
       "url": "https://github.com/flxk1/loomground-patchbay"
-    },
-    {
-      "repo": "RVND",
-      "family": "RVND",
-      "role": "local-first governance runtime for AI agents, built on Loomground",
-      "description": "Rvnd is a local-first governance system for AI agents. It is currently in beta.",
-      "pipeline_position": null,
-      "depends_on": [
-        "loomground-solver",
-        "loomground-versum",
-        "loomground-governance",
-        "loomground-deontic",
-        "loomground-ingest",
-        "loomground-legal",
-        "loomground-norm",
-        "loomground-factual",
-        "loomground-epistemic",
-        "loomground-vertical",
-        "loomground-workspace",
-        "loomground-brief",
-        "loomground-proxy"
-      ],
-      "tools": [],
-      "skills": [],
-      "install": "git clone https://github.com/flxk1/RVND.git && pip install .",
-      "url": "https://github.com/flxk1/RVND"
-    },
-    {
-      "repo": "rvnd-console",
-      "family": "RVND",
-      "role": "local operator console over an RVND instance",
-      "description": "Local operator console over an RVND instance.",
-      "pipeline_position": null,
-      "depends_on": [],
-      "tools": [],
-      "skills": [],
-      "install": null,
-      "url": "https://github.com/flxk1/rvnd-console"
-    },
-    {
-      "repo": "rvnd-plugins",
-      "family": "RVND",
-      "role": "RVND plugin marketplace; distribution metadata",
-      "description": "RVND plugin marketplace; distribution metadata.",
-      "pipeline_position": null,
-      "depends_on": [],
-      "tools": [],
-      "skills": [],
-      "install": null,
-      "url": "https://github.com/flxk1/rvnd-plugins"
     },
     {
       "repo": "loomground-mcp",

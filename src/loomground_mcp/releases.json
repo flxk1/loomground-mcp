@@ -494,26 +494,6 @@
       "tools": [],
       "skills": []
     },
-    "rvnd-console": {
-      "version": "0.0.1",
-      "tag": null,
-      "commit": null,
-      "package": "loomground-console",
-      "pypi": false,
-      "family": "RVND",
-      "tools": [],
-      "skills": []
-    },
-    "rvnd-plugins": {
-      "version": null,
-      "tag": null,
-      "commit": null,
-      "package": null,
-      "pypi": false,
-      "family": "RVND",
-      "tools": [],
-      "skills": []
-    },
     "loomground-mcp": {
       "version": "0.1.0",
       "tag": null,
@@ -1198,7 +1178,5 @@
       "reason": "transitive: via loomground-solver; not imported by loomground-proxy; pinned at release loomground-governance-v0.11.1"
     }
   ],
-  "skipped": [
-    "RVND"
-  ]
+  "skipped": []
 }
