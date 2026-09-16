@@ -42,10 +42,10 @@ dependencies = [
     "loomground-lane>=0.1,<0.2",
     "loomground-drift>=0.1,<0.3",
     "loomground-erasure>=0.1,<0.2",
-    "policy-compiler>=0.2,<0.3",
+    "policy-compiler>=0.3,<0.4",
     "evidence-emitter>=0.1,<0.2",
     "privacy-shield>=2,<3",
-    "a2a-compliance>=0.1,<0.2",
+    "a2a-compliance>=0.3,<0.4",
 ]
 dynamic = ["version"]
 
