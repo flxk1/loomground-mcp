@@ -33,10 +33,14 @@ loomground-erasure @ git+https://github.com/flxk1/loomground-erasure@df098be5815
 # transitive: audit-chain, lock and erasure consume it; no index, so it is pinned here too (tag v0.1.0).
 loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad
 # Applied skill runtimes, adding the corresponding MCP declarations to each
-# canonical skill. Pinned at each dependency's release tag once one exists;
-# privacy-shield stays commit-pinned until its own 2.0.0 tag lands.
-policy-compiler @ git+https://github.com/flxk1/policy-compiler@policy-compiler-v0.3.0
-evidence-emitter @ git+https://github.com/flxk1/evidence-emitter@v0.1.0
+# canonical skill. Pinned at the commit each dependency's release tag points
+# at (a tag name is mutable; the register resolves this SHA to its release
+# via dev_pin_release, same as every other pin in this file, so a tag ref
+# buys nothing and weakens the pin). policy-compiler@policy-compiler-v0.3.0,
+# evidence-emitter@v0.1.0, a2a-compliance@v0.3.0. privacy-shield stays
+# commit-pinned to a pre-release commit until its own 2.0.0 tag lands.
+policy-compiler @ git+https://github.com/flxk1/policy-compiler@41dfd3e3d35e7f171d3215f4e5dc54a60c4e8bd9
+evidence-emitter @ git+https://github.com/flxk1/evidence-emitter@07af3e3f76e070afcfaf933b194f43f3cc5bfc93
 privacy-shield @ git+https://github.com/flxk1/privacy-shield@111d63061be4e342f8047a9b92b804d35f64335f
-a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@v0.3.0
+a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@0da77b8b55d538b3a647667262ad5923483d7849
 pytest==9.1.1
