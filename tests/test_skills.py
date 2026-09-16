@@ -19,7 +19,7 @@ KEYS = {"repo", "name", "description", "allowed_tools", "commit", "path", "url"}
 
 
 def test_index_records():
-    assert len(INDEX) == 33 and len(PUBLIC) == 26 and len(PRIVATE) == 7
+    assert len(INDEX) == 26 and len(PUBLIC) == 26 and len(PRIVATE) == 0
     assert [(e["repo"], e["name"]) for e in INDEX] == sorted((e["repo"], e["name"]) for e in INDEX)
     for e in INDEX:
         assert set(e) - {"private"} == KEYS and len(e["commit"]) == 40 and e["description"]
@@ -34,7 +34,7 @@ def test_skill_index_tool():
     rows = env["result"]
     assert [(r["repo"], r["name"]) for r in rows] == [(e["repo"], e["name"]) for e in INDEX]
     prompts = [r["prompt"] for r in rows]
-    assert prompts.count(None) == 7 and {"loomground/loomground", "loomground-governance/loomground", "analyse-risks"} <= set(prompts)
+    assert prompts.count(None) == len(PRIVATE) and {"loomground/loomground", "loomground-governance/loomground", "analyse-risks"} <= set(prompts)
     assert len(set(p for p in prompts if p)) == 26
 
 
