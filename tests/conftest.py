@@ -10,6 +10,17 @@ from loomground_mcp import build_server
 
 logging.disable(logging.CRITICAL)  # planes log their refusals; the envelope carries them
 
+# privacy_scan wraps the vendored privacy-shield package, which writes its audit
+# trail under $HOME by default; isolate the same four user-state vars privacy-shield's
+# own tests/conftest.py does so this suite never touches the real home.
+_USER_STATE_VARS = ("HOME", "XDG_STATE_HOME", "LOCALAPPDATA", "USERPROFILE")
+
+
+@pytest.fixture(autouse=True)
+def _isolated_user_state(tmp_path, monkeypatch):
+    for var in _USER_STATE_VARS:
+        monkeypatch.setenv(var, str(tmp_path))
+
 POLICY = ("The operator must delete personal data within 30 days after the contract ends. "
           "The operator must not transfer personal data outside the EU. "
           "The operator may retain invoices for ten years.\n")
