@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-12",
+  "generated": "2026-09-15",
   "repos": {
     "loomground": {
       "version": null,
@@ -508,10 +508,10 @@
       ]
     },
     "loomground-plugins": {
-      "version": null,
+      "version": "0.4.0",
       "tag": null,
       "commit": null,
-      "package": null,
+      "package": "loomground-installer",
       "pypi": false,
       "family": "Interfaces and authoring",
       "tools": [],
@@ -837,6 +837,14 @@
     },
     {
       "consumer": "loomground-mcp",
+      "dependency": "a2a-compliance",
+      "range": ">=0.1,<0.2",
+      "dev_pin": "5c6f2c14af46e85989a443c51be103f248151d62",
+      "dev_pin_release": null,
+      "status": "unreleased-commit"
+    },
+    {
+      "consumer": "loomground-mcp",
       "dependency": "effect-reconciliation",
       "range": ">=0.2,<0.3",
       "dev_pin": "a5164fb54cc9c29ff38baa68dd0499336c1684ab",
@@ -850,6 +858,14 @@
       "dev_pin": "5e0096cff629e44d51c4f1b2db5116820b3f1a1b",
       "dev_pin_release": "v0.5.1",
       "status": "release"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "evidence-emitter",
+      "range": ">=0.1,<0.2",
+      "dev_pin": "4869b1f90ad12bee25cd19da3bb8b56d69de598c",
+      "dev_pin_release": null,
+      "status": "unreleased-commit"
     },
     {
       "consumer": "loomground-mcp",
@@ -1042,6 +1058,22 @@
       "dev_pin": "8dbb4fa46042f12eeecaf37cb1ad095b838d7185",
       "dev_pin_release": "v0.2.0",
       "status": "release"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "policy-compiler",
+      "range": ">=0.2,<0.3",
+      "dev_pin": "74e7fc4c9180b53179272ba5ddc3f591f3ee09d0",
+      "dev_pin_release": null,
+      "status": "unreleased-commit"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "privacy-shield",
+      "range": ">=1,<2",
+      "dev_pin": "a774b39e64a9aff19dc08c03d5216edaa9eb327d",
+      "dev_pin_release": null,
+      "status": "unreleased-commit"
     },
     {
       "consumer": "loomground-norm",

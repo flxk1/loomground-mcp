@@ -788,7 +788,7 @@
       "repo": "loomground-plugins",
       "family": "Interfaces and authoring",
       "role": "multi-host skill catalogue and package builder",
-      "description": "Distribute Loomground skills to Claude Code, Codex, and generic Agent Skills hosts from their canonical repositories.",
+      "description": "Distribute Loomground skills and one pinned runtime to Claude, Codex/OpenAI, Cursor, n8n and generic MCP/Agent Skills hosts from their canonical repositories.",
       "pipeline_position": null,
       "depends_on": [
         "a2a-compliance",
@@ -826,7 +826,7 @@
       "repo": "loomground-mcp",
       "family": "Interfaces and authoring",
       "role": "one MCP server exposing the planes as tools and the skills as prompts",
-      "description": "One MCP server exposing the Loomground planes as tools: versum, the four languages, solver and its skills, ingest, operators, assurance; stdio or HTTP.",
+      "description": "One MCP server exposing the Loomground planes as tools: versum, the four languages, solver and its skills, ingest, operators, assurance, controls; stdio or HTTP.",
       "pipeline_position": null,
       "depends_on": [
         "loomground-versum",
