@@ -2,13 +2,15 @@
 # Copyright 2026 flxk1
 """Each solver_* skill tool agrees with its skill script: the same JSON on stdin, the same JSON out.
 
-The scripts live in the loomground-solver checkout, not the wheel: ``LOOMGROUND_SOLVER_SKILLS`` names its
-``skills/`` directory (CI fetches the pinned commit); a sibling checkout is found by convention; otherwise skip.
+``LOOMGROUND_SOLVER_SKILLS`` names a loomground-solver ``skills/`` directory (CI fetches the pinned commit) and a
+sibling checkout is found by convention; failing both, the scripts vendored into this package are used — they ship
+now, and test_skills_parity holds them byte-equal to that checkout, so the test no longer skips itself away.
 """
 import json
 import os
 import subprocess
 import sys
+from importlib import resources
 from pathlib import Path
 
 import pytest
@@ -18,7 +20,8 @@ from conftest import SOLVER_SAMPLES, call
 HERE = Path(__file__).resolve().parents[1]
 CANDIDATES = [os.environ.get("LOOMGROUND_SOLVER_SKILLS", ""),
               HERE.parent / "loomground-repos" / "loomground-solver" / "skills",
-              HERE.parent / "loomground-solver" / "skills"]
+              HERE.parent / "loomground-solver" / "skills",
+              Path(str(resources.files("loomground_mcp"))) / "skills" / "loomground-solver"]
 
 
 def skills_dir() -> Path:

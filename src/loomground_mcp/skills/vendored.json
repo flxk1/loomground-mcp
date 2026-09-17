@@ -1,0 +1,322 @@
+{
+  "_": "Written by tools/vendor_skills.py, which is the only writer of this tree. One record per vendored skill: the repository, the commit its skills/<name>/ directory was copied from wholesale, that directory, its URL at that commit, and every copied file with its sha256. `--check` (and the repository's own tests) fail when the tree on disk is not exactly this.",
+  "skills": [
+    {
+      "repo": "a2a-compliance",
+      "name": "compliance-fleet",
+      "commit": "73439afc5ca0300099d34ab4408c0e974c540fce",
+      "source": "skills/compliance-fleet",
+      "url": "https://github.com/flxk1/a2a-compliance/tree/73439afc5ca0300099d34ab4408c0e974c540fce/skills/compliance-fleet",
+      "files": {
+        "SKILL.md": "b9a3d8d1999a5a7c3ffbd39f93d2db28767240f41028a8e8d48393aabb116acf"
+      }
+    },
+    {
+      "repo": "evidence-emitter",
+      "name": "evidence-emitter",
+      "commit": "4869b1f90ad12bee25cd19da3bb8b56d69de598c",
+      "source": "skills/evidence-emitter",
+      "url": "https://github.com/flxk1/evidence-emitter/tree/4869b1f90ad12bee25cd19da3bb8b56d69de598c/skills/evidence-emitter",
+      "files": {
+        "SKILL.md": "cf5953b219fcc66847f07f098354cebb5e9d3c0188b8de539a62f79b2041f53b"
+      }
+    },
+    {
+      "repo": "loomground",
+      "name": "loomground",
+      "commit": "60c11e0d210264b48fb8657a00e334b75cf84446",
+      "source": "skills/loomground",
+      "url": "https://github.com/flxk1/loomground/tree/60c11e0d210264b48fb8657a00e334b75cf84446/skills/loomground",
+      "files": {
+        "SKILL.md": "2912b03eff9ea582e0f6e51955c7dd3530d7888290750e3ab0aa9996cdfa2170",
+        "make_skill.py": "48feda4e4770ceea2ec014931bbbc9e8822981cda947c7acbabaeb1ab4621020"
+      }
+    },
+    {
+      "repo": "loomground-deontic",
+      "name": "deontic",
+      "commit": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "source": "skills/deontic",
+      "url": "https://github.com/flxk1/loomground-deontic/tree/35f8eabdc533b275a086b20c8d7a161f4acc46a8/skills/deontic",
+      "files": {
+        "SKILL.md": "e09057ae035649ddac5bba667dc423c501885c8091f1b99b79249e36d4116255",
+        "deontic_engine.py": "0e140d461c027e5e7f35a6db4255217e00e56a61f3a8fe86f4dd99d1f974dce3",
+        "validate.py": "39435fadbf07cdb72ec7b5d7cbb5b1b6929a1d764249e1c0a55b9ea7176466da"
+      }
+    },
+    {
+      "repo": "loomground-epistemic",
+      "name": "epistemic",
+      "commit": "7c5dac171e2df91ae91d96c3ccbea22b27cdd667",
+      "source": "skills/epistemic",
+      "url": "https://github.com/flxk1/loomground-epistemic/tree/7c5dac171e2df91ae91d96c3ccbea22b27cdd667/skills/epistemic",
+      "files": {
+        "SKILL.md": "a87be65fa8678560fe609cb057a010376a1b5a965a39c5bafb450569d60931fd"
+      }
+    },
+    {
+      "repo": "loomground-factual",
+      "name": "factual",
+      "commit": "4be819ec28c890e476b246e3ec616a5e1c3b857c",
+      "source": "skills/factual",
+      "url": "https://github.com/flxk1/loomground-factual/tree/4be819ec28c890e476b246e3ec616a5e1c3b857c/skills/factual",
+      "files": {
+        "SKILL.md": "0f9ab34969fb8d7a79186cc89e9b35490ff6f264c9058fdb937caa73a062a236"
+      }
+    },
+    {
+      "repo": "loomground-governance",
+      "name": "loomground",
+      "commit": "9ef2501af07d682c7d5ada2cb452fc9eba44f099",
+      "source": "skills/loomground",
+      "url": "https://github.com/flxk1/loomground-governance/tree/9ef2501af07d682c7d5ada2cb452fc9eba44f099/skills/loomground",
+      "files": {
+        "SKILL.md": "d062f15f1b28ef5f98971603054bb70e39dad5ca125f064b19ee35a60d56db53",
+        "loomground.py": "f6b324f136f0802f74543eeef4c5cdf12050bbbcbd854ce45a253608f11374cb",
+        "validate.py": "a203f56066df88ba31425a300bb70b75007530500c4d0d63a8ec416d271f1da4"
+      }
+    },
+    {
+      "repo": "loomground-ingest",
+      "name": "loomground-ingest",
+      "commit": "ce9639b9ea18d90c5ee386135ccce526a66b8e45",
+      "source": "skills/loomground-ingest",
+      "url": "https://github.com/flxk1/loomground-ingest/tree/ce9639b9ea18d90c5ee386135ccce526a66b8e45/skills/loomground-ingest",
+      "files": {
+        "SKILL.md": "a2e95b89bdbebcad6e5a7e9768f151528ce9dcc41265fd2b5e90ca1a9a329428"
+      }
+    },
+    {
+      "repo": "loomground-norm",
+      "name": "norm",
+      "commit": "104a3ca2272e34898b23fa43ba164e968d8f1001",
+      "source": "skills/norm",
+      "url": "https://github.com/flxk1/loomground-norm/tree/104a3ca2272e34898b23fa43ba164e968d8f1001/skills/norm",
+      "files": {
+        "SKILL.md": "cd6f836418245ea3e84024f28a3ff6098d84eda0a273b6e3bcbf5e15492adbe9"
+      }
+    },
+    {
+      "repo": "loomground-solver",
+      "name": "advise-solver-addons",
+      "commit": "c0f60681ac0dc205a55f710d1958dff3e79f086b",
+      "source": "skills/advise-solver-addons",
+      "url": "https://github.com/flxk1/loomground-solver/tree/c0f60681ac0dc205a55f710d1958dff3e79f086b/skills/advise-solver-addons",
+      "files": {
+        "SKILL.md": "348c9c24a0e12fb8fe65d9c3a2f83bd6cb0d5ac2dc06d1d5ff3a6330f71c876a",
+        "agents/interface.yaml": "a2e7d5af2161e29e7bee47666e4f88b27e5ccbede62cf32e9c7cea384a4d3877",
+        "references/eval.json": "4f0eed2e3cb40bcdfaf8bc64233626d2dd33df96362b5281aa1c75677fe8ee02",
+        "references/reference.md": "8dc6a5771fba753f909e8719f256817cd27de819fc091e48f11b52cb268dfc48",
+        "scripts/advise.py": "e95c0896431fba705e983ea1ede1159c63ed087d80177b75e889640f83bdaafa"
+      }
+    },
+    {
+      "repo": "loomground-solver",
+      "name": "analyse-risks",
+      "commit": "c0f60681ac0dc205a55f710d1958dff3e79f086b",
+      "source": "skills/analyse-risks",
+      "url": "https://github.com/flxk1/loomground-solver/tree/c0f60681ac0dc205a55f710d1958dff3e79f086b/skills/analyse-risks",
+      "files": {
+        "SKILL.md": "6d8926014bac7d3827de0a10dc2f9005864df136c2a455332ab99145be2adb1b",
+        "agents/interface.yaml": "a00203124b99256351bc098e46fd2f766963cec3d7c6e4a9ebb6c09bb58bd314",
+        "references/eval.json": "7304a3eec367ef6e44e158365c0f8152dfdc2fa931b537152c039da58b36b666",
+        "references/reference.md": "39e2013f64f817048dcd8ef6945fc71e455d84e89d9cef195ea7e31b8c513db5",
+        "scripts/run.py": "6ccaa4f6af879b3a7c228fe7d08439277b80453f9d6a67792a10f8b5b848c0a0"
+      }
+    },
+    {
+      "repo": "loomground-solver",
+      "name": "estimate-liability",
+      "commit": "c0f60681ac0dc205a55f710d1958dff3e79f086b",
+      "source": "skills/estimate-liability",
+      "url": "https://github.com/flxk1/loomground-solver/tree/c0f60681ac0dc205a55f710d1958dff3e79f086b/skills/estimate-liability",
+      "files": {
+        "SKILL.md": "f9e303db3e7295725f415b545bf73f1027b1b15e6b4f66d5bb35c25e9437b718",
+        "agents/interface.yaml": "2159133776a6e5f6ce4cb02cebb90a297f298091f63e1fd9e43c7de37a06f149",
+        "references/eval.json": "7ab7268ea6ffbcd91f7d4d5ff958addfb5e9db80aab9f81016abfca26e712f60",
+        "references/reference.md": "e2305de79eee68993b398f9a7a4f9c92408bbe17cb95da404bc5bff0c83da9d2",
+        "scripts/run.py": "8bba55e6b8b11baf64cc5757bb697b513701199561a12d990030d3605af1622f"
+      }
+    },
+    {
+      "repo": "loomground-solver",
+      "name": "litigation-risk-assessor",
+      "commit": "c0f60681ac0dc205a55f710d1958dff3e79f086b",
+      "source": "skills/litigation-risk-assessor",
+      "url": "https://github.com/flxk1/loomground-solver/tree/c0f60681ac0dc205a55f710d1958dff3e79f086b/skills/litigation-risk-assessor",
+      "files": {
+        "SKILL.md": "4baba3e45fd46110aaa81e3ed52f36095ebae4628f745dca3ad3e7674d41a904",
+        "agents/interface.yaml": "e26ae091edbaaddd348a1b334525c1ba8d3941b1441b05b0ebe2f27748a57677",
+        "references/eval.json": "1b83903296ec574811fa71d703b79257f385f9e45ca7a24176c4fdb4a19df738",
+        "references/reference.md": "6942d8eb4bf2bbccbd5bc016c2a7c8683cfc4f7f3ed36d8d1f40921a4c534af1",
+        "scripts/run.py": "d0d9e3654133db6b15df2f712d4e8dd4d1559de2128199309c70bc59785c7c11"
+      }
+    },
+    {
+      "repo": "loomground-solver",
+      "name": "opponent-modeler",
+      "commit": "c0f60681ac0dc205a55f710d1958dff3e79f086b",
+      "source": "skills/opponent-modeler",
+      "url": "https://github.com/flxk1/loomground-solver/tree/c0f60681ac0dc205a55f710d1958dff3e79f086b/skills/opponent-modeler",
+      "files": {
+        "SKILL.md": "c16308f8b864d4f49fd0f3bde13df13f981b650260f6412a7bccd0e985e89129",
+        "agents/interface.yaml": "9f434883ceff7da7191d07ebb67a5542db1f72d543af0e05db83c484ee60eb0a",
+        "references/eval.json": "055b7fd661ae297d5fccc17ae0b424ddb98d9a00be9b81c40c1787de342ccc7c",
+        "references/reference.md": "fa548a20d1d65d205b57856bb3c198d6259bc884467d8a817cfefaacb30ba8cf",
+        "scripts/run.py": "9376bc764ceabdf5a5804004b43e3b28a037fe38a36542f9e425f5096c4d14ef"
+      }
+    },
+    {
+      "repo": "loomground-solver",
+      "name": "probability-tracker",
+      "commit": "c0f60681ac0dc205a55f710d1958dff3e79f086b",
+      "source": "skills/probability-tracker",
+      "url": "https://github.com/flxk1/loomground-solver/tree/c0f60681ac0dc205a55f710d1958dff3e79f086b/skills/probability-tracker",
+      "files": {
+        "SKILL.md": "40898aa26f3f7b7e196643dd5e8c1073efe4c790ac79055df464724f06fc3d91",
+        "agents/interface.yaml": "59fd3b299c8cf44c6e309dd10aed5c135c3731aac9fde1153a8d95a6f72f3e43",
+        "references/eval.json": "2416668f0003fb2c27bbb2831212f4e785f58ca02d3ab10736b84025fd47599b",
+        "references/reference.md": "147a09bf52f8dd8d104e000cdb990bf12ad40831f3002a4373cdc895ccbe5df9",
+        "scripts/run.py": "eff598d6d531c860b316e96fdfb83d9c08fb261c0723574d03552b4a21908310"
+      }
+    },
+    {
+      "repo": "loomground-solver",
+      "name": "strategic-analysis",
+      "commit": "c0f60681ac0dc205a55f710d1958dff3e79f086b",
+      "source": "skills/strategic-analysis",
+      "url": "https://github.com/flxk1/loomground-solver/tree/c0f60681ac0dc205a55f710d1958dff3e79f086b/skills/strategic-analysis",
+      "files": {
+        "SKILL.md": "ff18ab0975d2fd0d27604a7428407748a23a6180000ac8d4c7cdd4884bff9038",
+        "agents/interface.yaml": "5006eb059bc6771285a5c998e4578dd0f32290480bb997c5cc7bbbd1ac4ea49c",
+        "references/eval.json": "596680b83ce3611ac5aeb00aaf18e6d1c8509aa3c603d8c12a790557a24e57f6",
+        "references/reference.md": "5ed54db92e6659966f4935908d14e0394f9e6c208e84acac1a5606c7cf626b64",
+        "scripts/run.py": "eced3204a02ea44ab524928f2f2828bf5b5a905038e496dc77917c44707ebd84"
+      }
+    },
+    {
+      "repo": "loomground-topos",
+      "name": "topos",
+      "commit": "a9f4f54cff8275726ea29139d7a8fabc22182747",
+      "source": "skills/topos",
+      "url": "https://github.com/flxk1/loomground-topos/tree/a9f4f54cff8275726ea29139d7a8fabc22182747/skills/topos",
+      "files": {
+        "SKILL.md": "51fe8cc7a4c228e08c86e4138c09970376bb97ea70c109656810a4735bdef287"
+      }
+    },
+    {
+      "repo": "loomground-versum",
+      "name": "loomground-curate",
+      "commit": "e4fb5b4b7a2b3655406347b196b8283fe93b1e7f",
+      "source": "skills/loomground-curate",
+      "url": "https://github.com/flxk1/loomground-versum/tree/e4fb5b4b7a2b3655406347b196b8283fe93b1e7f/skills/loomground-curate",
+      "files": {
+        "SKILL.md": "c5f017a726d0d93db06cfe86589bf77b61e61fbc33efb809def4be2b928a7906"
+      }
+    },
+    {
+      "repo": "loomground-versum",
+      "name": "loomground-enrich",
+      "commit": "e4fb5b4b7a2b3655406347b196b8283fe93b1e7f",
+      "source": "skills/loomground-enrich",
+      "url": "https://github.com/flxk1/loomground-versum/tree/e4fb5b4b7a2b3655406347b196b8283fe93b1e7f/skills/loomground-enrich",
+      "files": {
+        "SKILL.md": "083313968516f4b35bbbcbec5482e0191d85a20038fcd193e0918c048370c5e3",
+        "agents/interface.yaml": "c48a053ff2923ed21dc8b5efcae68092f955fed8e1a916269a85cda54d6097d2",
+        "references/eval.json": "333ecc6fe223d4b5ca5c07f4eac2423862c3a9792767b6c29655eef79e3f7607",
+        "references/reference.md": "77755789a97f3c3ef9e1c97186abd55d0f62ac9e2b57e0960f8f6e8ce13cc8a6"
+      }
+    },
+    {
+      "repo": "loomground-versum",
+      "name": "loomground-kg",
+      "commit": "e4fb5b4b7a2b3655406347b196b8283fe93b1e7f",
+      "source": "skills/loomground-kg",
+      "url": "https://github.com/flxk1/loomground-versum/tree/e4fb5b4b7a2b3655406347b196b8283fe93b1e7f/skills/loomground-kg",
+      "files": {
+        "SKILL.md": "5d08bfdfa88fb28d12bfd0ab1b9a8931ddaddbacbf5342629a70082440316e67",
+        "agents/interface.yaml": "f3480066b1f5f4d3c0094b28ca79d0691b2ef87b5d13b93d5c2a36caa00d5ff3",
+        "config.example.json": "57c71b25d8e66d73f4bd152f77e19be659562a4e3ff1035b4dbcb325644e98d4",
+        "references/eval.json": "6bfa0502d0d7e6ebda0d123fb3764bca040d5638125ff458b8815a8bbfa9fed7",
+        "references/reference.md": "af3a1b1d0a8c90719d2c3494413bb21da71e9aa182e6807bee5fa6d414b937b2",
+        "scripts/kg_query.py": "0077e6e2925b8267e46382951df233b6a1900e40ebac814e65f4ac1201895ab1"
+      }
+    },
+    {
+      "repo": "loomground-versum",
+      "name": "loomground-kg-chat",
+      "commit": "e4fb5b4b7a2b3655406347b196b8283fe93b1e7f",
+      "source": "skills/loomground-kg-chat",
+      "url": "https://github.com/flxk1/loomground-versum/tree/e4fb5b4b7a2b3655406347b196b8283fe93b1e7f/skills/loomground-kg-chat",
+      "files": {
+        "SKILL.md": "f6624325a52568ef882808d370248f2df5f9fe4a8ddcc2982e4a07f474a912ed",
+        "agents/interface.yaml": "489dd7bace7dcf3a5ad9b901205c91877a37cca6df1a16f2ca51a13f6aacc7f2",
+        "references/eval.json": "fc0ee8b68b5944bfb7b198a159a69ce74182c6e402f2ae97b82e5c3330b9cb62",
+        "references/reference.md": "9e6223d72942de998df2fd0e4c8dad859902ce7cd85428b303cec93883d447ff"
+      }
+    },
+    {
+      "repo": "loomground-versum",
+      "name": "loomground-knowledge-write",
+      "commit": "e4fb5b4b7a2b3655406347b196b8283fe93b1e7f",
+      "source": "skills/loomground-knowledge-write",
+      "url": "https://github.com/flxk1/loomground-versum/tree/e4fb5b4b7a2b3655406347b196b8283fe93b1e7f/skills/loomground-knowledge-write",
+      "files": {
+        "SKILL.md": "d25e4203bc017fa489fb5f2c0b32ae417af1324150f6574f096dc9f23558eedc",
+        "agents/interface.yaml": "b99a7a153a1cd9ec3e3aebaccc8d06ee44fdceb57f320ca0241fd084735e9e9d",
+        "references/eval.json": "0ad9543192744bc3d436bd1f88cff0b92a2139fa1072dd97e1394152b75158fd",
+        "references/reference.md": "88ce11e3b9df2b9ed6931328d648f2cc12710d0240a882c1a0c61df49e2c91f9",
+        "scripts/delegate_capture.py": "94fcdb1823eddccc37fd612017c36453032e42f2b26c223673ff5b91f0e820cb"
+      }
+    },
+    {
+      "repo": "loomground-versum",
+      "name": "loomground-mental-model",
+      "commit": "e4fb5b4b7a2b3655406347b196b8283fe93b1e7f",
+      "source": "skills/loomground-mental-model",
+      "url": "https://github.com/flxk1/loomground-versum/tree/e4fb5b4b7a2b3655406347b196b8283fe93b1e7f/skills/loomground-mental-model",
+      "files": {
+        "SKILL.md": "53c73c534cc94988b522c9b6adebb66310a35a4cca5a7790bb9b675a2fde8974",
+        "agents/interface.yaml": "7a9522392efd9f4ef895fb79f19bd5b1b7974b6def13a327fed47ffdb79df4c9",
+        "references/eval.json": "e614c6340091f0d8adeaa5eee7ab8a95dc01e59531e9168578ddd6efd5ff61d3",
+        "references/reference.md": "2021da0236ee2cc9edce547107e16ea792f7dd8ef31b540ca3cf7f9e77a6b9bb"
+      }
+    },
+    {
+      "repo": "loomground-versum",
+      "name": "loomground-organise",
+      "commit": "e4fb5b4b7a2b3655406347b196b8283fe93b1e7f",
+      "source": "skills/loomground-organise",
+      "url": "https://github.com/flxk1/loomground-versum/tree/e4fb5b4b7a2b3655406347b196b8283fe93b1e7f/skills/loomground-organise",
+      "files": {
+        "SKILL.md": "e0feace50f4f1642fd70d7b95ac65b1f59621c8d9c4d067ead3b555237e8796e",
+        "agents/interface.yaml": "07b78b7695dba0567644c11c30d25ad6ec8da839afa15e3aa3e9b94e25c8a643",
+        "organise.config.example.json": "81e3f326920cc658016199cfcb5d1385a1774bcf1980ebcd77a463488edf45d6",
+        "references/eval.json": "f266274a6f6929139daa1b15d3fe10752b1673d4ced9b0021127803a7c893bb7",
+        "references/reference.md": "851b4044caaf955b74844995c68a3928fe0405b0d6271f8eca9849c7bfc292e3",
+        "scripts/organise.py": "7503b62127e2ec25396de74c7c3d70d619cce27900bac965963c21af3b59c9dc",
+        "scripts/suggest.py": "8bc52c84cf8ac9007ac0356806a4459baa64be6ad106a08d87cf18e3edab4b56"
+      }
+    },
+    {
+      "repo": "policy-compiler",
+      "name": "policy-compiler",
+      "commit": "74e7fc4c9180b53179272ba5ddc3f591f3ee09d0",
+      "source": "skills/policy-compiler",
+      "url": "https://github.com/flxk1/policy-compiler/tree/74e7fc4c9180b53179272ba5ddc3f591f3ee09d0/skills/policy-compiler",
+      "files": {
+        "SKILL.md": "6c8617780bacac1db9b54f4e7d43e81ec36c6294f08df7b0ae0403a14ad28a07"
+      }
+    },
+    {
+      "repo": "privacy-shield",
+      "name": "privacy-shield",
+      "commit": "a774b39e64a9aff19dc08c03d5216edaa9eb327d",
+      "source": "skills/privacy-shield",
+      "url": "https://github.com/flxk1/privacy-shield/tree/a774b39e64a9aff19dc08c03d5216edaa9eb327d/skills/privacy-shield",
+      "files": {
+        "SKILL.md": "ede6723203f197e82330222267ba67bb6f946fe59ab5434684067cb8a37d6e57"
+      }
+    }
+  ]
+}

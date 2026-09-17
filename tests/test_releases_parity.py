@@ -1,29 +1,26 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 flxk1
-"""The vendored releases.json is byte-equal to RELEASES.json in the loomground repository at the pinned commit.
+"""The vendored releases.json is byte-equal to RELEASES.json in the loomground repository at the pinned commit,
+and every repository its edges name has a record in it.
 
-``LOOMGROUND_RELEASES`` names the file (CI fetches the pinned commit when it is public); the sibling checkout is
-found by convention; otherwise skip.
+``LOOMGROUND_RELEASES`` names the file (CI fetches the pinned commit); otherwise the commit is read out of a
+reachable checkout; otherwise skip.
 """
-import os
 from pathlib import Path
 
-import pytest
+from conftest import upstream
 
-from loomground_mcp.tools.releases import SOURCE
+from loomground_mcp.tools.releases import SOURCE, load
 
 HERE = Path(__file__).resolve().parents[1]
 VENDORED = HERE / "src" / "loomground_mcp" / "releases.json"
-CANDIDATES = [os.environ.get("LOOMGROUND_RELEASES", ""),
-              HERE.parent / "loomground-repos" / "Loomground Core" / "RELEASES.json"]
-
-
-def upstream() -> Path:
-    for c in CANDIDATES:
-        if c and Path(c).is_file():
-            return Path(c)
-    pytest.skip(f"loomground RELEASES.json at {SOURCE['commit'][:7]} not found (set LOOMGROUND_RELEASES)")
 
 
 def test_vendored_releases_matches_upstream():
-    assert VENDORED.read_bytes() == upstream().read_bytes()
+    assert VENDORED.read_bytes() == upstream("loomground", SOURCE["commit"], "RELEASES.json", "LOOMGROUND_RELEASES")
+
+
+def test_every_edge_names_a_repository_the_register_carries():
+    doc = load()
+    named = {e[side] for group in ("edges", "accepted") for e in doc[group] for side in ("consumer", "dependency")}
+    assert named <= set(doc["repos"])
