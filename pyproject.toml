@@ -12,40 +12,46 @@ requires-python = ">=3.10"
 license = "Apache-2.0"
 license-files = ["LICENSES/Apache-2.0.txt", "NOTICE"]
 authors = [{ name = "Loomground Contributors" }]
-# `mcp` is the one third-party dependency. Every other name is a sibling plane,
-# ranged here and git-pinned in requirements-dev.txt until the planes are on an index.
+# `mcp` is the one third-party dependency. Every other name is a sibling plane.
+# First-party siblings are direct git references, not ranges: no index serves this
+# family. Each ref is the release tag loomground's RELEASES.json records, and the full
+# transitive closure is declared, because those tagged commits still carry ranges that
+# only these URLs can satisfy.
+# policy-compiler, evidence-emitter, privacy-shield and a2a-compliance have no tag
+# carrying what their range meant, so each is a commit on its public main instead.
 dependencies = [
     "mcp>=2,<3",
-    "loomground-governance>=0.11,<0.12",
-    "loomground-versum>=0.13,<0.15",
-    "loomground-deontic>=0.1,<0.3",
-    "loomground-factual>=0.1,<0.2",
-    "loomground-epistemic>=0.1,<0.2",
-    "loomground-norm>=0.1,<0.2",
-    "loomground-solver>=0.5,<0.7",
-    "loomground-ingest>=0.2,<0.4",
-    "loomground-brief>=0.1,<0.3",
-    "loomground-collapse>=0.1,<0.3",
-    "loomground-escalation>=0.1,<0.3",
-    "loomground-falsifiability>=0.1,<0.3",
-    "loomground-proxy>=0.1,<0.3",
-    "loomground-mandate>=0.1,<0.3",
-    "oversight-certificate>=0.2,<0.3",
-    "governance-certification>=0.1,<0.3",
-    "norm-freshness>=0.3,<0.4",
-    "obligation-discharge>=0.1,<0.2",
-    "effect-reconciliation>=0.2,<0.3",
-    "enforcement-posture>=0.5,<0.6",
-    "5d-nd>=0.1,<0.3",
-    "loomground-audit-chain>=0.1,<0.2",
-    "loomground-lock>=0.1,<0.3",
-    "loomground-lane>=0.1,<0.2",
-    "loomground-drift>=0.1,<0.3",
-    "loomground-erasure>=0.1,<0.2",
-    "policy-compiler>=0.2,<0.3",
-    "evidence-emitter>=0.1,<0.2",
-    "privacy-shield>=1,<2",
-    "a2a-compliance>=0.1,<0.2",
+    "loomground-governance @ git+https://github.com/flxk1/loomground-governance@loomground-governance-v0.11.1",
+    "loomground-versum @ git+https://github.com/flxk1/loomground-versum@loomground-versum-v0.14.0",
+    "loomground-deontic @ git+https://github.com/flxk1/loomground-deontic@loomground-deontic-v0.2.1",
+    "loomground-factual @ git+https://github.com/flxk1/loomground-factual@factual-v0.1.0",
+    "loomground-epistemic @ git+https://github.com/flxk1/loomground-epistemic@epistemic-v0.1.0",
+    "loomground-norm @ git+https://github.com/flxk1/loomground-norm@norm-v0.1.1",
+    "loomground-solver @ git+https://github.com/flxk1/loomground-solver@solver-v0.6.0",
+    "loomground-ingest @ git+https://github.com/flxk1/loomground-ingest@loomground-ingest-v0.3.0",
+    "loomground-brief @ git+https://github.com/flxk1/loomground-brief@loomground-brief-v0.2.0",
+    "loomground-collapse @ git+https://github.com/flxk1/loomground-collapse@loomground-collapse-v0.2.0",
+    "loomground-escalation @ git+https://github.com/flxk1/loomground-escalation@loomground-escalation-v0.2.0",
+    "loomground-falsifiability @ git+https://github.com/flxk1/loomground-falsifiability@loomground-falsifiability-v0.2.0",
+    "loomground-proxy @ git+https://github.com/flxk1/loomground-proxy@loomground-proxy-v0.2.0",
+    "loomground-mandate @ git+https://github.com/flxk1/loomground-mandate@loomground-mandate-v0.2.0",
+    "oversight-certificate @ git+https://github.com/flxk1/oversight-certificate@v0.2.0",
+    "governance-certification @ git+https://github.com/flxk1/governance-certification@v0.2.0",
+    "norm-freshness @ git+https://github.com/flxk1/norm-freshness@v0.3.0",
+    "obligation-discharge @ git+https://github.com/flxk1/obligation-discharge@v0.1.0",
+    "effect-reconciliation @ git+https://github.com/flxk1/effect-reconciliation@v0.2.0",
+    "enforcement-posture @ git+https://github.com/flxk1/enforcement-posture@v0.5.1",
+    "5d-nd @ git+https://github.com/flxk1/5d-nd@v0.2.0",
+    "loomground-audit-chain @ git+https://github.com/flxk1/loomground-audit-chain@loomground-audit-chain-v0.1.0",
+    "loomground-lock @ git+https://github.com/flxk1/loomground-lock@loomground-lock-v0.2.0",
+    "loomground-lane @ git+https://github.com/flxk1/loomground-lane@loomground-lane-v0.1.0",
+    "loomground-drift @ git+https://github.com/flxk1/loomground-drift@loomground-drift-v0.2.0",
+    "loomground-erasure @ git+https://github.com/flxk1/loomground-erasure@loomground-erasure-v0.1.0",
+    "policy-compiler @ git+https://github.com/flxk1/policy-compiler@74e7fc4c9180b53179272ba5ddc3f591f3ee09d0",
+    "evidence-emitter @ git+https://github.com/flxk1/evidence-emitter@4869b1f90ad12bee25cd19da3bb8b56d69de598c",
+    "privacy-shield @ git+https://github.com/flxk1/privacy-shield@a774b39e64a9aff19dc08c03d5216edaa9eb327d",
+    "a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@5c6f2c14af46e85989a443c51be103f248151d62",
+    "loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@v0.1.0",
 ]
 dynamic = ["version"]
 
