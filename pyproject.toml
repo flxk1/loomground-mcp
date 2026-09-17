@@ -71,6 +71,11 @@ include = ["loomground_mcp*"]
 # a skill ships whole: its SKILL.md and every file that SKILL.md's instructions reach for
 loomground_mcp = ["py.typed", "catalogue.json", "releases.json", "skills/*.json", "skills/**/*"]
 
+[tool.setuptools.exclude-package-data]
+# what the skill glob would otherwise sweep up from a working tree: byte-code an install or a local run compiled.
+# tests/test_skills_vendoring.py holds the expansion of both lists to exactly the manifest plus the two records.
+loomground_mcp = ["skills/**/__pycache__/*", "skills/**/*.pyc"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src", "tools"]

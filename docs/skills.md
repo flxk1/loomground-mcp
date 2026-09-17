@@ -33,13 +33,24 @@ is in the wheel.
 Three checks hold that:
 
 - `tools/vendor_skills.py --check`, and `tests/test_skills_vendoring.py` with it, compare the tree
-  to the manifest — a dropped, added or altered file fails, as does a body referencing a path that
-  is not beside it. Neither needs a checkout or a network, so they never skip.
-- the same tests hold `pyproject.toml`'s package-data against the manifest, so a skill cannot be
-  whole in the repository and truncated in the wheel.
+  to the manifest in both directions: every recorded file present, unaltered and non-empty, and
+  every file under `skills/` recorded — enumerated from the disk, so a directory carrying no
+  SKILL.md is not a hiding place. Each index entry is re-derived from the vendored body, so a
+  description cannot drift from the skill it describes, and every relative path a body reaches for
+  has to exist and, when it names a file, be one. Neither needs a checkout or a network.
+- the same tests hold `pyproject.toml`'s `package-data` minus its `exclude-package-data` to exactly
+  that file list plus the two records, so a skill cannot be whole in the repository and truncated
+  in the wheel, and nothing the manifest does not vouch for — an editor's backup, compiled
+  byte-code — can ride along.
 - `tests/test_skills_parity.py` compares the vendored directory to its repository at the pinned
-  commit, file for file. A repository that cannot be fetched leaves its checkout absent and its
-  parity items skip, so a missing checkout is never a false green.
+  commit, file for file. A checkout that is absent skips locally; in CI
+  `test_ci_has_every_pinned_source` fails instead, because there a lost fetch would silently stop
+  asserting parity.
 
 `skills_lint` from [repo-standards](https://github.com/flxk1/repo-standards) is the family's
-conformance linter; CI fetches it at a pinned commit and runs it over the vendored tree.
+conformance linter, and it holds the three rules only it knows: description length, the allowed
+frontmatter keys, and that a description says when to use the skill. CI fetches it at a pinned
+commit and runs it over the vendored tree. It is handed a path relative to the tree's parent, never
+an absolute one: it matches its own skip list — which contains `work` — against every part of the
+path it is given, and a GitHub runner's workspace lives under `/home/runner/work/`, where an
+absolute path makes it skip every skill and report nothing linted.

@@ -4,11 +4,16 @@
 """Vendor each family skill directory wholesale, at a pinned commit.
 
 ``skills/vendored.json`` is the pin and the receipt: per skill the repository, the commit its directory was copied
-from, that directory's path, and every copied file with its sha256. This script is the only writer of the vendored
-tree — it reads the pin (``<repo>@<commit>`` on the command line re-pins one repository), copies ``skills/<name>/``
-at that commit file for file, deletes what the commit no longer carries, and rewrites the manifest and
-``skills/index.json``, whose description and allowed_tools are read back out of the copied SKILL.md. Re-running it
-is a no-op; a hand-copied or half-copied tree fails ``--check``, and the same check runs in the repository's tests.
+from, that directory's path, and every copied file with its sha256. Each skill carries its own pin; a commit given
+on the command line re-pins a repository's skills, and nothing else ever rewrites one. This script is the only
+writer of the vendored tree — it copies ``skills/<name>/`` at the pinned commit file for file, deletes what the
+commit no longer carries, and rewrites the manifest and ``skills/index.json``, whose description and allowed_tools
+are read back out of the copied SKILL.md.
+
+Re-running is a no-op. ``--check`` compares the two in both directions — every recorded file present, unaltered
+and non-empty, and every file present recorded, walked from the disk so an added one cannot hide — re-derives each
+index entry from the vendored body, and applies skills_lint's referenced-path rule. The repository's own tests run
+the same check against the installed package, and hold the packaging globs to the same file list.
 
 A source is a git checkout: ``$LOOMGROUND_SKILLS_ROOT/<repo>`` (the variable the parity tests and CI already use),
 else a sibling checkout, else — only with ``--fetch`` — a temporary fetch of github.com/flxk1/<repo> at the pin.
@@ -44,7 +49,7 @@ SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 REL_PATH = re.compile(r"(?<![\w/.$])((?:references|scripts|assets|docs)/[A-Za-z0-9_./-]+)")
 
 sys.path.insert(0, str(ROOT / "src"))
-from loomground_mcp.tools.skills import frontmatter_fields  # noqa: E402
+from loomground_mcp.tools.skills import frontmatter_fields, split_frontmatter  # noqa: E402
 
 
 class Fail(Exception):
@@ -184,21 +189,46 @@ def key(r: dict) -> tuple[str, str]:
 
 
 def vendored_files(dest: Path) -> set[str]:
-    """What is in a vendored skill directory, less what an install puts there (pip byte-compiles the scripts)."""
+    """What is in a vendored skill directory, less the byte-code an install compiles there."""
     if not dest.exists():
         return set()
-    return {str(p.relative_to(dest)) for p in dest.rglob("*")
-            if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc"}
+    return {p.relative_to(dest).as_posix() for p in dest.rglob("*") if p.is_file() and not bytecode(p)}
+
+
+def bytecode(p: Path) -> bool:
+    """`pip install` compiles the vendored scripts in place; the wheel itself must carry none (see pyproject)."""
+    return "__pycache__" in p.parts or p.suffix == ".pyc"
+
+
+def tree_files(skills: Path) -> dict[str, Path]:
+    """Everything under skills/ — walked from the disk, not from the manifest, so an *added* file is visible."""
+    return {p.relative_to(skills).as_posix(): p for p in skills.rglob("*") if p.is_file() and not bytecode(p)}
+
+
+def referenced(body: str) -> set[str]:
+    _, text = split_frontmatter(body)
+    return set(REL_PATH.findall(text))
 
 
 def check(skills: Path = SKILLS) -> list[str]:
-    """Every finding that says the vendored tree is not what the manifest records, or is incomplete."""
+    """Every finding that says the vendored tree is not exactly what the manifest records.
+
+    Both directions: every recorded file is present, unaltered and non-empty, and every file present is recorded —
+    a directory holding no SKILL.md is not a hiding place. Per record the index entry is re-derived from the
+    vendored SKILL.md and compared whole, so a fabricated description cannot pass, and each relative path the body
+    reaches for has to exist and, when it names a file, be one.
+    """
     out: list[str] = []
     records = manifest(skills)["skills"]
     index = {key(e): e for e in load(skills / INDEX_NAME)}
+    present = tree_files(skills)
+    expected: dict[str, tuple[str, str, str]] = {}
     for r in records:
         repo, name, sid = r["repo"], r["name"], f"{r['repo']}/{r['name']}"
         dest = skill_dir(skills, repo, name)
+        for rel, sha in r["files"].items():
+            target(dest, rel)  # a record never names a path outside its own directory
+            expected[f"{repo}/{name}/{rel}"] = (sid, rel, sha)
         entry = index.get((repo, name))
         if entry is None:
             out.append(f"{sid}: vendored but not in {INDEX_NAME}")
@@ -208,40 +238,50 @@ def check(skills: Path = SKILLS) -> list[str]:
             if dest.exists():
                 out.append(f"{sid}: private repository, but a body is vendored")
             continue
-        on_disk = vendored_files(dest)
-        for rel in sorted(set(r["files"]) - on_disk):
+        body_file = dest / "SKILL.md"
+        if "SKILL.md" not in r["files"] or not body_file.is_file():
+            out.append(f"{sid}: no vendored SKILL.md")
+            continue
+        body = body_file.read_text(encoding="utf-8", errors="replace")
+        if entry is not None and entry != index_record(repo, name, r["commit"], body, False):
+            out.append(f"{sid}: {INDEX_NAME} record disagrees with the vendored SKILL.md frontmatter")
+        for ref in sorted(referenced(body)):
+            rel = ref.rstrip(".")
+            p = dest / rel.rstrip("/")
+            if not p.exists():
+                out.append(f"{sid}: referenced path missing: {ref}")
+            elif not rel.endswith("/") and Path(rel).suffix and not p.is_file():
+                out.append(f"{sid}: referenced path is not a file: {ref}")
+    for path, (sid, rel, sha) in sorted(expected.items()):
+        p = present.get(path)
+        if p is None:
             out.append(f"{sid}: vendored file missing: {rel}")
-        for rel in sorted(on_disk - set(r["files"])):
-            out.append(f"{sid}: file not in the manifest: {rel}")
-        for rel in sorted(set(r["files"]) & on_disk):
-            if hashlib.sha256(target(dest, rel).read_bytes()).hexdigest() != r["files"][rel]:
-                out.append(f"{sid}: vendored file differs from the manifest: {rel}")
-        if "SKILL.md" in on_disk:
-            body = (dest / "SKILL.md").read_text(encoding="utf-8", errors="replace").split("\n---\n", 1)[-1]
-            for rel in sorted(set(REL_PATH.findall(body))):
-                if not (dest / rel.rstrip("/").rstrip(".")).exists() and not (dest / rel.rstrip("/")).exists():
-                    out.append(f"{sid}: referenced path missing: {rel}")
+            continue
+        data = p.read_bytes()
+        if hashlib.sha256(data).hexdigest() != sha:
+            out.append(f"{sid}: vendored file differs from the manifest: {rel}")
+        elif not data:
+            out.append(f"{sid}: vendored file is empty: {rel}")
+    for path in sorted(set(present) - set(expected) - {MANIFEST_NAME, INDEX_NAME}):
+        out.append(f"{path}: under skills/ and no record vendored it")
     for k in sorted(set(index) - {key(r) for r in records}):
         out.append(f"{k[0]}/{k[1]}: in {INDEX_NAME} but not vendored (run tools/vendor_skills.py)")
-    for body in sorted(skills.rglob("SKILL.md")):
-        k = body.relative_to(skills).parts[:2]
-        if len(k) == 2 and (k[0], k[1]) not in {key(r) for r in records}:
-            out.append(f"{k[0]}/{k[1]}: a body no record vendored (delete it, or add it to the manifest)")
     return out
 
 
-def vendor(targets: dict[str, str], skills: Path, allow_fetch: bool) -> list[str]:
+def vendor(targets: dict[tuple[str, str], str], skills: Path, allow_fetch: bool) -> list[str]:
+    """Vendor each named skill at the commit `targets` gives it — one entry per skill, never per repository."""
     records = {key(r): r for r in manifest(skills)["skills"]}
     index = {key(e): e for e in load(skills / INDEX_NAME)}
-    if set(targets) - {r[0] for r in records}:
-        raise Fail(f"not in the manifest: {', '.join(sorted(set(targets) - {r[0] for r in records}))}")
+    if set(targets) - set(records):
+        raise Fail("not in the manifest: " + ", ".join(f"{r}/{n}" for r, n in sorted(set(targets) - set(records))))
     done = []
     with tempfile.TemporaryDirectory() as tmp:
         for k, r in sorted(records.items()):
             repo, name = k
-            if repo not in targets:
+            if k not in targets:
                 continue
-            commit = targets[repo]
+            commit = targets[k]
             checkout = resolve(repo, commit, allow_fetch, Path(tmp))
             dest = skill_dir(skills, repo, name)
             if r.get("private"):
@@ -268,21 +308,28 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--fetch", action="store_true", help="fetch a pinned commit from GitHub when no checkout has it")
     args = ap.parse_args(argv)
     try:
-        pinned = {r["repo"]: r["commit"] for r in manifest()["skills"]}
+        records = manifest()["skills"]
+        pinned = {key(r): r["commit"] for r in records}
+        repos = {r["repo"] for r in records}
         if args.check:
             findings = check()
             for f in findings:
                 print(f"FAIL {f}")
-            print(f"{len(pinned)} repositories, {len(manifest()['skills'])} skills, {len(findings)} finding(s)")
+            print(f"{len(repos)} repositories, {len(records)} skills, {len(findings)} finding(s)")
             return 1 if findings else 0
         targets = dict(pinned)
         if args.repos:
             targets = {}
             for spec in args.repos:
                 repo, _, commit = spec.partition("@")
-                if repo not in pinned:
+                if repo not in repos:
                     raise Fail(f"{repo} is not in the manifest; add a record first")
-                targets[repo] = commit or pinned[repo]
+                # no commit given: each skill keeps its own pin. One given: it re-pins that repository's skills.
+                targets.update({k: commit or pinned[k] for k in pinned if k[0] == repo})
+        for repo in sorted(repos):  # a per-skill pin is honoured, and said out loud so it is never a surprise
+            spread = {pinned[k] for k in pinned if k[0] == repo}
+            if len(spread) > 1:
+                print(f"note: {repo} is pinned per skill at {', '.join(sorted(c[:7] for c in spread))}")
         for line in vendor(targets, SKILLS, args.fetch):
             print(line)
         findings = check()

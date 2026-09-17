@@ -26,22 +26,27 @@ jobs:
       - run: |
           git init -q topos-spec && git -C topos-spec fetch -q --depth 1 https://github.com/flxk1/loomground-topos c71f81cb44ca419bd67451290ab07b387404f297 && git -C topos-spec checkout -q FETCH_HEAD
       # the vendored catalogue.json is checked byte-for-byte against CATALOGUE.json at the loomground commit it was
-      # taken from (tools/catalogue.py SOURCE); that commit is not public yet, so a failed fetch leaves the file absent
-      # and the parity test skips (no false green: the test is only ever skipped, never faked)
+      # taken from (tools/catalogue.py SOURCE). That commit is public and fetches; the fetch is unguarded, because a
+      # guard turned a lost fetch into a silent skip and stopped asserting the parity — test_ci_has_every_pinned_source
+      # is the backstop if one arrives absent anyway
       - run: |
           sha=$(sed -n 's#.*"commit": "\([0-9a-f]*\)".*#\1#p' src/loomground_mcp/tools/catalogue.py)
-          git init -q loomground-cat && (git -C loomground-cat fetch -q --depth 1 https://github.com/flxk1/loomground "$sha" && git -C loomground-cat checkout -q FETCH_HEAD) || echo "loomground $sha not public yet; catalogue parity test will skip"
-      # the vendored releases.json is checked the same way against RELEASES.json at the loomground commit
-      # tools/releases.py SOURCE names; not public yet → the file stays absent and the parity test skips
+          git init -q loomground-cat
+          git -C loomground-cat fetch -q --depth 1 https://github.com/flxk1/loomground "$sha"
+          git -C loomground-cat checkout -q FETCH_HEAD
+      # the vendored releases.json, the same way, against RELEASES.json at the commit tools/releases.py SOURCE names
       - run: |
           sha=$(sed -n 's#.*"commit": "\([0-9a-f]*\)".*#\1#p' src/loomground_mcp/tools/releases.py)
-          git init -q loomground-rel && (git -C loomground-rel fetch -q --depth 1 https://github.com/flxk1/loomground "$sha" && git -C loomground-rel checkout -q FETCH_HEAD) || echo "loomground $sha not public yet; releases parity test will skip"
-      # the vendored skills are checked against each repository at the commit skills/index.json pins: a guarded fetch per
-      # public repository; a repository that cannot be fetched leaves its checkout absent and its parity items skip
+          git init -q loomground-rel
+          git -C loomground-rel fetch -q --depth 1 https://github.com/flxk1/loomground "$sha"
+          git -C loomground-rel checkout -q FETCH_HEAD
+      # the vendored skills against each repository at the commit skills/index.json pins, one fetch per public
+      # repository; unguarded for the same reason. A private record carries no body and is not fetched
       - run: |
           mkdir -p skills-src
           python -c 'import json; [print(e["repo"], e["commit"]) for e in json.load(open("src/loomground_mcp/skills/index.json")) if not e.get("private")]' | sort -u | while read repo sha; do
-            git init -q "skills-src/$repo" && (git -C "skills-src/$repo" fetch -q --depth 1 "https://github.com/flxk1/$repo" "$sha" || echo "$repo $sha not fetchable; its skill parity items will skip")
+            git init -q "skills-src/$repo"
+            git -C "skills-src/$repo" fetch -q --depth 1 "https://github.com/flxk1/$repo" "$sha" || exit 1
           done
       # skills_lint is the family's Agent Skills linter (flxk1/repo-standards); this repository holds its own
       # vendored skills to it instead of waiting for a sweep, so the fetch is unguarded — losing it fails the job

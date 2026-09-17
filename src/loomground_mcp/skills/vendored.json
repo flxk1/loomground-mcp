@@ -1,5 +1,5 @@
 {
-  "_": "Written by tools/vendor_skills.py, which is the only writer of this tree. One record per vendored skill: the repository, the commit its skills/<name>/ directory was copied from wholesale, that directory, its URL at that commit, and every copied file with its sha256. `--check` (and the repository's own tests) fail when the tree on disk is not exactly this.",
+  "_": "Written by tools/vendor_skills.py, the only writer of this tree. One record per vendored skill: the repository, the commit its skills/<name>/ directory was copied from wholesale, that directory, its URL at that commit, and every copied file with its sha256. A skill's commit is its own pin. `--check`, and the repository's tests with it, fail when the tree is not exactly this — in either direction, so a file no record vouches for cannot ship either.",
   "skills": [
     {
       "repo": "a2a-compliance",
