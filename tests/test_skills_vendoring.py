@@ -13,7 +13,7 @@ under an editable install and site-packages otherwise.
 """
 import glob
 import json
-import os
+import shutil
 import subprocess
 import sys
 from importlib import resources
@@ -27,6 +27,7 @@ from conftest import SOLVER_SAMPLES, call
 PACKAGE = Path(str(resources.files("loomground_mcp")))
 SKILLS = PACKAGE / "skills"
 ROOT = Path(__file__).resolve().parents[1]
+LINT = ROOT / "tools" / "vendored" / "skills_lint.py"
 RECORDS = vendor_skills.manifest(SKILLS)["skills"]
 
 
@@ -84,23 +85,53 @@ def test_the_vendored_solver_script_runs_and_agrees_with_its_tool(tool):
     assert json.loads(proc.stdout) == call(tool, sample)["result"]
 
 
-def test_skills_lint_passes_on_the_vendored_tree():
-    """The canonical linter (flxk1/repo-standards tools/skills_lint.py), when it is reachable: CI pins and fetches
-    it, a checkout is found by convention, and the referenced-path rule is checked unconditionally by
-    test_vendored_tree_matches_the_manifest either way.
+def test_the_vendored_tools_match_the_manifest():
+    """The linter is vendored like everything else — by commit, with a hash — so nothing here reads from the
+    repository it came from, at build time or ever."""
+    assert vendor_skills.check_tools(ROOT, SKILLS) == []
 
-    The linter is handed `skills` relative to its own parent, never an absolute path: it matches its SKIP_DIRS
-    (which include `work`) against every part of the path it is given, and a GitHub runner's workspace is
-    `/home/runner/work/<repo>/<repo>` — an absolute path there skips every SKILL.md and exits 2 with nothing
-    linted. Asserting the conform line as well as the exit code means a silent nothing-to-do cannot read as a pass.
-    """
-    for c in [os.environ.get("REPO_STANDARDS", ""), ROOT.parent / "repo-standards",
-              ROOT.parent.parent / "repo-standards"]:
-        lint = Path(c) / "tools" / "skills_lint.py" if c else None
-        if lint and lint.is_file():
-            proc = subprocess.run([sys.executable, str(lint), SKILLS.name],
-                                  cwd=SKILLS.parent, capture_output=True, text=True)
-            assert f"{len(RECORDS)}/{len(RECORDS)} skills conform" in proc.stdout, proc.stdout + proc.stderr
-            assert proc.returncode == 0, proc.stdout + proc.stderr
-            return
-    pytest.skip("repo-standards not found (set REPO_STANDARDS)")
+
+def lint(*roots) -> subprocess.CompletedProcess:
+    return subprocess.run([sys.executable, str(LINT), *(str(r) for r in roots)], capture_output=True, text=True)
+
+
+def test_skills_lint_passes_on_the_vendored_tree():
+    """The family's Agent Skills linter, vendored from flxk1/repo-standards: no env var, no checkout, no network,
+    no `if present` — this cannot skip. Asserting the conform line as well as the exit code means a silent
+    nothing-to-do (the linter's own exit 2) cannot read as a pass."""
+    proc = lint(SKILLS)
+    assert f"{len(RECORDS)}/{len(RECORDS)} skills conform" in proc.stdout, proc.stdout + proc.stderr
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+def test_skills_lint_does_not_care_where_the_tree_sits(tmp_path):
+    """The linter's skip list contains `work`, and a GitHub runner's workspace is `/home/runner/work/<repo>/<repo>`.
+    Matched against an absolute path's parts, that skipped every skill and reported nothing linted. The pinned
+    commit matches the list relative to the scan root instead; this holds a re-pin to that, rather than working
+    around it by passing a relative path."""
+    nested = tmp_path / "work" / "pkg" / "skills"
+    shutil.copytree(SKILLS, nested)
+    assert lint(nested).stdout == lint(SKILLS).stdout
+    assert lint(nested).returncode == 0
+
+
+# (the frontmatter, the rule it breaks) — the three rules no other check in this repository enforces
+BREAKS = [
+    ("name: x-skill\ndescription: " + "a" * 1100 + "\n", "description 1100 > 1024"),
+    ("name: x-skill\ndescription: Use when a key is not in the standard.\nauthor: nobody\n",
+     "key not in standard: author"),
+    ("name: x-skill\ndescription: A description that never says on what occasion to reach for it.\n",
+     "description does not say when to use it"),
+]
+
+
+@pytest.mark.parametrize("frontmatter,finding", BREAKS, ids=["description-length", "allowed-keys", "trigger"])
+def test_the_vendored_linter_still_enforces_its_three_rules(tmp_path, frontmatter, finding):
+    """What vendoring must not quietly lose: these are the rules this repository has no other check for, so a
+    re-pin that dropped one would otherwise go unnoticed."""
+    skill = tmp_path / "root" / "x-skill"
+    skill.mkdir(parents=True)
+    (skill / "SKILL.md").write_text(f"---\n{frontmatter}---\n\n# x-skill\n", encoding="utf-8")
+    proc = lint(tmp_path / "root")
+    assert finding in proc.stdout, proc.stdout + proc.stderr
+    assert proc.returncode == 1 and "0/1 skills conform" in proc.stdout

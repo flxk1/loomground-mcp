@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 flxk1
-"""Vendor each family skill directory wholesale, at a pinned commit.
+"""Vendor each family skill directory wholesale, at a pinned commit — and the checks this repository runs on itself.
 
 ``skills/vendored.json`` is the pin and the receipt: per skill the repository, the commit its directory was copied
 from, that directory's path, and every copied file with its sha256. Each skill carries its own pin; a commit given
@@ -15,12 +15,19 @@ and non-empty, and every file present recorded, walked from the disk so an added
 index entry from the vendored body, and applies skills_lint's referenced-path rule. The repository's own tests run
 the same check against the installed package, and hold the packaging globs to the same file list.
 
+The manifest's ``tools`` section is the same mechanism pointed at a check rather than a skill: a linter this
+repository holds itself to, copied by name out of another repository's ``tools/`` into ``tools/vendored/`` and
+hashed the same way. It is vendored rather than fetched because a published product must not take a build input
+from a working repository — one that can be renamed, reverted, or made private under it.
+
 A source is a git checkout: ``$LOOMGROUND_SKILLS_ROOT/<repo>`` (the variable the parity tests and CI already use),
 else a sibling checkout, else — only with ``--fetch`` — a temporary fetch of github.com/flxk1/<repo> at the pin.
+Vendoring is a development act with a commit as its receipt; nothing in a build or a test run fetches anything.
 
-    python3 tools/vendor_skills.py                       every skill, at the commit the manifest pins
+    python3 tools/vendor_skills.py                       every skill and tool, at the commit the manifest pins
     python3 tools/vendor_skills.py loomground-solver     one repository
     python3 tools/vendor_skills.py a2a-compliance@<sha>  re-pin one repository, then vendor it
+    python3 tools/vendor_skills.py repo-standards@<sha>  the same, for the vendored check
     python3 tools/vendor_skills.py --check               writes nothing; exit 1 on any drift or incompleteness
 """
 from __future__ import annotations
@@ -167,6 +174,44 @@ def copy(checkout: Path, repo: str, name: str, commit: str, dest: Path) -> dict[
     return recorded
 
 
+def copy_named(checkout: Path, commit: str, source: str, names, dest: Path, what: str) -> dict[str, str]:
+    """Named files out of one directory of a repository — how a vendored tool is taken.
+
+    A skill is copied wholesale, because a body pointing at a file that was left behind is the defect this whole
+    mechanism exists for. A tool is not: we consume one check out of a repository of them, and sweeping in its
+    siblings would vendor code nothing here runs. So a tool record lists its files, and the check holds the
+    directory to exactly that list.
+    """
+    available = tree(checkout, commit, source)
+    recorded: dict[str, str] = {}
+    for name in sorted(names):
+        if name not in available:
+            raise Fail(f"{what}: {source}/{name} is not in {commit[:7]}")
+        mode, sha = available[name]
+        if mode not in ("100644", "100755"):
+            raise Fail(f"{what}: {name} is mode {mode}; only regular files are vendored")
+        blob = git(checkout, "cat-file", "blob", sha)
+        out = target(dest, name)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_bytes(blob)
+        out.chmod(0o755 if mode == "100755" else 0o644)
+        recorded[name] = hashlib.sha256(blob).hexdigest()
+    prune(dest, set(recorded))
+    return recorded
+
+
+def tool_dest(root: Path, rec: dict) -> Path:
+    rel = rec["target"]
+    if Path(rel).is_absolute() or ".." in Path(rel).parts:
+        raise Fail(f"tool record targets {rel!r}, which is not inside the repository")
+    return root / rel
+
+
+def tool_record(repo: str, commit: str, source: str, target_rel: str, files: dict[str, str]) -> dict:
+    return {"repo": repo, "commit": commit, "source": source, "target": target_rel,
+            "url": f"{GITHUB}/{repo}/tree/{commit}/{source}", "files": files}
+
+
 def record(repo: str, name: str, commit: str, files: dict[str, str], private: bool) -> dict:
     r = {"repo": repo, "name": name, "commit": commit, "source": source_path(name),
          "url": f"{GITHUB}/{repo}/tree/{commit}/{source_path(name)}", "files": files}
@@ -269,6 +314,60 @@ def check(skills: Path = SKILLS) -> list[str]:
     return out
 
 
+def check_tools(root: Path = ROOT, skills: Path = SKILLS) -> list[str]:
+    """The vendored tools against their records: present, unaltered, non-empty, and nothing else in the directory.
+
+    Separate from `check` because these live in the repository, not in the package — a check that ships would have
+    nothing to look at. It is not conditional: a missing vendored tool is a finding, never a skip.
+    """
+    out: list[str] = []
+    for rec in manifest(skills).get("tools", []):
+        repo, commit = rec["repo"], rec["commit"]
+        what = f"{repo}@{commit[:7]}"
+        if not REPO_RE.match(repo) or not SHA_RE.match(commit):
+            out.append(f"{what}: tool record names a repository or commit of the wrong shape")
+            continue
+        dest = tool_dest(root, rec)
+        if rec["url"] != f"{GITHUB}/{repo}/tree/{commit}/{rec['source']}":
+            out.append(f"{what}: tool record url does not name its own commit and source")
+        present = {p.relative_to(dest).as_posix() for p in dest.rglob("*") if p.is_file() and not bytecode(p)} \
+            if dest.exists() else set()
+        for name, sha in sorted(rec["files"].items()):
+            p = target(dest, name)
+            if name not in present:
+                out.append(f"{what}: vendored tool missing: {rec['target']}/{name}")
+                continue
+            data = p.read_bytes()
+            if hashlib.sha256(data).hexdigest() != sha:
+                out.append(f"{what}: vendored tool differs from the manifest: {rec['target']}/{name}")
+            elif not data:
+                out.append(f"{what}: vendored tool is empty: {rec['target']}/{name}")
+        for name in sorted(present - set(rec["files"])):
+            out.append(f"{what}: {rec['target']}/{name} is vendored and no record vouches for it")
+    return out
+
+
+def vendor_tools(targets: dict[str, str], root: Path, skills: Path, allow_fetch: bool) -> list[str]:
+    records = {r["repo"]: r for r in manifest(skills).get("tools", [])}
+    done = []
+    with tempfile.TemporaryDirectory() as tmp:
+        for repo, rec in sorted(records.items()):
+            if repo not in targets:
+                continue
+            commit = targets[repo]
+            checkout = resolve(repo, commit, allow_fetch, Path(tmp))
+            dest = tool_dest(root, rec)
+            dest.mkdir(parents=True, exist_ok=True)
+            files = copy_named(checkout, commit, rec["source"], rec["files"], dest, f"{repo}@{commit[:7]}")
+            records[repo] = tool_record(repo, commit, rec["source"], rec["target"], files)
+            done.append(f"{repo}/{rec['source']} @ {commit[:7]} → {rec['target']}: {len(files)} file(s)")
+    if done:
+        doc = manifest(skills)
+        doc["tools"] = [records[r] for r in sorted(records)]
+        (skills / MANIFEST_NAME).write_text(dumps(doc), encoding="utf-8")
+    return done
+
+
 def vendor(targets: dict[tuple[str, str], str], skills: Path, allow_fetch: bool) -> list[str]:
     """Vendor each named skill at the commit `targets` gives it — one entry per skill, never per repository."""
     records = {key(r): r for r in manifest(skills)["skills"]}
@@ -294,9 +393,9 @@ def vendor(targets: dict[tuple[str, str], str], skills: Path, allow_fetch: bool)
             records[k] = record(repo, name, commit, files, bool(r.get("private")))
             index[k] = index_record(repo, name, commit, text, bool(r.get("private")))
             done.append(f"{repo}/{name} @ {commit[:7]}: {len(files)} file(s)")
-    (skills / MANIFEST_NAME).write_text(dumps({
-        "_": manifest(skills)["_"],
-        "skills": [records[k] for k in sorted(records)]}), encoding="utf-8")
+    doc = manifest(skills)  # rewrite this section, leave the rest of the manifest as it stands
+    doc["skills"] = [records[k] for k in sorted(records)]
+    (skills / MANIFEST_NAME).write_text(dumps(doc), encoding="utf-8")
     (skills / INDEX_NAME).write_text(dumps([index[k] for k in sorted(index)]), encoding="utf-8")
     return done
 
@@ -309,33 +408,38 @@ def main(argv: list[str]) -> int:
     args = ap.parse_args(argv)
     try:
         records = manifest()["skills"]
+        tools = manifest().get("tools", [])
         pinned = {key(r): r["commit"] for r in records}
-        repos = {r["repo"] for r in records}
-        if args.check:
-            findings = check()
+        tool_pinned = {r["repo"]: r["commit"] for r in tools}
+        repos = {r["repo"] for r in records} | set(tool_pinned)
+
+        def report(findings: list[str]) -> int:
             for f in findings:
                 print(f"FAIL {f}")
-            print(f"{len(repos)} repositories, {len(records)} skills, {len(findings)} finding(s)")
+            print(f"{len(repos)} repositories, {len(records)} skills, {len(tools)} vendored tool record(s), "
+                  f"{len(findings)} finding(s)")
             return 1 if findings else 0
-        targets = dict(pinned)
+
+        if args.check:
+            return report(check() + check_tools())
+        targets, tool_targets = dict(pinned), dict(tool_pinned)
         if args.repos:
-            targets = {}
+            targets, tool_targets = {}, {}
             for spec in args.repos:
                 repo, _, commit = spec.partition("@")
                 if repo not in repos:
                     raise Fail(f"{repo} is not in the manifest; add a record first")
                 # no commit given: each skill keeps its own pin. One given: it re-pins that repository's skills.
                 targets.update({k: commit or pinned[k] for k in pinned if k[0] == repo})
-        for repo in sorted(repos):  # a per-skill pin is honoured, and said out loud so it is never a surprise
+                if repo in tool_pinned:
+                    tool_targets[repo] = commit or tool_pinned[repo]
+        for repo in sorted({r["repo"] for r in records}):  # a per-skill pin is honoured, and said out loud
             spread = {pinned[k] for k in pinned if k[0] == repo}
             if len(spread) > 1:
                 print(f"note: {repo} is pinned per skill at {', '.join(sorted(c[:7] for c in spread))}")
-        for line in vendor(targets, SKILLS, args.fetch):
+        for line in vendor(targets, SKILLS, args.fetch) + vendor_tools(tool_targets, ROOT, SKILLS, args.fetch):
             print(line)
-        findings = check()
-        for f in findings:
-            print(f"FAIL {f}")
-        return 1 if findings else 0
+        return report(check() + check_tools())
     except Fail as e:
         print(f"error: {e}", file=sys.stderr)
         return 2

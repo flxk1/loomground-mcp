@@ -47,10 +47,14 @@ Three checks hold that:
   `test_ci_has_every_pinned_source` fails instead, because there a lost fetch would silently stop
   asserting parity.
 
-`skills_lint` from [repo-standards](https://github.com/flxk1/repo-standards) is the family's
-conformance linter, and it holds the three rules only it knows: description length, the allowed
-frontmatter keys, and that a description says when to use the skill. CI fetches it at a pinned
-commit and runs it over the vendored tree. It is handed a path relative to the tree's parent, never
-an absolute one: it matches its own skip list — which contains `work` — against every part of the
-path it is given, and a GitHub runner's workspace lives under `/home/runner/work/`, where an
-absolute path makes it skip every skill and report nothing linted.
+`skills_lint` is the family's Agent Skills conformance linter, and it holds the three rules nothing
+else here holds: description length, the allowed frontmatter key set, and that a description says
+when to use the skill. It is **vendored the same way the skills are** — `tools/vendored/`, from
+[repo-standards](https://github.com/flxk1/repo-standards) at the commit `skills/vendored.json`
+pins, each file recorded with its sha256, so `--check` detects a vendored copy that has drifted
+from the commit it claims. Nothing in the build or in CI reads from that repository: it is a
+working repo, where the rules are drafted, and a published product must not take a build input
+from one — `tests/test_build_inputs.py` holds every repository this repository fetches or pins to
+the catalogue's list of published ones. The linter runs unconditionally over the vendored tree, its
+verdict line is asserted as well as its exit code (its own exit 2 means it linted nothing), and
+three tests prove the vendored copy still enforces each of the three rules.

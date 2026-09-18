@@ -48,17 +48,19 @@ jobs:
             git init -q "skills-src/$repo"
             git -C "skills-src/$repo" fetch -q --depth 1 "https://github.com/flxk1/$repo" "$sha" || exit 1
           done
-      # skills_lint is the family's Agent Skills linter (flxk1/repo-standards); this repository holds its own
-      # vendored skills to it instead of waiting for a sweep, so the fetch is unguarded — losing it fails the job
-      - run: |
-          git init -q standards
-          git -C standards fetch -q --depth 1 https://github.com/flxk1/repo-standards 0a99ad8480f71dd258d8edbf9b7087ab5417e39c
-          git -C standards checkout -q FETCH_HEAD
-      # the vendored tree against the manifest that recorded copying it: no checkout, no network, never skipped
+      # the vendored tree and the vendored linter against the manifest that recorded copying them, by sha256:
+      # no checkout, no network, never skipped
       - run: python tools/vendor_skills.py --check
+      # skills_lint is the family's Agent Skills linter, vendored from flxk1/repo-standards at the commit
+      # skills/vendored.json pins — a working repository is not a build input, so nothing is fetched from it. The
+      # step is unconditional and the verdict line has to be there: the linter's own exit 2 says it linted nothing
+      # (no pipe into tee: this shell has no pipefail, and the linter's exit code must reach the step)
+      - run: |
+          python tools/vendored/skills_lint.py src/loomground_mcp/skills > lint.out
+          cat lint.out
+          grep -qE '^[0-9]+/[0-9]+ skills conform$' lint.out
       - run: python -m pytest -q
         env:
-          REPO_STANDARDS: ${{ github.workspace }}/standards
           LOOMGROUND_SOLVER_SKILLS: ${{ github.workspace }}/solver-skills/skills
           LOOMGROUND_TOPOS_EXAMPLES: ${{ github.workspace }}/topos-spec/examples
           LOOMGROUND_CATALOGUE: ${{ github.workspace }}/loomground-cat/CATALOGUE.json

@@ -1,5 +1,5 @@
 {
-  "_": "Written by tools/vendor_skills.py, the only writer of this tree. One record per vendored skill: the repository, the commit its skills/<name>/ directory was copied from wholesale, that directory, its URL at that commit, and every copied file with its sha256. A skill's commit is its own pin. `--check`, and the repository's tests with it, fail when the tree is not exactly this — in either direction, so a file no record vouches for cannot ship either.",
+  "_": "Written by tools/vendor_skills.py, the only writer of what it records. `skills`: one record per vendored skill — the repository, the commit its skills/<name>/ directory was copied from wholesale, that directory, its URL at that commit, and every copied file with its sha256. `tools`: a check this repository runs on itself, vendored by name out of another repository's tools/ so that no build or CI step reads from that repository. A skill's commit is its own pin. `--check`, and the repository's tests with it, fail when what is on disk is not exactly this — in either direction, so a file no record vouches for cannot ship or run either.",
   "skills": [
     {
       "repo": "a2a-compliance",
@@ -316,6 +316,19 @@
       "url": "https://github.com/flxk1/privacy-shield/tree/a774b39e64a9aff19dc08c03d5216edaa9eb327d/skills/privacy-shield",
       "files": {
         "SKILL.md": "ede6723203f197e82330222267ba67bb6f946fe59ab5434684067cb8a37d6e57"
+      }
+    }
+  ],
+  "tools": [
+    {
+      "repo": "repo-standards",
+      "commit": "12dd6d36ade950e2e2db90cb7366bbfa259c018e",
+      "source": "tools",
+      "target": "tools/vendored",
+      "url": "https://github.com/flxk1/repo-standards/tree/12dd6d36ade950e2e2db90cb7366bbfa259c018e/tools",
+      "files": {
+        "skills_lint.py": "3b97c1797092e0d70d0ca51cdafa1e4a8b450b870ea732c5654db6df7ad1ac8d",
+        "undecidable.py": "3007cb7e39ee27257c44e7999403bbd4b9841e74b968fb022c3e91b016775aba"
       }
     }
   ]
