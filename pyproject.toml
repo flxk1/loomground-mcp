@@ -47,10 +47,10 @@ dependencies = [
     "loomground-lane @ git+https://github.com/flxk1/loomground-lane@loomground-lane-v0.1.0",
     "loomground-drift @ git+https://github.com/flxk1/loomground-drift@loomground-drift-v0.2.0",
     "loomground-erasure @ git+https://github.com/flxk1/loomground-erasure@loomground-erasure-v0.1.0",
-    "policy-compiler @ git+https://github.com/flxk1/policy-compiler@74e7fc4c9180b53179272ba5ddc3f591f3ee09d0",
+    "policy-compiler @ git+https://github.com/flxk1/policy-compiler@2dfd3f0b7004981f6b59948fb92f690d619c3edf",
     "evidence-emitter @ git+https://github.com/flxk1/evidence-emitter@4869b1f90ad12bee25cd19da3bb8b56d69de598c",
     "privacy-shield @ git+https://github.com/flxk1/privacy-shield@a774b39e64a9aff19dc08c03d5216edaa9eb327d",
-    "a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@5c6f2c14af46e85989a443c51be103f248151d62",
+    "a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@66b4f42aaf6235652165f69bfc1f5304b77795d7",
     "loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@v0.1.0",
 ]
 dynamic = ["version"]
