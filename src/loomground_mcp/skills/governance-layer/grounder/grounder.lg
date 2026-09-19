@@ -1,0 +1,30 @@
+# grounder.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
+human reviewer role reviewer
+actor grounder grade L2
+
+gate ground_query risk low grant grounder
+gate read_evidence risk low grant grounder
+gate emit_provenance_receipt risk medium grade L3 grant grounder
+gate release risk low
+
+cord grounder -> ground_query
+cord grounder -> read_evidence
+cord grounder -> emit_provenance_receipt
+cord ground_query -> release
+cord read_evidence -> release
+cord emit_provenance_receipt -> release
+cord release -> master
+
+prohibit graph_write
+prohibit binary_fetch
+prohibit fabricate_citation
+prohibit answer_from_model_memory
+prohibit ground_from_private_folder
+obligation provenance_attached on release
+obligation coordinate_pinned on release
+obligation egress_checked on release
+obligation egress_payload_moat_safe on release
+obligation ingress_checked on release
+obligation official_versum_only on release
+obligation completeness_asserted on release
+redress disputed_grounding by reviewer overturn

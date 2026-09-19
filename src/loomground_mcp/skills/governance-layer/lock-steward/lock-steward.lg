@@ -1,0 +1,56 @@
+# lock-steward.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
+human data_protection_officer role data_protection_officer
+human workspace_owner role workspace_owner
+actor lock_steward grade L2
+
+gate lock_status risk low grant lock_steward
+gate classify_content risk low grant lock_steward
+gate propose_lock_profile risk medium grant lock_steward
+gate egress_check risk medium grant lock_steward
+gate ingress_check risk medium grant lock_steward
+gate provision_lock risk high grade L3 grant lock_steward
+gate raise_threshold risk high grade L3 grant lock_steward
+gate lower_threshold risk critical grade L4 grant lock_steward
+gate downgrade_backend risk critical grade L4 grant lock_steward
+gate unseal risk critical grade L4 grant lock_steward
+gate release risk low
+
+cord lock_steward -> lock_status
+cord lock_steward -> classify_content
+cord lock_steward -> propose_lock_profile
+cord lock_steward -> egress_check
+cord lock_steward -> ingress_check
+cord lock_steward -> provision_lock
+cord lock_steward -> raise_threshold
+cord lock_steward -> lower_threshold
+cord lock_steward -> downgrade_backend
+cord lock_steward -> unseal
+cord lock_status -> release
+cord classify_content -> release
+cord propose_lock_profile -> release
+cord egress_check -> release
+cord ingress_check -> release
+cord provision_lock -> release
+cord raise_threshold -> release
+cord lower_threshold -> release
+cord downgrade_backend -> release
+cord unseal -> release
+cord release -> master
+
+prohibit silent_mock_backend
+prohibit weaken_without_distinct_party
+prohibit assume_protected_on_unknown
+prohibit egress_on_lock_unavailable
+prohibit passphrase_in_context
+reserve provision_lock by workspace_owner
+reserve lower_threshold by workspace_owner and data_protection_officer
+reserve downgrade_backend by workspace_owner and data_protection_officer
+reserve unseal by workspace_owner
+obligation secure_default_backend on release
+obligation no_silent_weakening on release
+obligation human_confirm_before_mutate on release
+obligation every_change_chained on release
+obligation provision_is_not_access on release
+obligation egress_check_not_self_waivable on release
+redress lower_threshold by workspace_owner overturn
+redress provision_lock by workspace_owner overturn within 30d

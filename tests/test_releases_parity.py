@@ -16,12 +16,6 @@ from loomground_mcp.tools.releases import SOURCE, load
 HERE = Path(__file__).resolve().parents[1]
 VENDORED = HERE / "src" / "loomground_mcp" / "releases.json"
 THIRD_PARTY = {"mcp"}
-# The vendored register is a snapshot of the loomground repository at SOURCE["commit"], and that snapshot was taken
-# before this server declared the four applied skill runtimes. Each is a dependency here with no edge there, so the
-# register understates what this repository consumes. The fix is upstream — RELEASES.json has to be regenerated and
-# this pin moved forward — and until it lands the four are named here rather than left to pass silently. Any other
-# dependency that loses its edge fails, and so does this set once the register carries them.
-AHEAD_OF_REGISTER = {"a2a-compliance", "evidence-emitter", "policy-compiler", "privacy-shield"}
 
 
 def declared() -> set[str]:
@@ -46,5 +40,4 @@ def test_every_dependency_this_repository_declares_has_an_edge():
     doc = load()
     ours = {e["dependency"] for e in doc["edges"] if e["consumer"] == "loomground-mcp"}
     ours |= {a["dependency"] for a in doc["accepted"] if a["consumer"] == "loomground-mcp"}
-    assert declared() - ours == AHEAD_OF_REGISTER
-    assert declared() >= AHEAD_OF_REGISTER and not AHEAD_OF_REGISTER & ours
+    assert declared() <= ours

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-12",
+  "generated": "2026-09-15",
   "repos": {
     "loomground": {
       "version": null,
@@ -20,7 +20,7 @@
     "loomground-governance": {
       "version": "0.11.1",
       "tag": "loomground-governance-v0.11.1",
-      "commit": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "commit": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "package": "loomground-governance",
       "pypi": false,
       "family": "Standard",
@@ -46,7 +46,7 @@
     "loomground-deontic": {
       "version": "0.2.1",
       "tag": "loomground-deontic-v0.2.1",
-      "commit": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "commit": "319e218500da42dea693830ff790343aa340bd60",
       "package": "loomground-deontic",
       "pypi": false,
       "family": "Standard/language planes",
@@ -89,7 +89,7 @@
     "loomground-workspace": {
       "version": "0.1.0",
       "tag": "v0.1.0",
-      "commit": "e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad",
+      "commit": "b022d61f7c5e5d3dae85cf037f09ec4d446a3eb7",
       "package": "loomground-workspace",
       "pypi": false,
       "family": "Standard/contracts",
@@ -99,7 +99,7 @@
     "loomground-vertical": {
       "version": "0.1.0",
       "tag": "v0.1.0",
-      "commit": "3b1f0c2aeadf9c320e76986b65ed5f8cdee5ec22",
+      "commit": "0de4fb4aa03399bc6799be0bf23c2bcbe9bc56e6",
       "package": "loomground-vertical",
       "pypi": false,
       "family": "Standard/contracts",
@@ -129,7 +129,7 @@
     "loomground-ingest": {
       "version": "0.3.0",
       "tag": "loomground-ingest-v0.3.0",
-      "commit": "ce9639b9ea18d90c5ee386135ccce526a66b8e45",
+      "commit": "e741c28f3b4f9cc89e61ae23ff537414ea95cad1",
       "package": "loomground-ingest",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -143,7 +143,7 @@
     "loomground-versum": {
       "version": "0.14.0",
       "tag": "loomground-versum-v0.14.0",
-      "commit": "15e7bfc4fcfc942ba4d18f91b769ecfbbd092f47",
+      "commit": "2855a4904bea9ec4cc88e8c3550bd0c20ba4764a",
       "package": "loomground-versum",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -169,7 +169,7 @@
     "loomground-solver": {
       "version": "0.6.0",
       "tag": "solver-v0.6.0",
-      "commit": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "commit": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "package": "loomground-solver",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -198,7 +198,7 @@
     "loomground-norm": {
       "version": "0.1.1",
       "tag": "norm-v0.1.1",
-      "commit": "104a3ca2272e34898b23fa43ba164e968d8f1001",
+      "commit": "9d5f68f140dc8a904306eb265e19ddfb4dd4562a",
       "package": "loomground-norm",
       "pypi": false,
       "family": "Applied reasoning",
@@ -212,7 +212,7 @@
     "loomground-legal": {
       "version": "0.2.1",
       "tag": "legal-v0.2.1",
-      "commit": "3638910292886b7812cac0c3a6b5d1e954522fc3",
+      "commit": "abd77cfd344096687a95ddf96ed79c1d98bc77cc",
       "package": "loomground-legal",
       "pypi": false,
       "family": "Applied reasoning",
@@ -222,7 +222,7 @@
     "policy-compiler": {
       "version": "0.2.0",
       "tag": "policy-compiler-v0.2.0",
-      "commit": "34d966ad08c1c30b5d74f91e3b4c2977152062fe",
+      "commit": "6a678be67971ed54464d164afb953b2a53a4feb4",
       "package": "policy-compiler",
       "pypi": false,
       "family": "Applied reasoning",
@@ -237,7 +237,7 @@
     "loomground-brief": {
       "version": "0.2.0",
       "tag": "loomground-brief-v0.2.0",
-      "commit": "80a4fc4aca7f54422ca49a639a9e5f878e55e1da",
+      "commit": "f9a092de9bb5f81fdb0149e3fe563ac7fb1bf48e",
       "package": "loomground-brief",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -249,7 +249,7 @@
     "loomground-collapse": {
       "version": "0.2.0",
       "tag": "loomground-collapse-v0.2.0",
-      "commit": "f0214d9a25a920e27c29968b3c829d4e1ee564e8",
+      "commit": "84693981a02d7e0465c4d3c7b91c0552e6e0826e",
       "package": "loomground-collapse",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -261,7 +261,7 @@
     "loomground-escalation": {
       "version": "0.2.0",
       "tag": "loomground-escalation-v0.2.0",
-      "commit": "e97f1fbcd7f1bbef0781e54a571345a475518577",
+      "commit": "cd2a10ac78bd31d7d3baa0a10d147c1288a1ed35",
       "package": "loomground-escalation",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -273,7 +273,7 @@
     "loomground-falsifiability": {
       "version": "0.2.0",
       "tag": "loomground-falsifiability-v0.2.0",
-      "commit": "98e60ed4d2db3d6b950ba5c71d2b10b6427fb069",
+      "commit": "dc5984720cdd77dfdfd16b0f681c4f5155ecdf12",
       "package": "loomground-falsifiability",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -285,7 +285,7 @@
     "loomground-mandate": {
       "version": "0.2.0",
       "tag": "loomground-mandate-v0.2.0",
-      "commit": "e96c59dcbb52822418ed7035cc8bd4d44c3fd3ec",
+      "commit": "d37cc6123919206dda8021e9c5075b9b8a5ae5ee",
       "package": "loomground-mandate",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -297,7 +297,7 @@
     "loomground-proxy": {
       "version": "0.2.0",
       "tag": "loomground-proxy-v0.2.0",
-      "commit": "dccef6f96ad135a0bd79a9e3e0b77003fb4b331c",
+      "commit": "ba3598a4d7f392a722c7f99c1ed6ec5ee543e5ae",
       "package": "loomground-proxy",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -309,7 +309,7 @@
     "governance-certification": {
       "version": "0.2.0",
       "tag": "v0.2.0",
-      "commit": "9eb3f2bd79130e72bd700ba8dc44c175ffdff935",
+      "commit": "3d7a1121c135b43784d9b21d750d54c1a4f879c6",
       "package": "governance-certification",
       "pypi": false,
       "family": "Assurance artifacts",
@@ -321,7 +321,7 @@
     "5d-nd": {
       "version": "0.2.0",
       "tag": "v0.2.0",
-      "commit": "82a7d4bf0e3e18c8dd28068143fe78b6a510a4d5",
+      "commit": "5d8d726675c093fff13cc011b49a22fd60568f22",
       "package": "5d-nd",
       "pypi": false,
       "family": "Assurance artifacts",
@@ -382,7 +382,7 @@
     "obligation-discharge": {
       "version": "0.1.0",
       "tag": "v0.1.0",
-      "commit": "45058bcce230cc3e96171762afd9b13b450fa6c7",
+      "commit": "4030c2d4fc2603d5bff272859abb1dae7ee89d8c",
       "package": "obligation-discharge",
       "pypi": false,
       "family": "Assurance artifacts",
@@ -431,7 +431,7 @@
     "loomground-lock": {
       "version": "0.2.0",
       "tag": "loomground-lock-v0.2.0",
-      "commit": "b8a26930fd301d0181139fbb5665342fd614ef8e",
+      "commit": "f99e24b79278f42c7fcfdf5394bb6aea8173a91f",
       "package": "loomground-lock",
       "pypi": false,
       "family": "Runtime controls",
@@ -455,7 +455,7 @@
     "loomground-drift": {
       "version": "0.2.0",
       "tag": "loomground-drift-v0.2.0",
-      "commit": "f7de9456fccb8c76843eee260db2955cc6ee6444",
+      "commit": "e8279ec38255f278b978752fc13dffb51acfd448",
       "package": "loomground-drift",
       "pypi": false,
       "family": "Runtime controls",
@@ -508,10 +508,10 @@
       ]
     },
     "loomground-plugins": {
-      "version": null,
+      "version": "0.4.0",
       "tag": null,
       "commit": null,
-      "package": null,
+      "package": "loomground-installer",
       "pypi": false,
       "family": "Interfaces and authoring",
       "tools": [],
@@ -543,7 +543,7 @@
       "consumer": "loomground-audit-chain",
       "dependency": "loomground-workspace",
       "range": ">=0.1,<0.2",
-      "dev_pin": "e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad",
+      "dev_pin": "b022d61f7c5e5d3dae85cf037f09ec4d446a3eb7",
       "dev_pin_release": "v0.1.0",
       "status": "release"
     },
@@ -551,7 +551,7 @@
       "consumer": "loomground-brief",
       "dependency": "loomground-deontic",
       "range": null,
-      "dev_pin": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
       "dev_pin_release": "loomground-deontic-v0.2.1",
       "status": "missing-range"
     },
@@ -559,7 +559,7 @@
       "consumer": "loomground-brief",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "dev_pin_release": "loomground-governance-v0.11.1",
       "status": "missing-range"
     },
@@ -567,7 +567,7 @@
       "consumer": "loomground-brief",
       "dependency": "loomground-solver",
       "range": ">=0.5,<0.7",
-      "dev_pin": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "dev_pin": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "dev_pin_release": "solver-v0.6.0",
       "status": "release"
     },
@@ -575,7 +575,7 @@
       "consumer": "loomground-collapse",
       "dependency": "loomground-deontic",
       "range": null,
-      "dev_pin": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
       "dev_pin_release": "loomground-deontic-v0.2.1",
       "status": "missing-range"
     },
@@ -583,7 +583,7 @@
       "consumer": "loomground-collapse",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "dev_pin_release": "loomground-governance-v0.11.1",
       "status": "missing-range"
     },
@@ -591,7 +591,7 @@
       "consumer": "loomground-collapse",
       "dependency": "loomground-solver",
       "range": ">=0.5,<0.7",
-      "dev_pin": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "dev_pin": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "dev_pin_release": "solver-v0.6.0",
       "status": "release"
     },
@@ -607,7 +607,7 @@
       "consumer": "loomground-drift",
       "dependency": "loomground-governance",
       "range": ">=0.11,<0.12",
-      "dev_pin": "cf09ad8336c0ef47e700952896314472129fa4c7",
+      "dev_pin": "2a1e8a0b4fe9de6c4d273eb50e401342d6b275fc",
       "dev_pin_release": "loomground-governance-v0.11.0",
       "status": "release"
     },
@@ -615,7 +615,7 @@
       "consumer": "loomground-drift",
       "dependency": "loomground-workspace",
       "range": null,
-      "dev_pin": "e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad",
+      "dev_pin": "b022d61f7c5e5d3dae85cf037f09ec4d446a3eb7",
       "dev_pin_release": "v0.1.0",
       "status": "missing-range"
     },
@@ -639,7 +639,7 @@
       "consumer": "loomground-erasure",
       "dependency": "loomground-governance",
       "range": ">=0.11,<0.12",
-      "dev_pin": "cf09ad8336c0ef47e700952896314472129fa4c7",
+      "dev_pin": "2a1e8a0b4fe9de6c4d273eb50e401342d6b275fc",
       "dev_pin_release": "loomground-governance-v0.11.0",
       "status": "release"
     },
@@ -647,7 +647,7 @@
       "consumer": "loomground-erasure",
       "dependency": "loomground-lock",
       "range": ">=0.1,<0.3",
-      "dev_pin": "b8a26930fd301d0181139fbb5665342fd614ef8e",
+      "dev_pin": "f99e24b79278f42c7fcfdf5394bb6aea8173a91f",
       "dev_pin_release": "loomground-lock-v0.2.0",
       "status": "release"
     },
@@ -655,7 +655,7 @@
       "consumer": "loomground-erasure",
       "dependency": "loomground-workspace",
       "range": ">=0.1,<0.2",
-      "dev_pin": "e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad",
+      "dev_pin": "b022d61f7c5e5d3dae85cf037f09ec4d446a3eb7",
       "dev_pin_release": "v0.1.0",
       "status": "release"
     },
@@ -663,7 +663,7 @@
       "consumer": "loomground-escalation",
       "dependency": "loomground-deontic",
       "range": null,
-      "dev_pin": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
       "dev_pin_release": "loomground-deontic-v0.2.1",
       "status": "missing-range"
     },
@@ -671,7 +671,7 @@
       "consumer": "loomground-escalation",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "dev_pin_release": "loomground-governance-v0.11.1",
       "status": "missing-range"
     },
@@ -679,7 +679,7 @@
       "consumer": "loomground-escalation",
       "dependency": "loomground-solver",
       "range": ">=0.5,<0.7",
-      "dev_pin": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "dev_pin": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "dev_pin_release": "solver-v0.6.0",
       "status": "release"
     },
@@ -687,7 +687,7 @@
       "consumer": "loomground-falsifiability",
       "dependency": "loomground-deontic",
       "range": null,
-      "dev_pin": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
       "dev_pin_release": "loomground-deontic-v0.2.1",
       "status": "missing-range"
     },
@@ -695,7 +695,7 @@
       "consumer": "loomground-falsifiability",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "dev_pin_release": "loomground-governance-v0.11.1",
       "status": "missing-range"
     },
@@ -703,7 +703,7 @@
       "consumer": "loomground-falsifiability",
       "dependency": "loomground-solver",
       "range": ">=0.5,<0.7",
-      "dev_pin": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "dev_pin": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "dev_pin_release": "solver-v0.6.0",
       "status": "release"
     },
@@ -711,7 +711,7 @@
       "consumer": "loomground-ingest",
       "dependency": "loomground-deontic",
       "range": ">=0.2,<0.3",
-      "dev_pin": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
       "dev_pin_release": "loomground-deontic-v0.2.1",
       "status": "release"
     },
@@ -727,7 +727,7 @@
       "consumer": "loomground-ingest",
       "dependency": "loomground-governance",
       "range": ">=0.8,<0.12",
-      "dev_pin": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "dev_pin_release": "loomground-governance-v0.11.1",
       "status": "release"
     },
@@ -735,7 +735,7 @@
       "consumer": "loomground-ingest",
       "dependency": "loomground-solver",
       "range": ">=0.2,<0.7",
-      "dev_pin": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "dev_pin": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "dev_pin_release": "solver-v0.6.0",
       "status": "release"
     },
@@ -751,7 +751,7 @@
       "consumer": "loomground-lane",
       "dependency": "loomground-governance",
       "range": ">=0.11,<0.12",
-      "dev_pin": "cf09ad8336c0ef47e700952896314472129fa4c7",
+      "dev_pin": "2a1e8a0b4fe9de6c4d273eb50e401342d6b275fc",
       "dev_pin_release": "loomground-governance-v0.11.0",
       "status": "release"
     },
@@ -759,7 +759,7 @@
       "consumer": "loomground-lane",
       "dependency": "loomground-workspace",
       "range": null,
-      "dev_pin": "e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad",
+      "dev_pin": "b022d61f7c5e5d3dae85cf037f09ec4d446a3eb7",
       "dev_pin_release": "v0.1.0",
       "status": "missing-range"
     },
@@ -767,7 +767,7 @@
       "consumer": "loomground-legal",
       "dependency": "loomground-deontic",
       "range": ">=0.1,<0.3",
-      "dev_pin": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
       "dev_pin_release": "loomground-deontic-v0.2.1",
       "status": "release"
     },
@@ -775,7 +775,7 @@
       "consumer": "loomground-legal",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "dev_pin_release": "loomground-governance-v0.11.1",
       "status": "missing-range"
     },
@@ -783,7 +783,7 @@
       "consumer": "loomground-legal",
       "dependency": "loomground-solver",
       "range": ">=0.2,<0.7",
-      "dev_pin": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "dev_pin": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "dev_pin_release": "solver-v0.6.0",
       "status": "release"
     },
@@ -791,7 +791,7 @@
       "consumer": "loomground-lock",
       "dependency": "loomground-governance",
       "range": ">=0.11,<0.12",
-      "dev_pin": "cf09ad8336c0ef47e700952896314472129fa4c7",
+      "dev_pin": "2a1e8a0b4fe9de6c4d273eb50e401342d6b275fc",
       "dev_pin_release": "loomground-governance-v0.11.0",
       "status": "release"
     },
@@ -799,7 +799,7 @@
       "consumer": "loomground-lock",
       "dependency": "loomground-workspace",
       "range": ">=0.1,<0.2",
-      "dev_pin": "e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad",
+      "dev_pin": "b022d61f7c5e5d3dae85cf037f09ec4d446a3eb7",
       "dev_pin_release": "v0.1.0",
       "status": "release"
     },
@@ -807,7 +807,7 @@
       "consumer": "loomground-mandate",
       "dependency": "loomground-deontic",
       "range": null,
-      "dev_pin": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
       "dev_pin_release": "loomground-deontic-v0.2.1",
       "status": "missing-range"
     },
@@ -815,7 +815,7 @@
       "consumer": "loomground-mandate",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "dev_pin_release": "loomground-governance-v0.11.1",
       "status": "missing-range"
     },
@@ -823,7 +823,7 @@
       "consumer": "loomground-mandate",
       "dependency": "loomground-solver",
       "range": ">=0.5,<0.7",
-      "dev_pin": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "dev_pin": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "dev_pin_release": "solver-v0.6.0",
       "status": "release"
     },
@@ -831,9 +831,17 @@
       "consumer": "loomground-mcp",
       "dependency": "5d-nd",
       "range": ">=0.1,<0.3",
-      "dev_pin": "82a7d4bf0e3e18c8dd28068143fe78b6a510a4d5",
+      "dev_pin": "5d8d726675c093fff13cc011b49a22fd60568f22",
       "dev_pin_release": "v0.2.0",
       "status": "release"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "a2a-compliance",
+      "range": ">=0.1,<0.2",
+      "dev_pin": "66b4f42aaf6235652165f69bfc1f5304b77795d7",
+      "dev_pin_release": null,
+      "status": "unreleased-commit"
     },
     {
       "consumer": "loomground-mcp",
@@ -853,9 +861,17 @@
     },
     {
       "consumer": "loomground-mcp",
+      "dependency": "evidence-emitter",
+      "range": ">=0.1,<0.2",
+      "dev_pin": "4869b1f90ad12bee25cd19da3bb8b56d69de598c",
+      "dev_pin_release": null,
+      "status": "unreleased-commit"
+    },
+    {
+      "consumer": "loomground-mcp",
       "dependency": "governance-certification",
       "range": ">=0.1,<0.3",
-      "dev_pin": "9eb3f2bd79130e72bd700ba8dc44c175ffdff935",
+      "dev_pin": "3d7a1121c135b43784d9b21d750d54c1a4f879c6",
       "dev_pin_release": "v0.2.0",
       "status": "release"
     },
@@ -871,7 +887,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-brief",
       "range": ">=0.1,<0.3",
-      "dev_pin": "80a4fc4aca7f54422ca49a639a9e5f878e55e1da",
+      "dev_pin": "f9a092de9bb5f81fdb0149e3fe563ac7fb1bf48e",
       "dev_pin_release": "loomground-brief-v0.2.0",
       "status": "release"
     },
@@ -879,7 +895,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-collapse",
       "range": ">=0.1,<0.3",
-      "dev_pin": "f0214d9a25a920e27c29968b3c829d4e1ee564e8",
+      "dev_pin": "84693981a02d7e0465c4d3c7b91c0552e6e0826e",
       "dev_pin_release": "loomground-collapse-v0.2.0",
       "status": "release"
     },
@@ -887,7 +903,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-deontic",
       "range": ">=0.1,<0.3",
-      "dev_pin": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
       "dev_pin_release": "loomground-deontic-v0.2.1",
       "status": "release"
     },
@@ -895,7 +911,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-drift",
       "range": ">=0.1,<0.3",
-      "dev_pin": "f7de9456fccb8c76843eee260db2955cc6ee6444",
+      "dev_pin": "e8279ec38255f278b978752fc13dffb51acfd448",
       "dev_pin_release": "loomground-drift-v0.2.0",
       "status": "release"
     },
@@ -919,7 +935,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-escalation",
       "range": ">=0.1,<0.3",
-      "dev_pin": "e97f1fbcd7f1bbef0781e54a571345a475518577",
+      "dev_pin": "cd2a10ac78bd31d7d3baa0a10d147c1288a1ed35",
       "dev_pin_release": "loomground-escalation-v0.2.0",
       "status": "release"
     },
@@ -935,7 +951,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-falsifiability",
       "range": ">=0.1,<0.3",
-      "dev_pin": "98e60ed4d2db3d6b950ba5c71d2b10b6427fb069",
+      "dev_pin": "dc5984720cdd77dfdfd16b0f681c4f5155ecdf12",
       "dev_pin_release": "loomground-falsifiability-v0.2.0",
       "status": "release"
     },
@@ -943,7 +959,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-governance",
       "range": ">=0.11,<0.12",
-      "dev_pin": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "dev_pin_release": "loomground-governance-v0.11.1",
       "status": "release"
     },
@@ -951,7 +967,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-ingest",
       "range": ">=0.2,<0.4",
-      "dev_pin": "ce9639b9ea18d90c5ee386135ccce526a66b8e45",
+      "dev_pin": "e741c28f3b4f9cc89e61ae23ff537414ea95cad1",
       "dev_pin_release": "loomground-ingest-v0.3.0",
       "status": "release"
     },
@@ -967,7 +983,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-lock",
       "range": ">=0.1,<0.3",
-      "dev_pin": "b8a26930fd301d0181139fbb5665342fd614ef8e",
+      "dev_pin": "f99e24b79278f42c7fcfdf5394bb6aea8173a91f",
       "dev_pin_release": "loomground-lock-v0.2.0",
       "status": "release"
     },
@@ -975,7 +991,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-mandate",
       "range": ">=0.1,<0.3",
-      "dev_pin": "e96c59dcbb52822418ed7035cc8bd4d44c3fd3ec",
+      "dev_pin": "d37cc6123919206dda8021e9c5075b9b8a5ae5ee",
       "dev_pin_release": "loomground-mandate-v0.2.0",
       "status": "release"
     },
@@ -983,7 +999,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-norm",
       "range": ">=0.1,<0.2",
-      "dev_pin": "104a3ca2272e34898b23fa43ba164e968d8f1001",
+      "dev_pin": "9d5f68f140dc8a904306eb265e19ddfb4dd4562a",
       "dev_pin_release": "norm-v0.1.1",
       "status": "release"
     },
@@ -991,7 +1007,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-proxy",
       "range": ">=0.1,<0.3",
-      "dev_pin": "dccef6f96ad135a0bd79a9e3e0b77003fb4b331c",
+      "dev_pin": "ba3598a4d7f392a722c7f99c1ed6ec5ee543e5ae",
       "dev_pin_release": "loomground-proxy-v0.2.0",
       "status": "release"
     },
@@ -999,7 +1015,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-solver",
       "range": ">=0.5,<0.7",
-      "dev_pin": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "dev_pin": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "dev_pin_release": "solver-v0.6.0",
       "status": "release"
     },
@@ -1007,7 +1023,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-versum",
       "range": ">=0.13,<0.15",
-      "dev_pin": "15e7bfc4fcfc942ba4d18f91b769ecfbbd092f47",
+      "dev_pin": "2855a4904bea9ec4cc88e8c3550bd0c20ba4764a",
       "dev_pin_release": "loomground-versum-v0.14.0",
       "status": "release"
     },
@@ -1015,7 +1031,7 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-workspace",
       "range": null,
-      "dev_pin": "e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad",
+      "dev_pin": "b022d61f7c5e5d3dae85cf037f09ec4d446a3eb7",
       "dev_pin_release": "v0.1.0",
       "status": "missing-range"
     },
@@ -1031,7 +1047,7 @@
       "consumer": "loomground-mcp",
       "dependency": "obligation-discharge",
       "range": ">=0.1,<0.2",
-      "dev_pin": "45058bcce230cc3e96171762afd9b13b450fa6c7",
+      "dev_pin": "4030c2d4fc2603d5bff272859abb1dae7ee89d8c",
       "dev_pin_release": "v0.1.0",
       "status": "release"
     },
@@ -1044,10 +1060,26 @@
       "status": "release"
     },
     {
+      "consumer": "loomground-mcp",
+      "dependency": "policy-compiler",
+      "range": ">=0.2,<0.3",
+      "dev_pin": "2dfd3f0b7004981f6b59948fb92f690d619c3edf",
+      "dev_pin_release": null,
+      "status": "unreleased-commit"
+    },
+    {
+      "consumer": "loomground-mcp",
+      "dependency": "privacy-shield",
+      "range": ">=1,<2",
+      "dev_pin": "a774b39e64a9aff19dc08c03d5216edaa9eb327d",
+      "dev_pin_release": null,
+      "status": "unreleased-commit"
+    },
+    {
       "consumer": "loomground-norm",
       "dependency": "loomground-deontic",
       "range": ">=0.1,<0.3",
-      "dev_pin": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
       "dev_pin_release": "loomground-deontic-v0.2.1",
       "status": "release"
     },
@@ -1055,7 +1087,7 @@
       "consumer": "loomground-norm",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "dev_pin_release": "loomground-governance-v0.11.1",
       "status": "missing-range"
     },
@@ -1063,7 +1095,7 @@
       "consumer": "loomground-norm",
       "dependency": "loomground-solver",
       "range": ">=0.2,<0.7",
-      "dev_pin": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "dev_pin": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "dev_pin_release": "solver-v0.6.0",
       "status": "release"
     },
@@ -1071,7 +1103,7 @@
       "consumer": "loomground-proxy",
       "dependency": "loomground-deontic",
       "range": null,
-      "dev_pin": "35f8eabdc533b275a086b20c8d7a161f4acc46a8",
+      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
       "dev_pin_release": "loomground-deontic-v0.2.1",
       "status": "missing-range"
     },
@@ -1079,7 +1111,7 @@
       "consumer": "loomground-proxy",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "270e11d0bbded46c810b2fe56559323d6dcd969a",
+      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
       "dev_pin_release": "loomground-governance-v0.11.1",
       "status": "missing-range"
     },
@@ -1087,7 +1119,7 @@
       "consumer": "loomground-proxy",
       "dependency": "loomground-solver",
       "range": ">=0.5,<0.7",
-      "dev_pin": "5b72f71ebd1f732b4e713b51de15d3ac565faa96",
+      "dev_pin": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
       "dev_pin_release": "solver-v0.6.0",
       "status": "release"
     },
@@ -1095,7 +1127,7 @@
       "consumer": "loomground-solver",
       "dependency": "loomground-deontic",
       "range": ">=0.1,<0.3",
-      "dev_pin": "b6ea34e90b67d655b8abadceb6c280b2ed8e26f1",
+      "dev_pin": "4dec997a583faebe915a392747c031c70c11cf3a",
       "dev_pin_release": "loomground-deontic-v0.2.0",
       "status": "release"
     },
@@ -1103,7 +1135,7 @@
       "consumer": "loomground-solver",
       "dependency": "loomground-governance",
       "range": ">=0.8,<0.12",
-      "dev_pin": "cf09ad8336c0ef47e700952896314472129fa4c7",
+      "dev_pin": "2a1e8a0b4fe9de6c4d273eb50e401342d6b275fc",
       "dev_pin_release": "loomground-governance-v0.11.0",
       "status": "release"
     },
@@ -1111,7 +1143,7 @@
       "consumer": "loomground-versum",
       "dependency": "loomground-deontic",
       "range": ">=0.1,<0.3",
-      "dev_pin": "b6ea34e90b67d655b8abadceb6c280b2ed8e26f1",
+      "dev_pin": "4dec997a583faebe915a392747c031c70c11cf3a",
       "dev_pin_release": "loomground-deontic-v0.2.0",
       "status": "release"
     },
@@ -1119,7 +1151,7 @@
       "consumer": "loomground-versum",
       "dependency": "loomground-governance",
       "range": ">=0.8,<0.12",
-      "dev_pin": "cf09ad8336c0ef47e700952896314472129fa4c7",
+      "dev_pin": "2a1e8a0b4fe9de6c4d273eb50e401342d6b275fc",
       "dev_pin_release": "loomground-governance-v0.11.0",
       "status": "release"
     }

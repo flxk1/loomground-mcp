@@ -22,6 +22,83 @@
       }
     },
     {
+      "repo": "governance-layer",
+      "name": "auditor",
+      "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+      "source": "skills/auditor",
+      "url": "https://github.com/flxk1/governance-layer/tree/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/auditor",
+      "files": {
+        "SKILL.md": "86fdbcf0660da0f424363e998296a6e4aa69f5f0427617ea3fe7c69f469539eb",
+        "auditor.lg": "39b971f7c146c03326c1152b892fa4fed7abb1fbb6ac52728acd99495900ec84"
+      }
+    },
+    {
+      "repo": "governance-layer",
+      "name": "grounder",
+      "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+      "source": "skills/grounder",
+      "url": "https://github.com/flxk1/governance-layer/tree/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/grounder",
+      "files": {
+        "SKILL.md": "107fad31c8bbfc1891fe2c95c99bb4905f0374194dc6ae6db03799718abb45b5",
+        "grounder.lg": "5411d14e202d80b503153a157905935d17a114022a031cc6d8429f8aa1bbb33a"
+      }
+    },
+    {
+      "repo": "governance-layer",
+      "name": "knowledge-steward",
+      "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+      "source": "skills/knowledge-steward",
+      "url": "https://github.com/flxk1/governance-layer/tree/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/knowledge-steward",
+      "files": {
+        "SKILL.md": "e8ad1858defc11f58d1ea4f6b23a364cad7c10e52ca151344272bd04dd6f92b6",
+        "knowledge-steward.lg": "49f56ec257da83b9458d291f7a26547b07e0e1fa6236d17e2f87d620622a2eb5"
+      }
+    },
+    {
+      "repo": "governance-layer",
+      "name": "legal-reasoner",
+      "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+      "source": "skills/legal-reasoner",
+      "url": "https://github.com/flxk1/governance-layer/tree/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/legal-reasoner",
+      "files": {
+        "SKILL.md": "e60b19d21598225098856b68ef8b18d75f605e95382cbd9ee80172c9fcc18c4b",
+        "legal-reasoner.lg": "2d3200f28a9a6a6fed0be1978e3e75f67cc3f435e09d62085523a3b3f2d45f82"
+      }
+    },
+    {
+      "repo": "governance-layer",
+      "name": "local-grounder",
+      "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+      "source": "skills/local-grounder",
+      "url": "https://github.com/flxk1/governance-layer/tree/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/local-grounder",
+      "files": {
+        "SKILL.md": "41d527fe3a283a80103212ac470f6d76b32760624d2d29e0c6e9ec279534c93a",
+        "local-grounder.lg": "85f305852ed69132a053087b9b7f7941fe00c7f6e59babc7bc6bf843f854286e"
+      }
+    },
+    {
+      "repo": "governance-layer",
+      "name": "lock-steward",
+      "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+      "source": "skills/lock-steward",
+      "url": "https://github.com/flxk1/governance-layer/tree/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/lock-steward",
+      "files": {
+        "SKILL.md": "c10a2096f4813edce0d64c6feece9f1b0ba20f6022379f63b30961233d5ac5a3",
+        "lock-steward.lg": "ab6ac146b6d9492b11cc91ffe560bdddbd3a8566de0cf47d44f45c5e99be743d"
+      }
+    },
+    {
+      "repo": "governance-layer",
+      "name": "policy-officer",
+      "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+      "source": "skills/policy-officer",
+      "url": "https://github.com/flxk1/governance-layer/tree/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/policy-officer",
+      "files": {
+        "SKILL.md": "e76592af8029f7cfb72b5fa40aa62b402fc5cb771cddccd0fe0a51736ef9c216",
+        "policy-officer.lg": "f46cc6821389014d545eb009082b79325e83560f785645f8c26be38a16e67d85"
+      }
+    },
+    {
       "repo": "loomground",
       "name": "loomground",
       "commit": "6a7f37011b595cb70783f4d57ca6b5c2ca9324b6",
