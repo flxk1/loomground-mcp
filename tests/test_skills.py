@@ -19,7 +19,7 @@ KEYS = {"repo", "name", "description", "allowed_tools", "commit", "path", "url"}
 
 
 def test_index_records():
-    assert len(INDEX) == 26 and len(PUBLIC) == 26 and len(PRIVATE) == 0
+    assert len(INDEX) == 33 and len(PUBLIC) == 33 and len(PRIVATE) == 0
     assert [(e["repo"], e["name"]) for e in INDEX] == sorted((e["repo"], e["name"]) for e in INDEX)
     for e in INDEX:
         assert set(e) - {"private"} == KEYS and len(e["commit"]) == 40 and e["description"]
@@ -35,7 +35,7 @@ def test_skill_index_tool():
     assert [(r["repo"], r["name"]) for r in rows] == [(e["repo"], e["name"]) for e in INDEX]
     prompts = [r["prompt"] for r in rows]
     assert prompts.count(None) == len(PRIVATE) and {"loomground/loomground", "loomground-governance/loomground", "analyse-risks"} <= set(prompts)
-    assert len(set(p for p in prompts if p)) == 26
+    assert len(set(p for p in prompts if p)) == 33
 
 
 def test_skill_by_name():
@@ -63,7 +63,7 @@ def test_prompts_in_process():
             return (await c.list_prompts()).prompts, await c.get_prompt("analyse-risks")
     listed, got = asyncio.run(go())
     by_name = {p.name: p for p in listed}
-    assert len(listed) == 26 and set(by_name) == set(prompt_names(INDEX))
+    assert len(listed) == 33 and set(by_name) == set(prompt_names(INDEX))
     entry = prompt_names(INDEX)["analyse-risks"]
     assert by_name["analyse-risks"].description == entry["description"] and by_name["analyse-risks"].arguments == []
     assert len(got.messages) == 1 and got.messages[0].role == "user"

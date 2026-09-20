@@ -26,6 +26,69 @@
     "url": "https://github.com/flxk1/evidence-emitter/blob/4869b1f90ad12bee25cd19da3bb8b56d69de598c/skills/evidence-emitter/SKILL.md"
   },
   {
+    "repo": "governance-layer",
+    "name": "auditor",
+    "description": "Read-only over the signed chain (verify_chain/tail/shadow_scan/discipline). Writes nothing but an attributed override. Reports, never repairs. Use when the signed chain must be verified or reported on — 'verify the chain', 'tail the chain', 'shadow scan', 'discipline check', 'record an override'.",
+    "allowed_tools": [],
+    "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+    "path": "skills/auditor/SKILL.md",
+    "url": "https://github.com/flxk1/governance-layer/blob/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/auditor/SKILL.md"
+  },
+  {
+    "repo": "governance-layer",
+    "name": "grounder",
+    "description": "Read-only evidence at coordinate + provenance, or ground-or-escalate. Serves; never writes. Product grounder — official versum only. Use when a claim must be grounded against the official versum — 'ground this', 'is this in the corpus', 'give me the source for X at date D', 'confirm this against the graph'.",
+    "allowed_tools": [],
+    "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+    "path": "skills/grounder/SKILL.md",
+    "url": "https://github.com/flxk1/governance-layer/blob/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/grounder/SKILL.md"
+  },
+  {
+    "repo": "governance-layer",
+    "name": "knowledge-steward",
+    "description": "Build and maintain the graph: ingest, concepts, placement, write, curate; enrich; erase. The one write/erase authority. Use when material must enter, be curated in, or be erased from the graph — 'ingest this', 'add what we learned to the graph', 'curate the concepts', 'erase this subject'.",
+    "allowed_tools": [],
+    "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+    "path": "skills/knowledge-steward/SKILL.md",
+    "url": "https://github.com/flxk1/governance-layer/blob/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/knowledge-steward/SKILL.md"
+  },
+  {
+    "repo": "governance-layer",
+    "name": "legal-reasoner",
+    "description": "Grounded premises to a warranted conclusion (apply, in-force, conflict, effect, deontic). Calls grounder first; enacts nothing alone. Use when grounded premises must be argued to a conclusion — 'what follows from these provisions', 'is this permitted / obligatory / forbidden', 'which norm wins', 'how likely is liability'.",
+    "allowed_tools": [],
+    "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+    "path": "skills/legal-reasoner/SKILL.md",
+    "url": "https://github.com/flxk1/governance-layer/blob/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/legal-reasoner/SKILL.md"
+  },
+  {
+    "repo": "governance-layer",
+    "name": "local-grounder",
+    "description": "Grounds Felix's own work over his private knowledge folder. Firewalled from the product: never ships, never a product dependency, output never reaches the official versum. Use when Felix's own work must be grounded over his private knowledge folder — 'ground this against my private notes', 'read my private evidence'.",
+    "allowed_tools": [],
+    "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+    "path": "skills/local-grounder/SKILL.md",
+    "url": "https://github.com/flxk1/governance-layer/blob/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/local-grounder/SKILL.md"
+  },
+  {
+    "repo": "governance-layer",
+    "name": "lock-steward",
+    "description": "Provisions and discharges the per-folder egress lock (Privacy Lock). Manages the lock, never exempt. Ratchet + fail-secure. Use when a folder's egress lock must be provisioned, checked, raised, lowered, or unsealed — 'lock this folder', 'lock status', 'egress-check this payload', 'unseal'.",
+    "allowed_tools": [],
+    "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+    "path": "skills/lock-steward/SKILL.md",
+    "url": "https://github.com/flxk1/governance-layer/blob/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/lock-steward/SKILL.md"
+  },
+  {
+    "repo": "governance-layer",
+    "name": "policy-officer",
+    "description": "versum-policy to validated .lg to a human applying it. Makes known policy enforced. Know real-time; enforce-a-change reserved. Use when a known policy must become enforced — 'compile this policy to .lg', 'validate this patch', 'apply this patch', 'rebind the lane'.",
+    "allowed_tools": [],
+    "commit": "a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9",
+    "path": "skills/policy-officer/SKILL.md",
+    "url": "https://github.com/flxk1/governance-layer/blob/a42fb664f60418f9b236e7a8cb8bfbdce71ad1f9/skills/policy-officer/SKILL.md"
+  },
+  {
     "repo": "loomground",
     "name": "loomground",
     "description": "Express an AI-governance requirement as a validated Loomground policy-graph patch. Use when the user wants to encode a governance rule (human oversight, reservation, prohibition, separation of duty / quorum, redress or contestation, delegation and the principal chain, autonomy grades, disclosure obligation) as a .lg patch; validate or fix an existing patch; or judge whether a requirement is expressible in Loomground versus belonging to policy or a host. Triggers on \"express this as Loomground\", \"write a .lg patch\", \"is this governable in Loomground\", \"validate this patch\", \"governance as a policy graph\".",
