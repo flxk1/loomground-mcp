@@ -761,7 +761,7 @@
       "repo": "a2a-compliance",
       "family": "Runtime controls",
       "role": "full-family compliance-team planning and A2A maker control",
-      "description": "Plan a governed maker action across all 41 public Loomground repositories, then control maker agents over an A2A protocol; the protocol profile stays dependency-free and the full-family profile fails closed.",
+      "description": "Plan a governed maker action across the Loomground family, then control the maker over an A2A protocol. Two profiles: a protocol floor and a fail-closed Loomground compliance team.",
       "pipeline_position": null,
       "depends_on": [
         "loomground-governance",
