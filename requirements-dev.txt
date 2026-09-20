@@ -34,8 +34,8 @@ loomground-erasure @ git+https://github.com/flxk1/loomground-erasure@df098be5815
 loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@b022d61f7c5e5d3dae85cf037f09ec4d446a3eb7
 # Applied skill runtimes. These commits add the corresponding MCP declarations
 # to each canonical skill and remain independently reviewable before merge.
-policy-compiler @ git+https://github.com/flxk1/policy-compiler@2dfd3f0b7004981f6b59948fb92f690d619c3edf
-evidence-emitter @ git+https://github.com/flxk1/evidence-emitter@4869b1f90ad12bee25cd19da3bb8b56d69de598c
-privacy-shield @ git+https://github.com/flxk1/privacy-shield@a774b39e64a9aff19dc08c03d5216edaa9eb327d
-a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@66b4f42aaf6235652165f69bfc1f5304b77795d7
+policy-compiler @ git+https://github.com/flxk1/policy-compiler@policy-compiler-v0.2.0
+evidence-emitter @ git+https://github.com/flxk1/evidence-emitter@v0.1.0
+privacy-shield @ git+https://github.com/flxk1/privacy-shield@v1.0.0
+a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@v0.4.0
 pytest==9.1.1
