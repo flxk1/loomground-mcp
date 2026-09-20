@@ -59,8 +59,26 @@ def frontmatter_fields(text: str) -> dict[str, str]:
 def allowed_tools_of(fields: dict[str, str]) -> list[str]:
     """The `allowed-tools` frontmatter as a record list. Agent Skills writes the field
     comma-separated, so a bare `.split()` keeps the commas and yields `privacy_scan,`
-    — not a tool name anything can match. Whitespace-only remains valid."""
-    return [t for t in fields.get("allowed-tools", "").replace(",", " ").split() if t]
+    — not a tool name anything can match. Whitespace-only separation remains valid.
+
+    A comma inside a scope does not separate: `Bash(a:*, b:*)` is ONE grant, so the
+    split only fires at paren depth zero — replacing every comma would take the grant
+    apart and produce the same unmatchable fragments this function exists to avoid."""
+    raw, depth, token, out = fields.get("allowed-tools", ""), 0, [], []
+    for ch in raw:
+        if ch in "([{":
+            depth += 1
+        elif ch in ")]}" and depth:
+            depth -= 1
+        if depth == 0 and (ch.isspace() or ch == ","):
+            if token:
+                out.append("".join(token))
+                token = []
+            continue
+        token.append(ch)
+    if token:
+        out.append("".join(token))
+    return out
 
 
 def prompt_names(index: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:

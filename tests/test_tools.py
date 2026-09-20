@@ -220,14 +220,34 @@ def test_privacy_scan_text(tmp_path):
     assert env["result"]["walk_errors"] == [] and env["result"]["document_count"] == 1
 
 
-def test_privacy_scan_envelope_carries_no_original_value():
-    """The whole envelope, not just the overlay: `SpanFinding.value`/`.context` hold the
-    ORIGINAL text, and they are one dataclass-reflection away from the wire — checking
-    `overlay` alone passes while the original egresses beside it."""
-    secret = "ada@example.com"
-    env = call("privacy_scan", {"text": f"Contact Ada at {secret}.", "mode": "regex_only"})
+@pytest.mark.parametrize("mode", ["standard", "local_only", "anonymous_json", "regex_only"])
+@pytest.mark.parametrize("redaction_mode", ["redact", "block", "detect_only", "pseudonymize"])
+def test_privacy_scan_envelope_carries_no_original_value(mode, redaction_mode):
+    """No accepted mode combination puts an original in the envelope. Every mode, because
+    the two that broke this were not the default: `SpanFinding.value`/`.context` ride one
+    dataclass-reflection from the wire, and `overlay` IS the untouched original under
+    detect_only (nothing redacts) and block (the redactor refuses) — while egress_allowed
+    stays true, since the gate rules on the source class, not the residual. A test over
+    `redact` alone, or over `overlay` alone, stays green through both."""
+    secrets = ("ada@example.com", "DE89370400440532013000")
+    env = call("privacy_scan", {"text": f"Ada: {secrets[0]} IBAN {secrets[1]}",
+                                "mode": mode, "redaction_mode": redaction_mode})
     assert env["ok"] and env["result"]["documents"][0]["pii_detected"]
-    assert secret not in json.dumps(env, ensure_ascii=False)
+    blob = json.dumps(env, ensure_ascii=False)
+    assert not [s for s in secrets if s in blob], f"{mode}/{redaction_mode} egressed the original"
+
+
+def test_privacy_scan_withholds_an_uncleaned_overlay():
+    """detect_only produces no redaction, so the overlay is withheld rather than returned:
+    the span metadata still answers "is there PII here", which is what the mode is for."""
+    env = call("privacy_scan", {"text": "Ada: ada@example.com", "mode": "regex_only",
+                                "redaction_mode": "detect_only"})
+    doc = env["result"]["documents"][0]
+    assert doc["overlay"] is None and "not a cleaned overlay" in doc["overlay_withheld"]
+    assert doc["pii_detected"] and doc["span_count"] >= 1
+    clean = call("privacy_scan", {"text": "Ada: ada@example.com", "mode": "regex_only"})
+    kept = clean["result"]["documents"][0]
+    assert kept["overlay"] == "Ada: [EMAIL]" and "overlay_withheld" not in kept
 
 
 def test_a2a_ground_is_derivation_only():

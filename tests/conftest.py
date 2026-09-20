@@ -20,8 +20,13 @@ _USER_STATE_VARS = ("HOME", "XDG_STATE_HOME", "LOCALAPPDATA", "USERPROFILE")
 
 @pytest.fixture(autouse=True)
 def _isolated_user_state(tmp_path, monkeypatch):
+    # a subdirectory, not tmp_path itself: the folder fixtures hand tmp_path to tools as a
+    # data root, and privacy-shield writes its audit trail under HOME — pointed at the same
+    # directory, a scan would find its own log and count it as a document.
+    home = tmp_path / "home"
+    home.mkdir(exist_ok=True)
     for var in _USER_STATE_VARS:
-        monkeypatch.setenv(var, str(tmp_path))
+        monkeypatch.setenv(var, str(home))
     for name in list(os.environ):
         if name.startswith(("PRIVACY_SHIELD_", "BRAIN_")):
             monkeypatch.delenv(name, raising=False)

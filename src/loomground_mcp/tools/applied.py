@@ -82,7 +82,21 @@ def privacy_scan(text: str, mode: str = "standard", destination: str = "external
     # prohibited: egress_original_unredacted_text. Returning the ScanReport itself
     # would let `plain()` reflect the dataclass instead — its field branch runs
     # before its to_dict branch — and SpanFinding.value/.context are the original.
-    return report.to_dict()
+    payload = report.to_dict()
+    # to_dict closes the spans, not `overlay`. Under detect_only nothing redacts, and
+    # under block the redactor refuses, so `overlay` IS the untouched original while
+    # egress_allowed stays true — the gate rules on the source class, not the residual
+    # (the skill's clear_a_cleared_source_class_whatever_the_overlay_residual). That
+    # verdict is privacy-shield's to make and is left alone; what this call will not do
+    # is hand back an overlay the originals are still in. Checked span by span against
+    # the values the report carries, not inferred from placeholder_count.
+    for document, out in zip(report.documents, payload["documents"]):
+        residual = sorted({s.value for s in document.spans if s.value and s.value in document.overlay})
+        if residual:
+            out["overlay"] = None
+            out["overlay_withheld"] = (f"{len(residual)} detected value(s) still present; "
+                                       "not a cleaned overlay")
+    return payload
 
 
 @tool("a2a-compliance", "a2a_compliance.ground")
