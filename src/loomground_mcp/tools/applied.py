@@ -61,12 +61,20 @@ def evidence_verify(envelope: dict[str, Any]) -> Any:
 def privacy_scan(text: str, mode: str = "standard", destination: str = "external_llm",
                  redaction_mode: str = "redact", min_confidence: str = "medium",
                  audit_log_path: Optional[str] = None, tenant_id: str = "",
-                 user_id: str = "") -> Any:
+                 user_id: str = "", hash_salt: str = "") -> Any:
     """Scan raw text locally, produce its clean overlay and decide whether that
     overlay may leave for `destination`.  The original text and placeholder map
-    never leave this call.  The package records its normal local audit event."""
+    never leave this call.  The package records its normal local audit event.
+
+    `hash_salt` is required by `redaction_mode="hash"` and used by no other mode:
+    the digest is stable for a salt and changes with it, so the caller owns it.
+    Without one, hash fails closed rather than hashing under an invented salt."""
     ps = import_plane("privacy_shield")
     scanner = import_plane("privacy_shield.scanner")
+    # forwarded only when supplied: privacy-shield took no hash_salt before it threaded
+    # one to the redactor, so always passing the keyword would break every scan on a
+    # version that does not accept it, not just a hash one.
+    salt = {"hash_salt": hash_salt} if hash_salt else {}
     report = ps.scan(
         text,
         mode=enum_of(ps.PrivacyMode, mode),
@@ -77,6 +85,7 @@ def privacy_scan(text: str, mode: str = "standard", destination: str = "external
         tenant_id=tenant_id,
         user_id=user_id,
         force_text=True,
+        **salt,
     )
     # to_dict(include_original=False) is where privacy-shield holds the skill's
     # prohibited: egress_original_unredacted_text. Returning the ScanReport itself
