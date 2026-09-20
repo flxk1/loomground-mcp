@@ -87,9 +87,22 @@ def prompt_names(index: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     return {(f"{e['repo']}/{e['name']}" if e["name"] in shared else e["name"]): e for e in index if not e.get("private")}
 
 
+MCP_TOOL = re.compile(r"[a-z][a-z0-9_]*")
+
+
+def partition_tools(tools: list[str]) -> tuple[list[str], list[str]]:
+    """(tools this server serves, grants for the host). `allowed-tools` mixes the two: a
+    skill may ask its host for `Read` or `Bash(privacy-shield:*)` beside the tools served
+    here. Every served tool is lowercase snake_case; a grant is not."""
+    served = [t for t in tools if MCP_TOOL.fullmatch(t)]
+    return served, [t for t in tools if t not in served]
+
+
 def header(entry: dict[str, Any]) -> str:
-    tools = " ".join(entry["allowed_tools"]) or "(none declared)"
-    return f"Skill {entry['name']} from {entry['repo']} @ {entry['commit']}; tools: {tools}"
+    served, grants = partition_tools(entry["allowed_tools"])
+    tools = " ".join(served) or "(none declared)"
+    aside = f"; host grants: {' '.join(grants)}" if grants else ""
+    return f"Skill {entry['name']} from {entry['repo']} @ {entry['commit']}; tools: {tools}{aside}"
 
 
 def render(entry: dict[str, Any]) -> str:

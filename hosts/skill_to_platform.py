@@ -12,7 +12,8 @@ needs a public HTTPS URL instead; pass it.
 
 n8n: chat trigger -> AI Agent (system message = skill body, relative links rewritten to the
 repo's GitHub blob URL) <- placeholder chat model + MCP Client Tool (HTTP streamable,
-include: selected = frontmatter allowed-tools). The MCP node is emitted with
+include: selected = the frontmatter allowed-tools this server serves; a host grant
+such as Read or Bash(...) is reported separately, never as an MCP tool). The MCP node is emitted with
 authentication: none; a server started with --token needs a header credential set by hand.
 langdock: the same instructions text + the remote-MCP recipe.
 
@@ -116,6 +117,41 @@ def _block(lines, i, indent):
     return (out if out is not None else {}), i
 
 
+MCP_TOOL = re.compile(r"[a-z][a-z0-9_]*")
+
+
+def split_grants(raw: str):
+    """`allowed-tools` as a list. Comma- or whitespace-separated, but a comma inside a
+    scope does not separate: `Bash(a:*, b:*)` is ONE grant."""
+    depth, token, out = 0, [], []
+    for ch in raw.strip():
+        if ch in "([{":
+            depth += 1
+        elif ch in ")]}" and depth:
+            depth -= 1
+        if depth == 0 and (ch.isspace() or ch == ","):
+            if token:
+                out.append("".join(token))
+                token = []
+            continue
+        token.append(ch)
+    if token:
+        out.append("".join(token))
+    return out
+
+
+def partition_tools(tools):
+    """(MCP tool names, host grants). `allowed-tools` mixes both: a skill may ask its host
+    for `Read` or `Bash(privacy-shield:*)` alongside the tools this server serves. Only the
+    former belong in an MCP node's includeTools — naming a host grant there tells an operator
+    to enable a tool the server does not serve. Every tool loomground-mcp serves is
+    lowercase snake_case; a grant is not (`Read`, `Bash(...)`). Matched by shape because this
+    script is stdlib-only and standalone, and cannot import the tool registry.
+    """
+    served = [t for t in tools if MCP_TOOL.fullmatch(t)]
+    return served, [t for t in tools if t not in served]
+
+
 def parse_skill(path: Path):
     text = path.read_text(encoding="utf-8")
     m = FM_RE.match(text)
@@ -128,7 +164,7 @@ def parse_skill(path: Path):
         raise SkillError(f"{path}: frontmatter has no `description`")
     tools = fm.get("allowed-tools") or fm.get("allowed_tools") or []
     if isinstance(tools, str):
-        tools = [t for t in re.split(r"[\s,]+", tools.strip()) if t]
+        tools = split_grants(tools)
     body = text[m.end():].strip("\n")
     if not body.strip():
         raise SkillError(f"{path}: empty body")
@@ -194,6 +230,7 @@ def instructions(fm, body):
 
 def n8n_workflow(fm, tools, text, server_url, model, repo_url):
     name = fm["name"]
+    served, grants = partition_tools(tools)
     wid = hashlib.sha1(f"{repo_url}#{name}".encode()).hexdigest()[:16]
     nodes = [
         {"id": "trigger", "name": "When chat message received", "type": "@n8n/n8n-nodes-langchain.chatTrigger",
@@ -206,7 +243,7 @@ def n8n_workflow(fm, tools, text, server_url, model, repo_url):
         {"id": "mcp", "name": "loomground-mcp", "type": "@n8n/n8n-nodes-langchain.mcpClientTool", "typeVersion": MCP_TOOL_VERSION,
          "position": [420, 220],
          "parameters": {"endpointUrl": server_url, "serverTransport": "httpStreamable", "authentication": "none",
-                        "include": "selected" if tools else "all", "includeTools": tools, "options": {}}},
+                        "include": "selected" if served else "all", "includeTools": served, "options": {}}},
     ]
     return {
         "id": wid, "name": f"skill: {name}", "active": False, "settings": {"executionOrder": "v1"}, "nodes": nodes,
@@ -215,19 +252,25 @@ def n8n_workflow(fm, tools, text, server_url, model, repo_url):
             "Chat Model (set your credential)": {"ai_languageModel": [[{"node": f"{name} (AI Agent)", "type": "ai_languageModel", "index": 0}]]},
             "loomground-mcp": {"ai_tool": [[{"node": f"{name} (AI Agent)", "type": "ai_tool", "index": 0}]]},
         },
-        "meta": {"source": "skill_to_platform.py", "skill": name, "allowed_tools": tools},
+        "meta": {"source": "skill_to_platform.py", "skill": name, "allowed_tools": tools,
+                 "mcp_tools": served, "host_grants": grants},
     }
 
 
 def langdock_doc(fm, tools, text, server_url):
     name = fm["name"]
-    tl = ", ".join(f"`{t}`" for t in tools) if tools else "all tools the server lists"
+    served, grants = partition_tools(tools)
+    tl = ", ".join(f"`{t}`" for t in served) if served else "all tools the server lists"
+    note = ("" if not grants else
+            " The skill also declares " + ", ".join(f"`{g}`" for g in grants) +
+            ", which this server does not serve: they are grants for a host that has those"
+            " tools, and there is nothing to enable for them on the integration.")
     recipe = (f"**Langdock recipe.** In your Langdock workspace: Settings → Integrations → *Add integration* → "
               f"*Connect remote MCP* → URL `{server_url}` (the server must be reachable over public HTTPS; "
               f"`loomground-mcp serve --transport streamable-http --token <token>` behind a TLS reverse proxy), "
               f"header `Authorization: Bearer <token>`. "
               f"Create an assistant named `{name}`, paste the instructions below as its system instructions, "
-              f"attach the loomground-mcp integration and enable only these tools: {tl}.")
+              f"attach the loomground-mcp integration and enable only these tools: {tl}.{note}")
     return f"# Langdock assistant: {name}\n\n{recipe}\n\n---\n\n## Instructions\n\n{text}"
 
 
