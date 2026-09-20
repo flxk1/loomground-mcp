@@ -214,6 +214,20 @@ def test_privacy_scan_text(tmp_path):
     })
     doc = env["result"]["documents"][0]
     assert env["ok"] and doc["pii_detected"] and "ada@example.com" not in doc["overlay"]
+    # force_text=True, so the walk never runs: walk_errors stays empty whatever its
+    # element type upstream, which is why the List[str] -> List[WalkError] change in
+    # 2.0.0 is invisible here. Asserted so a future directory-scan path has to notice.
+    assert env["result"]["walk_errors"] == [] and env["result"]["document_count"] == 1
+
+
+def test_privacy_scan_envelope_carries_no_original_value():
+    """The whole envelope, not just the overlay: `SpanFinding.value`/`.context` hold the
+    ORIGINAL text, and they are one dataclass-reflection away from the wire — checking
+    `overlay` alone passes while the original egresses beside it."""
+    secret = "ada@example.com"
+    env = call("privacy_scan", {"text": f"Contact Ada at {secret}.", "mode": "regex_only"})
+    assert env["ok"] and env["result"]["documents"][0]["pii_detected"]
+    assert secret not in json.dumps(env, ensure_ascii=False)
 
 
 def test_a2a_ground_is_derivation_only():

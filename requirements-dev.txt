@@ -36,6 +36,7 @@ loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@e6e5e7d
 # to each canonical skill and remain independently reviewable before merge.
 policy-compiler @ git+https://github.com/flxk1/policy-compiler@74e7fc4c9180b53179272ba5ddc3f591f3ee09d0
 evidence-emitter @ git+https://github.com/flxk1/evidence-emitter@4869b1f90ad12bee25cd19da3bb8b56d69de598c
-privacy-shield @ git+https://github.com/flxk1/privacy-shield@a774b39e64a9aff19dc08c03d5216edaa9eb327d
+# privacy-shield is pinned at the commit its v2.0.0 tag points at (40f5a76).
+privacy-shield @ git+https://github.com/flxk1/privacy-shield@40f5a765a0cef9a3cbe3785218a6eed8d1bc6dd7
 a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@5c6f2c14af46e85989a443c51be103f248151d62
 pytest==9.1.1

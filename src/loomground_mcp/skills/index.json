@@ -292,10 +292,12 @@
     "name": "privacy-shield",
     "description": "Local-first PII/PHI detection and clean-overlay pipeline for governed folders. Scan a folder, file, or text span by span, produce the PII-cleaned overlay — the only thing meant to leave the machine — then decide whether egress to an external service is allowed, by source classification. Personal data is found with a regex/lexicon floor plus an optional local embedding/LLM layer; the value<->placeholder map stays local; every decision is written to a local audit trail. Works standalone with every Loomground plane optional. An external enforcement host can attach behind the neutral sink interface that no-ops when absent. \"Cleared\" means the source class is allowed to egress, NOT a zero-residual certificate. Use when the user says \"redact this\", \"clean this before I send it to the cloud\", \"is this safe for an external LLM\", \"scan this folder for personal data\", \"make a privacy overlay\", \"lock this folder's egress\".",
     "allowed_tools": [
-      "privacy_scan"
+      "privacy_scan",
+      "Bash(privacy-shield:*)",
+      "Read"
     ],
-    "commit": "a774b39e64a9aff19dc08c03d5216edaa9eb327d",
+    "commit": "40f5a765a0cef9a3cbe3785218a6eed8d1bc6dd7",
     "path": "skills/privacy-shield/SKILL.md",
-    "url": "https://github.com/flxk1/privacy-shield/blob/a774b39e64a9aff19dc08c03d5216edaa9eb327d/skills/privacy-shield/SKILL.md"
+    "url": "https://github.com/flxk1/privacy-shield/blob/40f5a765a0cef9a3cbe3785218a6eed8d1bc6dd7/skills/privacy-shield/SKILL.md"
   }
 ]

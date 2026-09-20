@@ -2,6 +2,7 @@
 # Copyright 2026 flxk1
 import asyncio
 import logging
+import os
 
 import pytest
 from mcp import Client
@@ -9,6 +10,22 @@ from mcp import Client
 from loomground_mcp import build_server
 
 logging.disable(logging.CRITICAL)  # planes log their refusals; the envelope carries them
+
+# privacy_scan drives privacy-shield, which resolves its four runtime stores under the
+# platform user-state directory and REJECTS any leftover BRAIN_* name outright. Isolate
+# the same vars its own tests/conftest.py does, by prefix rather than by importing the
+# package, which is optional here like every other plane.
+_USER_STATE_VARS = ("HOME", "XDG_STATE_HOME", "LOCALAPPDATA", "USERPROFILE")
+
+
+@pytest.fixture(autouse=True)
+def _isolated_user_state(tmp_path, monkeypatch):
+    for var in _USER_STATE_VARS:
+        monkeypatch.setenv(var, str(tmp_path))
+    for name in list(os.environ):
+        if name.startswith(("PRIVACY_SHIELD_", "BRAIN_")):
+            monkeypatch.delenv(name, raising=False)
+
 
 POLICY = ("The operator must delete personal data within 30 days after the contract ends. "
           "The operator must not transfer personal data outside the EU. "

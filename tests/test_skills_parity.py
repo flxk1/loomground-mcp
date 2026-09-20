@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from loomground_mcp.tools.skills import body_path, frontmatter_fields, load_index
+from loomground_mcp.tools.skills import allowed_tools_of, body_path, frontmatter_fields, load_index
 
 HERE = Path(__file__).resolve().parents[1]
 ALIASES = {"loomground": ["loomground-repos/Loomground Core"], "loomground-topos": ["legal-topology-grammar"]}
@@ -38,7 +38,7 @@ def show(repo: str, commit: str, path: str) -> bytes:
 def test_vendored_skill_matches_repository(entry):
     upstream = show(entry["repo"], entry["commit"], entry["path"])
     fm = frontmatter_fields(upstream.decode("utf-8"))
-    assert (fm["name"], fm["description"], fm.get("allowed-tools", "").split()) == \
+    assert (fm["name"], fm["description"], allowed_tools_of(fm)) == \
         (entry["name"], entry["description"], entry["allowed_tools"])
     if entry.get("private"):
         assert not body_path(entry).is_file()

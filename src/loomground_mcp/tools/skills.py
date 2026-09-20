@@ -56,6 +56,13 @@ def frontmatter_fields(text: str) -> dict[str, str]:
     return fields
 
 
+def allowed_tools_of(fields: dict[str, str]) -> list[str]:
+    """The `allowed-tools` frontmatter as a record list. Agent Skills writes the field
+    comma-separated, so a bare `.split()` keeps the commas and yields `privacy_scan,`
+    — not a tool name anything can match. Whitespace-only remains valid."""
+    return [t for t in fields.get("allowed-tools", "").replace(",", " ").split() if t]
+
+
 def prompt_names(index: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     """Prompt name → record, for every record with a body; a name held by more than one repository is qualified."""
     shared = {n for n, c in Counter(e["name"] for e in index).items() if c > 1}

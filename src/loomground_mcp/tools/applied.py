@@ -57,7 +57,7 @@ def evidence_verify(envelope: dict[str, Any]) -> Any:
     return ee.verify(envelope)
 
 
-@tool("privacy-shield", "brain.privacy_shield.scan")
+@tool("privacy-shield", "privacy_shield.scan")
 def privacy_scan(text: str, mode: str = "standard", destination: str = "external_llm",
                  redaction_mode: str = "redact", min_confidence: str = "medium",
                  audit_log_path: Optional[str] = None, tenant_id: str = "",
@@ -65,9 +65,9 @@ def privacy_scan(text: str, mode: str = "standard", destination: str = "external
     """Scan raw text locally, produce its clean overlay and decide whether that
     overlay may leave for `destination`.  The original text and placeholder map
     never leave this call.  The package records its normal local audit event."""
-    ps = import_plane("brain.privacy_shield")
-    scanner = import_plane("brain.privacy_shield.scanner")
-    return ps.scan(
+    ps = import_plane("privacy_shield")
+    scanner = import_plane("privacy_shield.scanner")
+    report = ps.scan(
         text,
         mode=enum_of(ps.PrivacyMode, mode),
         destination=destination,
@@ -78,6 +78,11 @@ def privacy_scan(text: str, mode: str = "standard", destination: str = "external
         user_id=user_id,
         force_text=True,
     )
+    # to_dict(include_original=False) is where privacy-shield holds the skill's
+    # prohibited: egress_original_unredacted_text. Returning the ScanReport itself
+    # would let `plain()` reflect the dataclass instead — its field branch runs
+    # before its to_dict branch — and SpanFinding.value/.context are the original.
+    return report.to_dict()
 
 
 @tool("a2a-compliance", "a2a_compliance.ground")
