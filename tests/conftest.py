@@ -2,8 +2,11 @@
 # Copyright 2026 flxk1
 import asyncio
 import logging
+import os
+from pathlib import Path
 
 import pytest
+import vendor_skills
 from mcp import Client
 
 from loomground_mcp import build_server
@@ -36,6 +39,23 @@ cord transfer -> master
 TRANSPORT = {"activations": [{"actor": "agent", "source": "transfer", "token": {
     "id": "t1", "kind": "data_transfer", "risk": "high", "party": "customer-42",
     "provenance": ["urn:dls:sha256:b3421929b6310f99781cd8fe287294d0a152acc15ee6b3cfcdcbdde340812d40#para-1:150-240"]}}]}
+
+
+def upstream(repo: str, commit: str, path: str, env: str = "") -> bytes:
+    """`path` at `commit` in `repo` — what a vendored copy has to equal.
+
+    The file `env` names wins (CI fetches the pinned commit into a fresh checkout); otherwise the commit is read
+    out of a reachable checkout, resolved the way tools/vendor_skills.py resolves it when it vendors. Reading the
+    commit, never the checkout's working tree, is what keeps a moved-on checkout from turning a parity test into
+    noise. No checkout with that commit: skip — never a silent pass.
+    """
+    named = os.environ.get(env, "") if env else ""
+    if named and Path(named).is_file():
+        return Path(named).read_bytes()
+    for co in vendor_skills.checkouts(repo):
+        if (co / ".git").exists() and vendor_skills.has_commit(co, commit):
+            return vendor_skills.git(co, "show", f"{commit}:{path}")
+    pytest.skip(f"{repo}@{commit[:7]} in no reachable checkout (set LOOMGROUND_SKILLS_ROOT or {env or 'the path'})")
 
 
 def call(name: str, arguments: dict | None = None) -> dict:
