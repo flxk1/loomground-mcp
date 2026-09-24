@@ -100,7 +100,7 @@ def privacy_scan(text: str, mode: str = "standard", destination: str = "external
     # is hand back an overlay the originals are still in. Checked span by span against
     # the values the report carries, not inferred from placeholder_count. A span's
     # `value` is not always its original (the local-model layer records a hint, with
-    # end = start + 10), so a span whose value is empty or is not the text at its
+    # end = start + 10), so a span whose value is empty, null or not the text at its
     # offsets counts too — the redactor rewrote those offsets, not what the layer found.
     for document, out in zip(report.documents, payload["documents"]):
         residual = _residual(text, document)
@@ -111,7 +111,7 @@ def privacy_scan(text: str, mode: str = "standard", destination: str = "external
     # the backstop for both of the above: a privacy-shield inside the range whose
     # to_dict still carries SpanFinding.value/.context (the pre-release 2.0.0 commits
     # did) is refused whole, not trusted field by field.
-    detected = {s.value for d in report.documents for s in d.spans if s.value}
+    detected = {s.value for d in report.documents for s in d.spans if isinstance(s.value, str) and s.value}
     if any(v in s for s in _strings(payload) for v in detected):
         raise Unavailable("a detected value appears in the serialised report; "
                           "privacy_scan returns nothing rather than risk egressing it")
@@ -119,8 +119,9 @@ def privacy_scan(text: str, mode: str = "standard", destination: str = "external
 
 
 def _residual(text: str, document: Any) -> int:
-    misplaced = sum(1 for s in document.spans if not s.value or text[s.start:s.end] != s.value)
-    return misplaced + len({s.value for s in document.spans if s.value.strip() and s.value in document.overlay})
+    values = [s.value if isinstance(s.value, str) else "" for s in document.spans]
+    misplaced = sum(1 for s, v in zip(document.spans, values) if not v or text[s.start:s.end] != v)
+    return misplaced + len({v for v in values if v.strip() and v in document.overlay})
 
 
 def _strings(value: Any):

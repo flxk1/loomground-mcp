@@ -779,7 +779,7 @@ def test_privacy_scan_refuses_a_serialiser_that_carries_originals(monkeypatch):
     assert "ada@example.com" not in blob and "DE89370400440532013000" not in blob
 
 
-@pytest.mark.parametrize("hint", ["Alter Wasserturm 7", ""])
+@pytest.mark.parametrize("hint", ["Alter Wasserturm 7", "", None])
 @pytest.mark.parametrize("redaction_mode", ["detect_only", "redact", "pseudonymize", "block"])
 def test_privacy_scan_withholds_a_span_whose_value_is_not_its_original(monkeypatch, redaction_mode, hint):
     """The local-model layer records a `value_hint`, not the matched text, with
