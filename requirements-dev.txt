@@ -37,10 +37,10 @@ loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@e6e5e7d
 # at (a tag name is mutable; the register resolves this SHA to its release
 # via dev_pin_release, same as every other pin in this file, so a tag ref
 # buys nothing and weakens the pin). policy-compiler@policy-compiler-v0.3.0,
-# evidence-emitter@v0.1.0, a2a-compliance@v0.3.0. privacy-shield stays
-# commit-pinned to a pre-release commit until its own 2.0.0 tag lands.
+# evidence-emitter@v0.1.0, a2a-compliance@v0.3.0, privacy-shield@v2.1.1 (the
+# pre-release commit it was on predates the serialiser privacy_scan relies on).
 policy-compiler @ git+https://github.com/flxk1/policy-compiler@41dfd3e3d35e7f171d3215f4e5dc54a60c4e8bd9
 evidence-emitter @ git+https://github.com/flxk1/evidence-emitter@07af3e3f76e070afcfaf933b194f43f3cc5bfc93
-privacy-shield @ git+https://github.com/flxk1/privacy-shield@111d63061be4e342f8047a9b92b804d35f64335f
+privacy-shield @ git+https://github.com/flxk1/privacy-shield@dc71ff0bc1491cc6cfd5f31568c41a3c94d474a0
 a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@0da77b8b55d538b3a647667262ad5923483d7849
 pytest==9.1.1

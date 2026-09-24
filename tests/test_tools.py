@@ -214,6 +214,77 @@ def test_privacy_scan_text(tmp_path):
     })
     doc = env["result"]["documents"][0]
     assert env["ok"] and doc["pii_detected"] and "ada@example.com" not in doc["overlay"]
+    # force_text=True, so the walk never runs: walk_errors stays empty whatever its
+    # element type upstream, which is why the List[str] -> List[WalkError] change in
+    # 2.0.0 is invisible here. Asserted so a future directory-scan path has to notice.
+    assert env["result"]["walk_errors"] == [] and env["result"]["document_count"] == 1
+
+
+@pytest.mark.parametrize("mode", ["standard", "local_only", "anonymous_json", "regex_only"])
+@pytest.mark.parametrize("redaction_mode", ["redact", "block", "detect_only", "pseudonymize"])
+def test_privacy_scan_envelope_carries_no_original_value(mode, redaction_mode):
+    """No accepted mode combination puts an original in the envelope. Every mode, because
+    the two that broke this were not the default: `SpanFinding.value`/`.context` ride one
+    dataclass-reflection from the wire, and `overlay` IS the untouched original under
+    detect_only (nothing redacts) and block (when the redactor refuses) — while egress_allowed
+    stays true, since the gate rules on the source class, not the residual. A test over
+    `redact` alone, or over `overlay` alone, stays green through both."""
+    secrets = ("ada@example.com", "DE89370400440532013000")
+    env = call("privacy_scan", {"text": f"Ada: {secrets[0]} IBAN {secrets[1]}",
+                                "mode": mode, "redaction_mode": redaction_mode})
+    assert env["ok"] and env["result"]["documents"][0]["pii_detected"]
+    blob = json.dumps(env, ensure_ascii=False)
+    assert not [s for s in secrets if s in blob], f"{mode}/{redaction_mode} egressed the original"
+
+
+def _scan_takes_a_hash_salt() -> bool:
+    """Whether the installed privacy-shield threads hash_salt to its redactor. 2.0.0 does
+    not, and the range admits it, so the reachable half of the contract is asserted
+    unconditionally and the working half only where the plumbing exists."""
+    import inspect
+    try:
+        from privacy_shield.runner import scan
+    except ImportError:
+        return False
+    return "hash_salt" in inspect.signature(scan).parameters
+
+
+def test_hash_without_a_salt_fails_closed():
+    """True on every version: the redactor refuses to invent a salt, and neither does
+    this wrapper — an invented one is unstable per call or a lookup of the value."""
+    env = call("privacy_scan", {"text": "Ada: ada@example.com", "mode": "regex_only",
+                                "redaction_mode": "hash"})
+    assert env["ok"] is False and "result" not in env
+    assert "hash_salt" in json.dumps(env)
+
+
+@pytest.mark.skipif(not _scan_takes_a_hash_salt(),
+                    reason="installed privacy-shield does not thread hash_salt (<= 2.0.0)")
+def test_hash_with_a_salt_redacts_and_is_salt_dependent():
+    salt = "a" * 64
+    def overlay(s):
+        env = call("privacy_scan", {"text": "Ada: ada@example.com", "mode": "regex_only",
+                                    "redaction_mode": "hash", "hash_salt": s})
+        assert env["ok"], env
+        doc = env["result"]["documents"][0]
+        assert "ada@example.com" not in json.dumps(env, ensure_ascii=False)
+        assert doc["overlay"] is not None and "overlay_withheld" not in doc
+        return doc["overlay"]
+    assert "[SHA:" in overlay(salt)
+    assert overlay(salt) == overlay(salt) and overlay(salt) != overlay("b" * 64)
+
+
+def test_privacy_scan_withholds_an_uncleaned_overlay():
+    """detect_only produces no redaction, so the overlay is withheld rather than returned:
+    the span metadata still answers "is there PII here", which is what the mode is for."""
+    env = call("privacy_scan", {"text": "Ada: ada@example.com", "mode": "regex_only",
+                                "redaction_mode": "detect_only"})
+    doc = env["result"]["documents"][0]
+    assert doc["overlay"] is None and "not a cleaned overlay" in doc["overlay_withheld"]
+    assert doc["pii_detected"] and doc["span_count"] >= 1
+    clean = call("privacy_scan", {"text": "Ada: ada@example.com", "mode": "regex_only"})
+    kept = clean["result"]["documents"][0]
+    assert kept["overlay"] == "Ada: [EMAIL]" and "overlay_withheld" not in kept
 
 
 def test_a2a_ground_is_derivation_only():
@@ -693,3 +764,35 @@ def test_audit_chain_verify_is_read_only(tmp_path, monkeypatch):
     env = call("audit_chain_verify", {"folder": str(tmp_path)})
     assert env["unavailable"] and "will not mint" in env["reason"]
     assert not keys.exists()
+
+
+def test_privacy_scan_refuses_a_serialiser_that_carries_originals(monkeypatch):
+    """The backstop: a privacy-shield inside the range whose to_dict still reflects
+    SpanFinding.value/.context (the pre-release 2.0.0 commits) yields `unavailable`, not
+    an envelope with the original in it."""
+    runner = pytest.importorskip("privacy_shield.runner")
+    leaky = runner.ScanReport.to_dict
+    monkeypatch.setattr(runner.ScanReport, "to_dict", lambda self, **_: leaky(self, include_original=True))
+    env = call("privacy_scan", {"text": "Ada: ada@example.com IBAN DE89370400440532013000"})
+    assert env["ok"] is False and env.get("unavailable") is True
+    blob = json.dumps(env, ensure_ascii=False)
+    assert "ada@example.com" not in blob and "DE89370400440532013000" not in blob
+
+
+@pytest.mark.parametrize("redaction_mode", ["detect_only", "redact", "pseudonymize", "block"])
+def test_privacy_scan_withholds_a_span_whose_value_is_not_its_original(monkeypatch, redaction_mode):
+    """The local-model layer records a `value_hint`, not the matched text, with
+    end = start + 10: a residual read from `value` alone let the untouched overlay out
+    under detect_only, and under redact the rest of the address after ten characters."""
+    runtime = pytest.importorskip("privacy_shield.services.local_model_runtime")
+    text = "treffpunkt ist wie immer am alten wasserturm 7 hinten."
+    hit = {"type": "address", "value_hint": "Alter Wasserturm 7", "start_pos": text.index("am alten")}
+    monkeypatch.setattr(runtime, "is_local_model_available", lambda *a, **k: True)
+    monkeypatch.setattr(runtime, "detect_pii_with_local_model", lambda t, **k: {
+        "detected_pii": [hit], "confidence": 0.9, "categories": ["address"],
+        "safe_to_send_external": False, "error": None})
+    env = call("privacy_scan", {"text": text, "redaction_mode": redaction_mode})
+    doc = env["result"]["documents"][0]
+    assert [s["layer"] for s in doc["spans"]] == [5]
+    assert doc["overlay"] is None and "overlay_withheld" in doc
+    assert "asserturm" not in json.dumps(env, ensure_ascii=False)

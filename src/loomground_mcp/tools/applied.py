@@ -10,7 +10,7 @@ import json
 from importlib.resources import files
 from typing import Any, Optional
 
-from ._result import enum_of, import_plane, tool
+from ._result import Unavailable, enum_of, import_plane, tool
 
 
 @tool("policy-compiler", "policy_compiler.compile")
@@ -61,13 +61,21 @@ def evidence_verify(envelope: dict[str, Any]) -> Any:
 def privacy_scan(text: str, mode: str = "standard", destination: str = "external_llm",
                  redaction_mode: str = "redact", min_confidence: str = "medium",
                  audit_log_path: Optional[str] = None, tenant_id: str = "",
-                 user_id: str = "") -> Any:
+                 user_id: str = "", hash_salt: str = "") -> Any:
     """Scan raw text locally, produce its clean overlay and decide whether that
     overlay may leave for `destination`.  The original text and placeholder map
-    never leave this call.  The package records its normal local audit event."""
+    never leave this call.  The package records its normal local audit event.
+
+    `hash_salt` is required by `redaction_mode="hash"` and used by no other mode:
+    the digest is stable for a salt and changes with it, so the caller owns it.
+    Without one, hash fails closed rather than hashing under an invented salt."""
     ps = import_plane("privacy_shield")
     scanner = import_plane("privacy_shield.scanner")
-    return ps.scan(
+    # forwarded only when supplied: privacy-shield took no hash_salt before it threaded
+    # one to the redactor, so always passing the keyword would break every scan on a
+    # version that does not accept it, not just a hash one.
+    salt = {"hash_salt": hash_salt} if hash_salt else {}
+    report = ps.scan(
         text,
         mode=enum_of(ps.PrivacyMode, mode),
         destination=destination,
@@ -77,7 +85,61 @@ def privacy_scan(text: str, mode: str = "standard", destination: str = "external
         tenant_id=tenant_id,
         user_id=user_id,
         force_text=True,
+        **salt,
     )
+    # to_dict(include_original=False) is where privacy-shield holds the skill's
+    # prohibited: egress_original_unredacted_text. Returning the ScanReport itself
+    # would let `plain()` reflect the dataclass instead — its field branch runs
+    # before its to_dict branch — and SpanFinding.value/.context are the original.
+    payload = report.to_dict()
+    # to_dict closes the spans, not `overlay`. Under detect_only nothing redacts, and
+    # under block the redactor may refuse, and then `overlay` IS the untouched original while
+    # egress_allowed stays true — the gate rules on the source class, not the residual
+    # (the skill's clear_a_cleared_source_class_whatever_the_overlay_residual). That
+    # verdict is privacy-shield's to make and is left alone; what this call will not do
+    # is hand back an overlay the originals are still in. Checked span by span against
+    # the values the report carries, not inferred from placeholder_count. A span's
+    # `value` is not always its original (the local-model layer records a hint, with
+    # end = start + 10), so the text at its offsets is read too; an overlay that is the
+    # text unchanged counts every span, and so does a span whose value is not the text
+    # at its offsets — the redactor rewrote those offsets, not what the layer found.
+    for document, out in zip(report.documents, payload["documents"]):
+        residual = _residual(text, document)
+        if residual and out.get("overlay") is not None:
+            out["overlay"] = None
+            out["overlay_withheld"] = (f"{residual} detected value(s) still present; "
+                                       "not a cleaned overlay")
+    # the backstop for both of the above: a privacy-shield inside the range whose
+    # to_dict still carries SpanFinding.value/.context (the pre-release 2.0.0 commits
+    # did) is refused whole, not trusted field by field.
+    detected = {s.value for d in report.documents for s in d.spans if s.value}
+    if any(v in s for s in _strings(payload) for v in detected):
+        raise Unavailable("a detected value appears in the serialised report; "
+                          "privacy_scan returns nothing rather than risk egressing it")
+    return payload
+
+
+def _residual(text: str, document: Any) -> int:
+    if not document.spans:
+        return 0
+    if document.overlay == text:
+        return len(document.spans)
+    misplaced = sum(1 for s in document.spans if s.value and text[s.start:s.end] != s.value)
+    probes = {s.value for s in document.spans if s.value}
+    probes |= {text[s.start:s.end] for s in document.spans if 0 <= s.start < s.end <= len(text)}
+    return misplaced + len({p for p in probes if p.strip() and p in document.overlay})
+
+
+def _strings(value: Any):
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for k, v in value.items():
+            yield str(k)
+            yield from _strings(v)
+    elif isinstance(value, (list, tuple)):
+        for v in value:
+            yield from _strings(v)
 
 
 @tool("a2a-compliance", "a2a_compliance.ground")
