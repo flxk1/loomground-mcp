@@ -100,9 +100,8 @@ def privacy_scan(text: str, mode: str = "standard", destination: str = "external
     # is hand back an overlay the originals are still in. Checked span by span against
     # the values the report carries, not inferred from placeholder_count. A span's
     # `value` is not always its original (the local-model layer records a hint, with
-    # end = start + 10), so the text at its offsets is read too; an overlay that is the
-    # text unchanged counts every span, and so does a span whose value is not the text
-    # at its offsets — the redactor rewrote those offsets, not what the layer found.
+    # end = start + 10), so a span whose value is empty or is not the text at its
+    # offsets counts too — the redactor rewrote those offsets, not what the layer found.
     for document, out in zip(report.documents, payload["documents"]):
         residual = _residual(text, document)
         if residual and out.get("overlay") is not None:
@@ -120,14 +119,8 @@ def privacy_scan(text: str, mode: str = "standard", destination: str = "external
 
 
 def _residual(text: str, document: Any) -> int:
-    if not document.spans:
-        return 0
-    if document.overlay == text:
-        return len(document.spans)
-    misplaced = sum(1 for s in document.spans if s.value and text[s.start:s.end] != s.value)
-    probes = {s.value for s in document.spans if s.value}
-    probes |= {text[s.start:s.end] for s in document.spans if 0 <= s.start < s.end <= len(text)}
-    return misplaced + len({p for p in probes if p.strip() and p in document.overlay})
+    misplaced = sum(1 for s in document.spans if not s.value or text[s.start:s.end] != s.value)
+    return misplaced + len({s.value for s in document.spans if s.value.strip() and s.value in document.overlay})
 
 
 def _strings(value: Any):

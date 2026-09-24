@@ -779,14 +779,15 @@ def test_privacy_scan_refuses_a_serialiser_that_carries_originals(monkeypatch):
     assert "ada@example.com" not in blob and "DE89370400440532013000" not in blob
 
 
+@pytest.mark.parametrize("hint", ["Alter Wasserturm 7", ""])
 @pytest.mark.parametrize("redaction_mode", ["detect_only", "redact", "pseudonymize", "block"])
-def test_privacy_scan_withholds_a_span_whose_value_is_not_its_original(monkeypatch, redaction_mode):
+def test_privacy_scan_withholds_a_span_whose_value_is_not_its_original(monkeypatch, redaction_mode, hint):
     """The local-model layer records a `value_hint`, not the matched text, with
     end = start + 10: a residual read from `value` alone let the untouched overlay out
     under detect_only, and under redact the rest of the address after ten characters."""
     runtime = pytest.importorskip("privacy_shield.services.local_model_runtime")
     text = "treffpunkt ist wie immer am alten wasserturm 7 hinten."
-    hit = {"type": "address", "value_hint": "Alter Wasserturm 7", "start_pos": text.index("am alten")}
+    hit = {"type": "address", "value_hint": hint, "start_pos": text.index("am alten")}
     monkeypatch.setattr(runtime, "is_local_model_available", lambda *a, **k: True)
     monkeypatch.setattr(runtime, "detect_pii_with_local_model", lambda t, **k: {
         "detected_pii": [hit], "confidence": 0.9, "categories": ["address"],
