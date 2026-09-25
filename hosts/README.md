@@ -58,7 +58,7 @@ Both files carry `REPLACE_WITH_YOUR_CREDENTIAL_ID` where a credential id belongs
 
 ## Langdock
 
-Settings → Integrations → *Add integration* → *Connect remote MCP* → the server's URL. The server must be reachable over public HTTPS, so run `loomground-mcp serve --transport streamable-http --token <token>` behind a TLS reverse proxy and give Langdock the proxied URL plus the header `Authorization: Bearer <token>`. Then create an assistant, paste a skill's instructions as its system instructions, attach the integration and enable only that skill's `allowed-tools`.
+Settings → Integrations → *Add integration* → *Connect remote MCP* → the server's URL. The server must be reachable over public HTTPS, so run `loomground-mcp serve --transport streamable-http --token <token>` behind a TLS reverse proxy and give Langdock the proxied URL plus the header `Authorization: Bearer <token>`. Then create an assistant, paste a skill's instructions as its system instructions, attach the integration and enable only the tools that skill's `allowed-tools` names from this server; grants such as `Read` or `Bash(...)` are for the host, not the integration (the converter's Langdock output lists exactly which).
 
 ```bash
 python hosts/skill_to_platform.py <SKILL.md> --target langdock --server-url https://<your-host>/mcp -o assistant.md

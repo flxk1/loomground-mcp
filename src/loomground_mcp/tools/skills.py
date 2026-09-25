@@ -62,9 +62,18 @@ def prompt_names(index: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     return {(f"{e['repo']}/{e['name']}" if e["name"] in shared else e["name"]): e for e in index if not e.get("private")}
 
 
+SERVED_SHAPE = re.compile(r"[a-z][a-z0-9_]*")
+
+
 def header(entry: dict[str, Any]) -> str:
-    tools = " ".join(entry["allowed_tools"]) or "(none declared)"
-    return f"Skill {entry['name']} from {entry['repo']} @ {entry['commit']}; tools: {tools}"
+    """`allowed-tools` mixes this server's tools with grants the skill asks of its host
+    (`Read`, `Bash(privacy-shield:*)`); the header names them apart. Every served tool is
+    lowercase snake_case and a grant is not."""
+    served = [t for t in entry["allowed_tools"] if SERVED_SHAPE.fullmatch(t)]
+    grants = [t for t in entry["allowed_tools"] if t not in served]
+    tools = " ".join(served) or "(none declared)"
+    aside = f"; host grants: {' '.join(grants)}" if grants else ""
+    return f"Skill {entry['name']} from {entry['repo']} @ {entry['commit']}; tools: {tools}{aside}"
 
 
 def render(entry: dict[str, Any]) -> str:

@@ -388,11 +388,11 @@
     {
       "repo": "privacy-shield",
       "name": "privacy-shield",
-      "commit": "ba34ddff5f55293181eef7d260aca572d12c7d08",
+      "commit": "dc71ff0bc1491cc6cfd5f31568c41a3c94d474a0",
       "source": "skills/privacy-shield",
-      "url": "https://github.com/flxk1/privacy-shield/tree/ba34ddff5f55293181eef7d260aca572d12c7d08/skills/privacy-shield",
+      "url": "https://github.com/flxk1/privacy-shield/tree/dc71ff0bc1491cc6cfd5f31568c41a3c94d474a0/skills/privacy-shield",
       "files": {
-        "SKILL.md": "fae3d96c7332b6849f31b55ada1686bdcbe928954d2019a5728aae72323ed0c1"
+        "SKILL.md": "d89d91a39528b89956e523476b6c3a8d4356980440d258aec85ba17ed2b317d3"
       }
     }
   ],

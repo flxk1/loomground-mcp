@@ -98,3 +98,24 @@ def test_a_folded_description_is_read():
     fm = frontmatter_fields("---\nname: demo\ndescription: >-\n  First half\n  and second half.\nallowed-tools: a b\n---\n\n# demo\n")
     assert fm["description"] == "First half and second half."
     assert fm["name"] == "demo" and fm["allowed-tools"] == "a b"
+
+
+@pytest.mark.parametrize("raw,tools", [
+    ("", []),
+    ("a b", ["a", "b"]),
+    ("privacy_scan, Bash(privacy-shield:*), Read", ["privacy_scan", "Bash(privacy-shield:*)", "Read"]),
+    ("Bash(a:*, b:*),Read", ["Bash(a:*, b:*)", "Read"]),
+])
+def test_allowed_tools_split_at_paren_depth_zero(raw, tools):
+    """Agent Skills writes `allowed-tools` comma-separated; a whitespace split kept the
+    commas (`privacy_scan,`), and splitting every comma took a scoped grant apart."""
+    import vendor_skills
+    assert vendor_skills.split_allowed_tools(raw) == tools
+
+
+def test_a_host_grant_is_named_apart_in_the_prompt_header():
+    """privacy-shield asks its host for `Bash(privacy-shield:*)` and `Read` beside
+    `privacy_scan`; the header must not present those as this server's tools."""
+    entry = next(e for e in INDEX if e["repo"] == "privacy-shield")
+    assert entry["allowed_tools"] == ["privacy_scan", "Bash(privacy-shield:*)", "Read"]
+    assert header(entry).endswith("; tools: privacy_scan; host grants: Bash(privacy-shield:*) Read")

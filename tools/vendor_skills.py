@@ -218,13 +218,33 @@ def record(repo: str, name: str, commit: str, files: dict[str, str], private: bo
     return {**r, "private": True} if private else r
 
 
+def split_allowed_tools(raw: str) -> list[str]:
+    """`allowed-tools` as a list: comma- or whitespace-separated, split only at paren depth
+    zero, so the comma in `Bash(a:*, b:*)` stays inside its one grant."""
+    depth, token, out = 0, [], []
+    for ch in raw.strip():
+        if ch in "([{":
+            depth += 1
+        elif ch in ")]}" and depth:
+            depth -= 1
+        if depth == 0 and (ch.isspace() or ch == ","):
+            if token:
+                out.append("".join(token))
+                token = []
+            continue
+        token.append(ch)
+    if token:
+        out.append("".join(token))
+    return out
+
+
 def index_record(repo: str, name: str, commit: str, text: str, private: bool) -> dict:
     fm = frontmatter_fields(text)
     if fm.get("name") != name:
         raise Fail(f"{repo}/{name}: SKILL.md frontmatter names {fm.get('name')!r}")
     path = f"{source_path(name)}/SKILL.md"
     r = {"repo": repo, "name": name, "description": fm.get("description", ""),
-         "allowed_tools": fm.get("allowed-tools", "").split(), "commit": commit, "path": path,
+         "allowed_tools": split_allowed_tools(fm.get("allowed-tools", "")), "commit": commit, "path": path,
          "url": f"{GITHUB}/{repo}/blob/{commit}/{path}"}
     return {**r, "private": True} if private else r
 

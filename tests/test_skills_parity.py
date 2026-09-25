@@ -48,7 +48,7 @@ def test_vendored_skill_matches_repository(entry):
     upstream = vendor_skills.tree(co, commit, vendor_skills.source_path(name))
     blob = vendor_skills.git(co, "cat-file", "blob", upstream["SKILL.md"][1])
     fm = frontmatter_fields(blob.decode("utf-8"))
-    assert (fm["name"], fm["description"], fm.get("allowed-tools", "").split()) == \
+    assert (fm["name"], fm["description"], vendor_skills.split_allowed_tools(fm.get("allowed-tools", ""))) == \
         (name, entry["description"], entry["allowed_tools"])
     if entry.get("private"):
         assert not body_path(entry).is_file()
