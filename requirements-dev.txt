@@ -30,7 +30,8 @@ loomground-lock @ git+https://github.com/flxk1/loomground-lock@f99e24b79278f42c7
 loomground-lane @ git+https://github.com/flxk1/loomground-lane@9bac236ed7034b6183470e2a49137fde477d9b59
 loomground-drift @ git+https://github.com/flxk1/loomground-drift@e8279ec38255f278b978752fc13dffb51acfd448
 loomground-erasure @ git+https://github.com/flxk1/loomground-erasure@df098be5815e5dc418d36d397a8d9b24697279e7
-# transitive: audit-chain, lock and erasure consume it; no index, so it is pinned here too (tag v0.1.0).
+# transitive: audit-chain, erasure and lock import it and drift and lane declare it; tests/conftest.py's chain fixture
+# imports it too. No index, so it is pinned here (tag v0.1.0).
 loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@b022d61f7c5e5d3dae85cf037f09ec4d446a3eb7
 # Applied skill runtimes, adding the corresponding MCP declarations to each
 # canonical skill. Pinned at the commit each release tag points at on GitHub (a

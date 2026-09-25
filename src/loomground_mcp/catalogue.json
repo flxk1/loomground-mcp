@@ -754,7 +754,7 @@
       "skills": [
         "privacy-shield"
       ],
-      "install": "pip install \"git+https://github.com/flxk1/privacy-shield.git@v1.0.0\"",
+      "install": "pip install \"git+https://github.com/flxk1/privacy-shield.git@v2.1.1\"",
       "url": "https://github.com/flxk1/privacy-shield"
     },
     {
