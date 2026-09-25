@@ -1,0 +1,34 @@
+# policy-officer.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
+human workspace_owner role workspace_owner
+actor policy_officer grade L2
+
+gate ground_policy risk low grant policy_officer
+gate compile_lg_twin risk medium grant policy_officer
+gate validate_patch risk low grant policy_officer
+gate apply_patch risk critical grade L4 grant policy_officer
+gate rebind_lane risk high grade L3 grant policy_officer
+gate release risk low
+
+cord policy_officer -> ground_policy
+cord policy_officer -> compile_lg_twin
+cord policy_officer -> validate_patch
+cord policy_officer -> apply_patch
+cord policy_officer -> rebind_lane
+cord ground_policy -> release
+cord compile_lg_twin -> release
+cord validate_patch -> release
+cord apply_patch -> release
+cord rebind_lane -> release
+cord release -> master
+
+prohibit auto_apply_policy
+prohibit enforce_unvalidated
+prohibit self_widen_authority
+prohibit silent_disable
+reserve apply_patch by workspace_owner
+reserve rebind_lane by workspace_owner
+obligation litmus_classified on release
+obligation human_confirm_before_apply on release
+obligation fingerprint_pinned on release
+obligation validated_before_apply on release
+redress apply_patch by workspace_owner overturn within 14d

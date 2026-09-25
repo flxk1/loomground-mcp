@@ -1,46 +1,45 @@
 # Git-pinned first-party planes (no index yet). Install BEFORE `pip install .` so the ranges resolve.
 # A pin is the dependency's release tag (RELEASES.json in loomground) where the family's declared ranges let pip
 # resolve the set together; otherwise a commit on the dependency's public main (see CHANGELOG for which and why).
-loomground-governance @ git+https://github.com/flxk1/loomground-governance@270e11d0bbded46c810b2fe56559323d6dcd969a
-loomground-deontic @ git+https://github.com/flxk1/loomground-deontic@35f8eabdc533b275a086b20c8d7a161f4acc46a8
+loomground-governance @ git+https://github.com/flxk1/loomground-governance@82c7613e4a2247218a7281dd99933ed7c9e31218
+loomground-deontic @ git+https://github.com/flxk1/loomground-deontic@319e218500da42dea693830ff790343aa340bd60
 loomground-factual @ git+https://github.com/flxk1/loomground-factual@db60a0592eb7741732944f05279b27def0c9685b
 loomground-epistemic @ git+https://github.com/flxk1/loomground-epistemic@2c1dc8ea8278fe3d1aeffa470319573c53dee932
-loomground-solver @ git+https://github.com/flxk1/loomground-solver@5b72f71ebd1f732b4e713b51de15d3ac565faa96
-loomground-norm @ git+https://github.com/flxk1/loomground-norm@104a3ca2272e34898b23fa43ba164e968d8f1001
-loomground-versum @ git+https://github.com/flxk1/loomground-versum@15e7bfc4fcfc942ba4d18f91b769ecfbbd092f47
-loomground-ingest @ git+https://github.com/flxk1/loomground-ingest@ce9639b9ea18d90c5ee386135ccce526a66b8e45
-loomground-brief @ git+https://github.com/flxk1/loomground-brief@80a4fc4aca7f54422ca49a639a9e5f878e55e1da
-loomground-collapse @ git+https://github.com/flxk1/loomground-collapse@f0214d9a25a920e27c29968b3c829d4e1ee564e8
-loomground-escalation @ git+https://github.com/flxk1/loomground-escalation@e97f1fbcd7f1bbef0781e54a571345a475518577
-loomground-falsifiability @ git+https://github.com/flxk1/loomground-falsifiability@98e60ed4d2db3d6b950ba5c71d2b10b6427fb069
-loomground-proxy @ git+https://github.com/flxk1/loomground-proxy@dccef6f96ad135a0bd79a9e3e0b77003fb4b331c
-loomground-mandate @ git+https://github.com/flxk1/loomground-mandate@e96c59dcbb52822418ed7035cc8bd4d44c3fd3ec
+loomground-solver @ git+https://github.com/flxk1/loomground-solver@2cdf037882e3d867faa7e47e8f6b71a4dee0e38d
+loomground-norm @ git+https://github.com/flxk1/loomground-norm@9d5f68f140dc8a904306eb265e19ddfb4dd4562a
+loomground-versum @ git+https://github.com/flxk1/loomground-versum@2855a4904bea9ec4cc88e8c3550bd0c20ba4764a
+loomground-ingest @ git+https://github.com/flxk1/loomground-ingest@e741c28f3b4f9cc89e61ae23ff537414ea95cad1
+loomground-brief @ git+https://github.com/flxk1/loomground-brief@f9a092de9bb5f81fdb0149e3fe563ac7fb1bf48e
+loomground-collapse @ git+https://github.com/flxk1/loomground-collapse@84693981a02d7e0465c4d3c7b91c0552e6e0826e
+loomground-escalation @ git+https://github.com/flxk1/loomground-escalation@cd2a10ac78bd31d7d3baa0a10d147c1288a1ed35
+loomground-falsifiability @ git+https://github.com/flxk1/loomground-falsifiability@dc5984720cdd77dfdfd16b0f681c4f5155ecdf12
+loomground-proxy @ git+https://github.com/flxk1/loomground-proxy@ba3598a4d7f392a722c7f99c1ed6ec5ee543e5ae
+loomground-mandate @ git+https://github.com/flxk1/loomground-mandate@d37cc6123919206dda8021e9c5075b9b8a5ae5ee
 oversight-certificate @ git+https://github.com/flxk1/oversight-certificate@8dbb4fa46042f12eeecaf37cb1ad095b838d7185
-governance-certification @ git+https://github.com/flxk1/governance-certification@9eb3f2bd79130e72bd700ba8dc44c175ffdff935
+governance-certification @ git+https://github.com/flxk1/governance-certification@3d7a1121c135b43784d9b21d750d54c1a4f879c6
 norm-freshness @ git+https://github.com/flxk1/norm-freshness@e2951a6db30e0773742d4bf15a915d983ee30216
-obligation-discharge @ git+https://github.com/flxk1/obligation-discharge@45058bcce230cc3e96171762afd9b13b450fa6c7
+obligation-discharge @ git+https://github.com/flxk1/obligation-discharge@4030c2d4fc2603d5bff272859abb1dae7ee89d8c
 effect-reconciliation @ git+https://github.com/flxk1/effect-reconciliation@a5164fb54cc9c29ff38baa68dd0499336c1684ab
 enforcement-posture @ git+https://github.com/flxk1/enforcement-posture@5e0096cff629e44d51c4f1b2db5116820b3f1a1b
-5d-nd @ git+https://github.com/flxk1/5d-nd@82a7d4bf0e3e18c8dd28068143fe78b6a510a4d5
+5d-nd @ git+https://github.com/flxk1/5d-nd@5d8d726675c093fff13cc011b49a22fd60568f22
 # Runtime controls and the signed audit chain, at their release tags. `loomground-lock-v0.2.0` and
 # `loomground-drift-v0.2.0` tag commits whose `_version.py` still reads 0.1.0 (release-please bumped the
 # manifest, not the version source), so the declared ranges follow the version pip actually installs.
 loomground-audit-chain @ git+https://github.com/flxk1/loomground-audit-chain@7a6e7a4dab006862391d35309c1a65a3023992b3
-loomground-lock @ git+https://github.com/flxk1/loomground-lock@b8a26930fd301d0181139fbb5665342fd614ef8e
+loomground-lock @ git+https://github.com/flxk1/loomground-lock@f99e24b79278f42c7fcfdf5394bb6aea8173a91f
 loomground-lane @ git+https://github.com/flxk1/loomground-lane@9bac236ed7034b6183470e2a49137fde477d9b59
-loomground-drift @ git+https://github.com/flxk1/loomground-drift@f7de9456fccb8c76843eee260db2955cc6ee6444
+loomground-drift @ git+https://github.com/flxk1/loomground-drift@e8279ec38255f278b978752fc13dffb51acfd448
 loomground-erasure @ git+https://github.com/flxk1/loomground-erasure@df098be5815e5dc418d36d397a8d9b24697279e7
 # transitive: audit-chain, lock and erasure consume it; no index, so it is pinned here too (tag v0.1.0).
-loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@e6e5e7dae8dc11e089a11dc15f3b519d2e4750ad
+loomground-workspace @ git+https://github.com/flxk1/loomground-workspace@b022d61f7c5e5d3dae85cf037f09ec4d446a3eb7
 # Applied skill runtimes, adding the corresponding MCP declarations to each
-# canonical skill. Pinned at the commit each dependency's release tag points
-# at (a tag name is mutable; the register resolves this SHA to its release
-# via dev_pin_release, same as every other pin in this file, so a tag ref
-# buys nothing and weakens the pin). policy-compiler@policy-compiler-v0.3.0,
-# evidence-emitter@v0.1.0, a2a-compliance@v0.3.0, privacy-shield@v2.1.1 (the
-# pre-release commit it was on predates the serialiser privacy_scan relies on).
-policy-compiler @ git+https://github.com/flxk1/policy-compiler@41dfd3e3d35e7f171d3215f4e5dc54a60c4e8bd9
+# canonical skill. Pinned at the commit each release tag points at on GitHub (a
+# tag name is mutable, so a tag ref weakens the pin): policy-compiler@policy-compiler-v0.3.0,
+# evidence-emitter@v0.1.0, privacy-shield@v2.1.1, a2a-compliance@v0.3.0 — the
+# releases pyproject's ranges admit. privacy-shield 1.x is out of range: its
+# import root is brain.privacy_shield and it serialises originals.
+policy-compiler @ git+https://github.com/flxk1/policy-compiler@d14e9a859661421738c3e0c8d2d79ae1941fbc2f
 evidence-emitter @ git+https://github.com/flxk1/evidence-emitter@07af3e3f76e070afcfaf933b194f43f3cc5bfc93
 privacy-shield @ git+https://github.com/flxk1/privacy-shield@dc71ff0bc1491cc6cfd5f31568c41a3c94d474a0
-a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@0da77b8b55d538b3a647667262ad5923483d7849
+a2a-compliance @ git+https://github.com/flxk1/a2a-compliance@fd2239949175472af457da90fa7d24f636c05d48
 pytest==9.1.1

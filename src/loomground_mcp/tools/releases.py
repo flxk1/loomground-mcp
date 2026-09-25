@@ -13,7 +13,7 @@ from typing import Any, Optional
 from ._result import Unavailable, tool
 
 PLANE = "loomground"
-SOURCE = {"repo": "https://github.com/flxk1/loomground", "commit": "91a0bbee2d8b2520cee8e1d2e5fc9928084d79f4"}
+SOURCE = {"repo": "https://github.com/flxk1/loomground", "commit": "67f45b8de67b618f2d018bdb4c415de033f6b8f3"}
 
 
 def load() -> dict[str, Any]:

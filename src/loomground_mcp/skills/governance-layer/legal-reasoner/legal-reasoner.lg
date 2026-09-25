@@ -1,0 +1,33 @@
+# legal-reasoner.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
+human affected_party role affected_party
+human legal_reviewer role legal_reviewer
+human policy_owner role policy_owner
+actor legal_reasoner grade L2
+
+gate warrant_conclusion risk medium grant legal_reasoner
+gate quantify_exposure risk medium grant legal_reasoner
+gate emit_lg_patch risk high grade L3 grant legal_reasoner
+gate release_disposition risk critical grade L4 grant legal_reasoner
+gate release risk low
+
+cord legal_reasoner -> warrant_conclusion
+cord legal_reasoner -> quantify_exposure
+cord legal_reasoner -> emit_lg_patch
+cord legal_reasoner -> release_disposition
+cord warrant_conclusion -> release
+cord quantify_exposure -> release
+cord emit_lg_patch -> release
+cord release_disposition -> release
+cord release -> master
+
+prohibit reason_over_unconfirmed
+prohibit self_enact
+prohibit parallel_grounding_layer
+reserve release_disposition by 2 of { legal_reviewer, policy_owner }
+obligation warrant_shown on release
+obligation premises_confirmed on release
+obligation grounding_called_first on release
+obligation egress_checked on release
+obligation egress_payload_moat_safe on release
+obligation completeness_asserted on release
+redress released_disposition by affected_party overturn within 14d

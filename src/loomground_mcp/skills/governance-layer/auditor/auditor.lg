@@ -1,0 +1,35 @@
+# auditor.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
+human workspace_owner role workspace_owner
+actor auditor grade L2
+
+gate verify_chain risk low grant auditor
+gate tail_chain risk low grant auditor
+gate get_event risk low grant auditor
+gate shadow_scan risk low grant auditor
+gate discipline risk low grant auditor
+gate record_override risk medium grant auditor
+gate release risk low
+
+cord auditor -> verify_chain
+cord auditor -> tail_chain
+cord auditor -> get_event
+cord auditor -> shadow_scan
+cord auditor -> discipline
+cord auditor -> record_override
+cord verify_chain -> release
+cord tail_chain -> release
+cord get_event -> release
+cord shadow_scan -> release
+cord discipline -> release
+cord record_override -> release
+cord release -> master
+
+prohibit mutate_graph
+prohibit mutate_policy
+prohibit sign_content
+prohibit repair_in_place
+obligation read_only_default on release
+obligation chain_verified_before_report on release
+obligation rationale_on_override on release
+obligation findings_not_masked on release
+redress recorded_override by workspace_owner overturn

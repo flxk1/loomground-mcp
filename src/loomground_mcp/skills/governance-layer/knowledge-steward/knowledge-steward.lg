@@ -1,0 +1,43 @@
+# knowledge-steward.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
+human curator role curator
+human data_protection_officer role data_protection_officer
+human subject role subject
+human workspace_owner role workspace_owner
+actor knowledge_steward grade L2
+
+gate ingest_dryrun risk low grant knowledge_steward
+gate extract_concepts risk low grant knowledge_steward
+gate propose_placement risk medium grant knowledge_steward
+gate graph_write risk high grade L3 grant knowledge_steward
+gate curate_canon risk high grade L3 grant knowledge_steward
+gate graph_erase risk critical grade L4 grant knowledge_steward
+gate release risk low
+
+cord knowledge_steward -> ingest_dryrun
+cord knowledge_steward -> extract_concepts
+cord knowledge_steward -> propose_placement
+cord knowledge_steward -> graph_write
+cord knowledge_steward -> curate_canon
+cord knowledge_steward -> graph_erase
+cord ingest_dryrun -> release
+cord extract_concepts -> release
+cord propose_placement -> release
+cord graph_write -> release
+cord curate_canon -> release
+cord graph_erase -> release
+cord release -> master
+
+prohibit direct_write_bypassing_path
+prohibit binary_fetch_in_session
+prohibit invent_node
+prohibit unlogged_mutation
+reserve graph_erase by data_protection_officer and workspace_owner
+reserve curate_canon by curator
+obligation single_write_path on release
+obligation dry_run_then_confirm on release
+obligation dedup_urn_sidecar on release
+obligation legal_basis_recorded on release
+obligation egress_checked on release
+obligation erase_egress_limit_disclosed on release
+redress graph_erase by subject within 30d
+redress graph_write by workspace_owner overturn
