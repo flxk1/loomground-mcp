@@ -101,18 +101,52 @@ def test_versum_search(policy_folder):
     assert [h["snippet"] for h in env["result"]["hits"]] == ["The operator may retain invoices for ten years."]
 
 
+def _csv_row_count(path):
+    """Rows in a csv file (0 if the file doesn't exist yet, or exists only as index_folder's empty scaffold)."""
+    import csv
+    import os
+    if not os.path.isfile(path):
+        return 0
+    with open(path, newline="", encoding="utf-8") as fh:
+        return sum(1 for _ in csv.DictReader(fh))
+
+
+def _listing(folder):
+    import os
+    return sorted(
+        (os.path.relpath(os.path.join(dirpath, name), folder), os.path.getsize(os.path.join(dirpath, name)))
+        for dirpath, _, names in os.walk(folder) for name in names
+    )
+
+
 def test_versum_capture(policy_folder, tmp_path):
     src = tmp_path / "inbox"; src.mkdir()
     (src / "policy.md").write_text("The controller must notify the authority within 72 hours.\n", encoding="utf-8")
-    env = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "policy.md"), "profile": "law-eu"})
+
+    before = _listing(policy_folder)
+    dry = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "policy.md"), "profile": "law-eu"})
+    after = _listing(policy_folder)
+    assert dry["ok"] and dry["result"]["dry_run"] is True
+    assert dry["result"]["status"] == "would_admit" and dry["result"]["admitted"] is False
+    assert dry["result"]["urn"].startswith("urn:")
+    assert before == after  # a default call leaves the folder byte-for-byte unchanged
+
+    env = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "policy.md"),
+                                   "profile": "law-eu", "confirm": True})
     r = env["result"]
-    assert env["ok"] and r["status"] == "admitted" and r["claim_count"] == 1 and r["urn"].startswith("urn:")
+    assert env["ok"] and r["dry_run"] is False and r["status"] == "admitted" and r["claim_count"] == 1
+    assert r["urn"].startswith("urn:")
     assert r["index"]["n_sources"] == 2  # policy.txt already in the folder + the admitted source
-    again = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "policy.md"), "profile": "law-eu"})
+    assert before != _listing(policy_folder)  # confirm=True does write
+
+    again = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "policy.md"),
+                                     "profile": "law-eu", "confirm": True})
     assert again["result"]["status"] == "duplicate" and again["result"]["admitted"] is False
     (src / "table.csv").write_text("a,b\n", encoding="utf-8")
-    bad = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "table.csv")})
+    bad = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "table.csv"), "confirm": True})
     assert bad["ok"] is False and bad["error"]["type"] == "CaptureError"
+    bad_dry = call("versum_capture", {"folder": policy_folder, "source_path": str(src / "table.csv")})
+    assert bad_dry["ok"] is False and bad_dry["error"]["type"] == "CaptureError"  # validation fails before confirm matters
 
 
 def test_versum_suggest(corpus_folder):
@@ -127,32 +161,58 @@ def test_versum_suggest(corpus_folder):
 
 
 def test_versum_confirm(corpus_folder):
+    import os
     call("versum_index", {"folder": corpus_folder, "profile": "law-eu"})
     assert call("versum_confirm", {"folder": corpus_folder})["unavailable"] is True  # no queue yet
     call("versum_suggest", {"folder": corpus_folder})
-    env = call("versum_confirm", {"folder": corpus_folder, "min_sources": 2})
+
+    concepts_csv = os.path.join(corpus_folder, ".versum", "concepts.csv")
+    dry = call("versum_confirm", {"folder": corpus_folder, "min_sources": 2})
+    assert dry["result"]["dry_run"] is True
+    assert dry["result"]["concept_ids"] == ["personal-data"] and dry["result"]["n_edges"] >= 2
+    assert _csv_row_count(concepts_csv) == 0  # dry run writes nothing (index_folder's empty scaffold only)
+
+    env = call("versum_confirm", {"folder": corpus_folder, "min_sources": 2, "confirm": True})
+    assert env["result"]["dry_run"] is False
     assert env["result"]["concept_ids"] == ["personal-data"] and env["result"]["n_edges"] >= 2
-    import os
-    assert os.path.isfile(os.path.join(corpus_folder, ".versum", "concepts.csv"))
-    none = call("versum_confirm", {"folder": corpus_folder, "concept_ids": ["not-a-concept"]})
-    assert none["result"] == {"n_concepts": 0, "n_edges": 0, "concept_ids": []}
+    assert _csv_row_count(concepts_csv) == 1  # confirm=True does write
+    none = call("versum_confirm", {"folder": corpus_folder, "concept_ids": ["not-a-concept"], "confirm": True})
+    assert none["result"]["n_concepts"] == 0 and none["result"]["n_edges"] == 0 and none["result"]["concept_ids"] == []
 
 
 def test_versum_canon(corpus_folder, tmp_path):
     assert call("versum_canon", {"folder": corpus_folder})["unavailable"] is True
     call("versum_index", {"folder": corpus_folder, "profile": "law-eu"})
-    env = call("versum_canon", {"folder": corpus_folder})
+
+    import os
+    concepts_csv = os.path.join(corpus_folder, ".versum", "concepts.csv")
+    dry = call("versum_canon", {"folder": corpus_folder})
+    rd = dry["result"]
+    assert rd["dry_run"] is True and rd["layout"] == "index" and rd["n_sources"] == 2 and rd["n_concepts"] >= 1
+    assert _csv_row_count(concepts_csv) == 0  # dry run writes nothing (index_folder's empty scaffold only)
+
+    env = call("versum_canon", {"folder": corpus_folder, "confirm": True})
     r = env["result"]
-    assert r["layout"] == "index" and r["n_sources"] == 2 and r["n_concepts"] >= 1
-    import csv, os
+    assert r["dry_run"] is False and r["layout"] == "index" and r["n_sources"] == 2 and r["n_concepts"] >= 1
+    assert r["n_concepts"] == rd["n_concepts"] and r["n_edges"] == rd["n_edges"]
+    assert _csv_row_count(concepts_csv) == r["n_concepts"] > 0  # confirm=True does write
+
+    import csv
     kg = tmp_path / "kg" / "by-domain" / "dom-a"; kg.mkdir(parents=True)
     cols = ["canonical_urn", "library", "item_id", "source_urn", "text", "polarity", "predicate", "modality", "quantification"]
     with (kg / "claims.csv").open("w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols); w.writeheader()
         w.writerow(dict(zip(cols, ["urn:x:1", "lib", "i1", "urn:x:1", "A 'processor' duty.", "N", "obligation", "req", "null"])))
         w.writerow(dict(zip(cols, ["urn:x:2", "lib", "i2", "urn:x:2", "The 'processor' duty recurs.", "N", "obligation", "req", "null"])))
-    env = call("versum_canon", {"folder": str(tmp_path / "kg")})
-    assert env["result"]["layout"] == "kg" and env["result"]["n_domains"] == 1 and env["result"]["n_concepts"] == 1
+
+    dry_kg = call("versum_canon", {"folder": str(tmp_path / "kg")})
+    assert dry_kg["result"]["dry_run"] is True and dry_kg["result"]["layout"] == "kg"
+    assert dry_kg["result"]["n_domains"] == 1 and dry_kg["result"]["n_concepts"] == 1
+    assert not os.path.isfile(tmp_path / "kg" / "canon.json")  # dry run writes nothing at the kg root either
+
+    env = call("versum_canon", {"folder": str(tmp_path / "kg"), "confirm": True})
+    assert env["result"]["dry_run"] is False and env["result"]["layout"] == "kg"
+    assert env["result"]["n_domains"] == 1 and env["result"]["n_concepts"] == 1
     assert os.path.isfile(tmp_path / "kg" / "canon.json")
     assert call("versum_canon", {"folder": str(kg)})["result"]["layout"] == "domain"
 
