@@ -1,7 +1,8 @@
 ---
 name: lock-steward
 description: "Provisions and discharges the per-folder egress lock (Privacy Lock). Manages the lock, never exempt. Ratchet + fail-secure. Use when a folder's egress lock must be provisioned, checked, raised, lowered, or unsealed — 'lock this folder', 'lock status', 'egress-check this payload', 'unseal'."
-metadata: { provenance: { stamp: "tool=governance-layer version=0.1.0 input_sha256=a1a3818d80cf91346244edd953772c16f4f08ea547af05ee8d01653566f427ba" } }
+allowed-tools: lock_text, privacy_scan
+metadata: { provenance: { stamp: "tool=governance-layer version=0.1.0 input_sha256=cc4d16a56a7af23a0fb90f93482dbff1a42f97f9bce2ba1bc22b41ec46fe8de3" } }
 governance:
   grade: L2
   actions:
@@ -47,6 +48,8 @@ governance:
 Provisions and discharges the per-folder egress lock (Privacy Lock). Manages the lock, never exempt. Ratchet + fail-secure.
 
 **Doors.** Host: an egress-lock interface (setup/threshold/seal/classify/egress_check/ingress_check/audit_query). Mutations signed + reserved; bundled door HOLDs.
+
+**Public skill.** privacy-shield:privacy-shield. `allowed-tools` above is this role's whole tool grant, from one source (`ROLES` in `build_role_skills.py`); no other tool is served.
 
 ## Governance identity
 The `governance:` block above is the whole of this skill's authority. A skill is universal; the block turns it into a governed **role** that ctrl plans on and an **enforcement host enforces** (a signed verdict on the host's hash-chain -- auto / human / reserved / prohibited, joined strictest-wins), and the agent-registry records. Reserved acts hold for a human; prohibited kinds are severed regardless of grade.

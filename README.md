@@ -35,6 +35,8 @@ out: 55 loomground_catalogue
 
 55 tools, one per plane function; the seven solver skill scripts count as functions, and the topos reader, the catalogue, the release register and the skill index are this repository's. Policy compilation, development-signed evidence, local privacy scanning, A2A grounding, full-family planning, admission preview and reconciliation expose the four applied skill runtimes without activating policy, handling production keys or dispatching agent directives. The audit chain and the four runtime controls are served read-only: they decide, they do not write. Signatures, envelopes, enums and the tool table per plane: [docs/tools.md](docs/tools.md).
 
+`versum_capture` / `versum_confirm` / `versum_canon` are dry runs by default and write nothing. `confirm=True` writes only into a **local, unsigned working folder** on this host — the result carries `governed: false`, `signed: false` and the absolute `working_folder` written, plus a `note`. That write is never the governed graph: the signed record other services rely on, if any, is produced host-side, not by this offline tool.
+
 Call `loomground_catalogue` first: the family map, the pipeline order, how documents become an `.lg` patch. `loomground_releases` is the family's release and pin register, vendored from `RELEASES.json`. `loomground_skill` returns the vendored skill index; the same 26 skills are served as MCP prompts, each vendored whole — body, references, scripts — at a recorded commit and checked file for file against its repository: [docs/skills.md](docs/skills.md).
 
 Result envelope: `{plane, function, ok, result | error | unavailable}`; keys are passed per call as PEM.

@@ -1,4 +1,5 @@
 # lock-steward.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
+# stamped: tool=governance-layer version=0.1.0 input_sha256=28213004268ec9226b53204573f7b6b39dd7e515a0220d1a14bad0ac42f4da2c
 human data_protection_officer role data_protection_officer
 human workspace_owner role workspace_owner
 actor lock_steward grade L2
@@ -13,7 +14,6 @@ gate raise_threshold risk high grade L3 grant lock_steward
 gate lower_threshold risk critical grade L4 grant lock_steward
 gate downgrade_backend risk critical grade L4 grant lock_steward
 gate unseal risk critical grade L4 grant lock_steward
-gate release risk low
 
 cord lock_steward -> lock_status
 cord lock_steward -> classify_content
@@ -25,17 +25,16 @@ cord lock_steward -> raise_threshold
 cord lock_steward -> lower_threshold
 cord lock_steward -> downgrade_backend
 cord lock_steward -> unseal
-cord lock_status -> release
-cord classify_content -> release
-cord propose_lock_profile -> release
-cord egress_check -> release
-cord ingress_check -> release
-cord provision_lock -> release
-cord raise_threshold -> release
-cord lower_threshold -> release
-cord downgrade_backend -> release
-cord unseal -> release
-cord release -> master
+cord lock_status -> master
+cord classify_content -> master
+cord propose_lock_profile -> master
+cord egress_check -> master
+cord ingress_check -> master
+cord provision_lock -> master
+cord raise_threshold -> master
+cord lower_threshold -> master
+cord downgrade_backend -> master
+cord unseal -> master
 
 prohibit silent_mock_backend
 prohibit weaken_without_distinct_party
@@ -46,11 +45,65 @@ reserve provision_lock by workspace_owner
 reserve lower_threshold by workspace_owner and data_protection_officer
 reserve downgrade_backend by workspace_owner and data_protection_officer
 reserve unseal by workspace_owner
-obligation secure_default_backend on release
-obligation no_silent_weakening on release
-obligation human_confirm_before_mutate on release
-obligation every_change_chained on release
-obligation provision_is_not_access on release
-obligation egress_check_not_self_waivable on release
+obligation secure_default_backend on lock_status
+obligation secure_default_backend on classify_content
+obligation secure_default_backend on propose_lock_profile
+obligation secure_default_backend on egress_check
+obligation secure_default_backend on ingress_check
+obligation secure_default_backend on provision_lock
+obligation secure_default_backend on raise_threshold
+obligation secure_default_backend on lower_threshold
+obligation secure_default_backend on downgrade_backend
+obligation secure_default_backend on unseal
+obligation no_silent_weakening on lock_status
+obligation no_silent_weakening on classify_content
+obligation no_silent_weakening on propose_lock_profile
+obligation no_silent_weakening on egress_check
+obligation no_silent_weakening on ingress_check
+obligation no_silent_weakening on provision_lock
+obligation no_silent_weakening on raise_threshold
+obligation no_silent_weakening on lower_threshold
+obligation no_silent_weakening on downgrade_backend
+obligation no_silent_weakening on unseal
+obligation human_confirm_before_mutate on lock_status
+obligation human_confirm_before_mutate on classify_content
+obligation human_confirm_before_mutate on propose_lock_profile
+obligation human_confirm_before_mutate on egress_check
+obligation human_confirm_before_mutate on ingress_check
+obligation human_confirm_before_mutate on provision_lock
+obligation human_confirm_before_mutate on raise_threshold
+obligation human_confirm_before_mutate on lower_threshold
+obligation human_confirm_before_mutate on downgrade_backend
+obligation human_confirm_before_mutate on unseal
+obligation every_change_chained on lock_status
+obligation every_change_chained on classify_content
+obligation every_change_chained on propose_lock_profile
+obligation every_change_chained on egress_check
+obligation every_change_chained on ingress_check
+obligation every_change_chained on provision_lock
+obligation every_change_chained on raise_threshold
+obligation every_change_chained on lower_threshold
+obligation every_change_chained on downgrade_backend
+obligation every_change_chained on unseal
+obligation provision_is_not_access on lock_status
+obligation provision_is_not_access on classify_content
+obligation provision_is_not_access on propose_lock_profile
+obligation provision_is_not_access on egress_check
+obligation provision_is_not_access on ingress_check
+obligation provision_is_not_access on provision_lock
+obligation provision_is_not_access on raise_threshold
+obligation provision_is_not_access on lower_threshold
+obligation provision_is_not_access on downgrade_backend
+obligation provision_is_not_access on unseal
+obligation egress_check_not_self_waivable on lock_status
+obligation egress_check_not_self_waivable on classify_content
+obligation egress_check_not_self_waivable on propose_lock_profile
+obligation egress_check_not_self_waivable on egress_check
+obligation egress_check_not_self_waivable on ingress_check
+obligation egress_check_not_self_waivable on provision_lock
+obligation egress_check_not_self_waivable on raise_threshold
+obligation egress_check_not_self_waivable on lower_threshold
+obligation egress_check_not_self_waivable on downgrade_backend
+obligation egress_check_not_self_waivable on unseal
 redress lower_threshold by workspace_owner overturn
 redress provision_lock by workspace_owner overturn within 30d

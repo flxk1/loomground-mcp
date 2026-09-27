@@ -33,6 +33,25 @@ def _queue_path(folder: str) -> Path:
     return p
 
 
+_OFFLINE_NOTE = (
+    "Local, unsigned working folder; not the governed record. The signed graph that others "
+    "rely on is written host-side only, never by this offline tool."
+)
+
+
+def _offline_write(working_folder: Path) -> dict[str, Any]:
+    """Fields every confirm=True write carries: it lands in a local, unsigned working folder,
+    never the governed (signed) graph. `working_folder` is the absolute path actually written."""
+    return {"governed": False, "signed": False, "working_folder": str(working_folder.resolve()),
+            "note": _OFFLINE_NOTE}
+
+
+def _offline_dry_run() -> dict[str, Any]:
+    """Fields every dry-run result carries: nothing is governed or signed even once confirmed,
+    so the same false/false markers apply before any write happens."""
+    return {"governed": False, "signed": False}
+
+
 def _rows(path: Path) -> list[dict[str, Any]]:
     with path.open(encoding="utf-8", newline="") as fh:
         rows = list(csv.DictReader(fh))
@@ -82,11 +101,41 @@ def versum_search(folder: str, query: str, k: int = 10, filters: Optional[dict[s
     return {"layout": "index", "retrieval": "bm25", "hits": hits}
 
 
+def _capture_preview(folder: str, source_path: str, profile: str) -> dict[str, Any]:
+    """Everything capture_file does up to (not including) the write: validate, resolve identity,
+    check dedupe against the folder's existing registry. Writes nothing; the folder is untouched."""
+    from versum.write import _validated_source, content_hash, dedup, load_registry, resolve_identity
+    source, profile_obj = _validated_source(source_path, profile)
+    folder_path = _folder(folder)
+    registry = load_registry(folder_path)
+    ident = resolve_identity(source, profile_obj)
+    sha1 = content_hash(source)
+    hit = dedup(registry, ident.urn, sha1, ident.title)
+    if hit:
+        reason, existing = hit
+        return {"status": "duplicate", "admitted": False, "reason": reason, "profile": profile,
+                "source_path": str(source), "target_path": existing.get("path", ""), "urn": ident.urn,
+                "existing_urn": existing.get("urn")}
+    return {"status": "would_admit", "admitted": False, "profile": profile, "source_path": str(source),
+            "urn": ident.urn, "method": ident.method, "title": ident.title}
+
+
 @tool(PLANE, "versum.write.capture_file")
-def versum_capture(folder: str, source_path: str, profile: str = "generic") -> dict[str, Any]:
-    """Admit one local source (.txt/.md/.pdf) into <folder>: identity → dedupe → stub + sidecar → re-index. Returns the capture report (status admitted|duplicate, urn, claim_count, index); an unsupported or unreadable source is a CaptureError."""
+def versum_capture(folder: str, source_path: str, profile: str = "generic", confirm: bool = False) -> dict[str, Any]:
+    """Admit one local source (.txt/.md/.pdf) into <folder>: identity → dedupe → stub + sidecar → re-index. This is
+    a dry run by default — it validates, resolves identity, checks dedupe, and writes nothing; pass `confirm=True`
+    to actually admit. `confirm=True` writes only into `folder` itself, a LOCAL, UNSIGNED working folder — it is
+    NOT the governed graph and nothing here is chained, signed or receipted (that record, if any, is written
+    host-side, never by this offline tool). Returns the capture report (status admitted|duplicate|would_admit,
+    urn, claim_count, index) plus `dry_run`, `governed` (always false), `signed` (always false), and — once
+    confirmed — `working_folder` (the absolute folder written) and a `note` restating that this is not the
+    governed record. An unsupported or unreadable source is a CaptureError either way."""
+    if not confirm:
+        return {**_capture_preview(folder, source_path, profile), "dry_run": True, **_offline_dry_run()}
     from versum.write import capture_file
-    return capture_file(source_path, str(_folder(folder)), profile)
+    folder_path = _folder(folder)
+    return {**capture_file(source_path, str(folder_path), profile), "dry_run": False,
+            **_offline_write(folder_path)}
 
 
 @tool(PLANE, "versum.concept.curate.suggest_folder")
@@ -102,28 +151,114 @@ def versum_suggest(folder: str, min_sources: int = 1) -> dict[str, Any]:
     return {**report, "min_sources": min_sources, "candidates": [r for r in rows if r["n_sources"] >= min_sources]}
 
 
+def _confirm_preview(folder: str, concept_ids: Optional[list[str]], min_sources: int) -> dict[str, Any]:
+    """What confirm_folder would keep, computed by the same filter it applies, without saving concepts.csv /
+    semantic_edges.csv."""
+    from versum.store import graph as g
+    q = _folder(folder) / ".versum" / "curation"
+    sc = _rows(q / "suggested_concepts.csv")
+    se = g.load_edges(q / "suggested_edges.csv")
+    only_concepts = {c.strip() for c in concept_ids if c.strip()} if concept_ids else None
+    keep = {c["concept_id"] for c in sc
+            if (only_concepts and c["concept_id"] in only_concepts)
+            or (not only_concepts and int(c["n_sources"]) >= min_sources)}
+    edges = [e for e in se if e["dst_id"] in keep]
+    return {"n_concepts": len(keep), "n_edges": len(edges), "concept_ids": sorted(keep)}
+
+
 @tool(PLANE, "versum.concept.curate.confirm_folder")
-def versum_confirm(folder: str, concept_ids: Optional[list[str]] = None, min_sources: int = 1) -> dict[str, Any]:
-    """Promote suggested concepts into <folder>/.versum/concepts.csv + semantic_edges.csv: an explicit `concept_ids` pick, else every candidate with at least `min_sources` sources (2 = convergent only). Requires versum_suggest first."""
-    from versum.concept.curate import confirm_folder
+def versum_confirm(folder: str, concept_ids: Optional[list[str]] = None, min_sources: int = 1,
+                    confirm: bool = False) -> dict[str, Any]:
+    """Promote suggested concepts into <folder>/.versum/concepts.csv + semantic_edges.csv: an explicit `concept_ids`
+    pick, else every candidate with at least `min_sources` sources (2 = convergent only). Requires versum_suggest
+    first. This is a dry run by default — it reports which concepts/edges would be kept and writes nothing; pass
+    `confirm=True` to actually promote them. `confirm=True` writes only into `<folder>/.versum`, a LOCAL, UNSIGNED
+    working folder — it is NOT the governed graph and nothing here is chained, signed or receipted. Returns the
+    same counts (n_concepts, n_edges, concept_ids) plus `dry_run`, `governed` (always false), `signed` (always
+    false), and — once confirmed — `working_folder` (the absolute folder written) and a `note` restating that
+    this is not the governed record."""
     _queue_path(folder)
+    if not confirm:
+        return {**_confirm_preview(folder, concept_ids, min_sources), "dry_run": True, **_offline_dry_run()}
+    from versum.concept.curate import confirm_folder
     picked = {c.strip() for c in concept_ids if c.strip()} if concept_ids else None
-    return confirm_folder(str(_folder(folder)), min_sources, picked)
+    folder_path = _folder(folder)
+    return {**confirm_folder(str(folder_path), min_sources, picked), "dry_run": False,
+            **_offline_write(folder_path / ".versum")}
+
+
+def _canon_domain_preview(folder: Path, domain: str, m_max: int) -> tuple[dict[str, Any], dict[str, Any]]:
+    """What curate_domain_folder would compute (build_canon is pure — no write), without writing
+    concepts.csv / semantic_edges.csv / canon.partial.json. Returns (summary, canon) so a kg-level
+    preview can merge the canons."""
+    from versum.concept.canon import build_canon
+    claims = _rows(folder / "claims.csv")
+    domain = domain or folder.name
+    for c in claims:
+        c.setdefault("domain", domain)
+    canon = build_canon(claims, m_max=m_max, domain_of=lambda c: c.get("domain", domain))
+    summary = {"domain": domain, "n_claims": canon["n_claims"], "n_sources": canon["n_sources"],
+               "n_concepts": len(canon["concepts"]), "n_edges": len(canon["edges"]),
+               "n_unclustered": canon.get("n_unclustered", 0)}
+    return summary, canon
+
+
+def _canon_kg_preview(root: Path, m_max: int) -> dict[str, Any]:
+    """What curate_kg would compute over a materialised by-domain/ root, without writing any per-domain
+    table, canon.partial.json, canon.json or convergence.json."""
+    from versum.concept.canon import domain_partial, merge_partials
+    domains = sorted(p for p in root.iterdir() if p.is_dir() and (p / "claims.csv").is_file())
+    partials, per_domain = [], []
+    for d in domains:
+        summary, canon = _canon_domain_preview(d, d.name, m_max)
+        per_domain.append(summary)
+        partials.append(domain_partial(canon, d.name))
+    merged = merge_partials(partials)
+    return {"n_domains": len(domains), "n_concepts": merged["n_concepts"], "n_claims": merged["n_claims"],
+            "n_unclustered": merged["n_unclustered"], "clustered_rate": merged["clustered_rate"],
+            "n_sources": merged["n_sources"], "canon_by_domain": merged["canon_by_domain"],
+            "per_domain": per_domain}
 
 
 @tool(PLANE, "versum.concept.canon.curate_kg / curate_domain_folder")
-def versum_canon(folder: str, config: Optional[str] = None, m_max: int = 1) -> dict[str, Any]:
-    """Cluster claims into the coordinate-identity canon and (over)write the concept tables. `config` (a sync config path) or a materialised KG root (`by-domain/`) curates the whole KG into canon.json + convergence.json; a by-domain folder (`claims.csv`) or a plain index (`.versum/claims.csv`) curates that one folder in place."""
+def versum_canon(folder: str, config: Optional[str] = None, m_max: int = 1, confirm: bool = False) -> dict[str, Any]:
+    """Cluster claims into the coordinate-identity canon and (over)write the concept tables. `config` (a sync config
+    path) or a materialised KG root (`by-domain/`) curates the whole KG into canon.json + convergence.json; a
+    by-domain folder (`claims.csv`) or a plain index (`.versum/claims.csv`) curates that one folder in place. This
+    is a dry run by default — it clusters and reports the counts it would write and writes nothing; pass
+    `confirm=True` to actually (over)write the tables. `confirm=True` writes only into a LOCAL, UNSIGNED working
+    folder (the kg root, the by-domain folder, or `<folder>/.versum`, depending on layout) — it is NOT the
+    governed graph and nothing here is chained, signed or receipted. Returns the same counts (layout plus
+    n_concepts/n_domains/etc.) plus `dry_run`, `governed` (always false), `signed` (always false), and — once
+    confirmed — `working_folder` (the absolute folder written) and a `note` restating that this is not the
+    governed record."""
     from versum.concept.canon import curate_domain_folder, curate_kg
     if config:
-        return {"layout": "kg", **curate_kg(config, m_max=m_max)}
+        from versum.sync import load_config
+        cfg = load_config(config) if isinstance(config, str) else config
+        kg_root = Path(cfg["kg_root"]).expanduser()
+        if not confirm:
+            root = kg_root / "by-domain" if (kg_root / "by-domain").is_dir() else kg_root
+            return {"layout": "kg", **_canon_kg_preview(root, m_max), "dry_run": True, **_offline_dry_run()}
+        return {"layout": "kg", **curate_kg(config, m_max=m_max), "dry_run": False, **_offline_write(kg_root)}
     root = _folder(folder)
     if (root / "by-domain").is_dir():
-        return {"layout": "kg", **curate_kg({"kg_root": str(root)}, m_max=m_max)}
+        if not confirm:
+            return {"layout": "kg", **_canon_kg_preview(root / "by-domain", m_max), "dry_run": True, **_offline_dry_run()}
+        return {"layout": "kg", **curate_kg({"kg_root": str(root)}, m_max=m_max), "dry_run": False,
+                **_offline_write(root)}
     if (root / "claims.csv").is_file():
-        return {"layout": "domain", **curate_domain_folder(root, m_max=m_max)}
+        if not confirm:
+            summary, _ = _canon_domain_preview(root, "", m_max)
+            return {"layout": "domain", **summary, "dry_run": True, **_offline_dry_run()}
+        return {"layout": "domain", **curate_domain_folder(root, m_max=m_max), "dry_run": False,
+                **_offline_write(root)}
     _claims_path(folder)
-    return {"layout": "index", **curate_domain_folder(root / ".versum", domain=root.name, m_max=m_max)}
+    if not confirm:
+        summary, _ = _canon_domain_preview(root / ".versum", root.name, m_max)
+        return {"layout": "index", **summary, "dry_run": True, **_offline_dry_run()}
+    return {"layout": "index", **curate_domain_folder(root / ".versum", domain=root.name, m_max=m_max),
+            "dry_run": False, **_offline_write(root / ".versum")}
 
 
 TOOLS = [versum_index, versum_claims, versum_search, versum_capture, versum_suggest, versum_confirm, versum_canon]
