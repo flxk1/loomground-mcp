@@ -2,7 +2,7 @@
 <!-- Copyright 2026 flxk1 -->
 # What the suite covers
 
-207 tests:
+270 tests:
 
 - one per tool, across all 55;
 - the graceful degradation of each optional plane, with its package absent;
