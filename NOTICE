@@ -7,7 +7,7 @@ All files are licensed under the Apache License, Version 2.0
 (see LICENSES/Apache-2.0.txt).
 
 How this is made: The code and documentation are written with Loomground
-agents running on Claude (Anthropic). The maintainer reads and corrects all
+agents. The maintainer reads and corrects all
 of it.
 
 An assisted commit ends with a plain line naming the tool used —
