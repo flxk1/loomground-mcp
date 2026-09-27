@@ -2,7 +2,7 @@
 <!-- Copyright 2026 flxk1 -->
 # Prompts and skills
 
-The server serves 26 public skills as MCP prompts, one per vendored SKILL.md.
+The server serves 33 public skills as MCP prompts, one per vendored SKILL.md.
 
 - `prompts/list` — one prompt per skill.
 - `prompts/get` — the skill body under one header line:
@@ -13,7 +13,7 @@ The server serves 26 public skills as MCP prompts, one per vendored SKILL.md.
 
 ## The index
 
-The index carries 26 records, one per conformant public Agent Skill. A record is `repo`, `name`,
+The index carries 33 records, one per conformant public Agent Skill. A record is `repo`, `name`,
 `description`, `allowed_tools`, `commit`, `path`, `url`, `prompt`. The format keeps room for a
 metadata-only record from a private repository (`private: true`): no body, and never a prompt.
 

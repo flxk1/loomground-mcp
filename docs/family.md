@@ -15,37 +15,41 @@ the table below is a reading of them.
 | dependency | range | dev pin |
 |---|---|---|
 | `mcp` | `>=2,<3` | PyPI |
-| `loomground-governance` | `>=0.11,<0.12` | `270e11d` |
-| `loomground-versum` | `>=0.13,<0.15` | `15e7bfc` |
-| `loomground-deontic` | `>=0.1,<0.3` | `35f8eab` |
+| `loomground-governance` | `>=0.11,<0.12` | `82c7613` |
+| `loomground-versum` | `>=0.13,<0.15` | `2855a49` |
+| `loomground-deontic` | `>=0.1,<0.3` | `319e218` |
 | `loomground-factual` | `>=0.1,<0.2` | `db60a05` |
 | `loomground-epistemic` | `>=0.1,<0.2` | `2c1dc8e` |
-| `loomground-norm` | `>=0.1,<0.2` | `104a3ca` |
-| `loomground-solver` | `>=0.5,<0.7` | `5b72f71` |
-| `loomground-ingest` | `>=0.2,<0.4` | `ce9639b` |
-| `loomground-brief` | `>=0.1,<0.3` | `80a4fc4` |
-| `loomground-collapse` | `>=0.1,<0.3` | `f0214d9` |
-| `loomground-escalation` | `>=0.1,<0.3` | `e97f1fb` |
-| `loomground-falsifiability` | `>=0.1,<0.3` | `98e60ed` |
-| `loomground-proxy` | `>=0.1,<0.3` | `dccef6f` |
-| `loomground-mandate` | `>=0.1,<0.3` | `e96c59d` |
+| `loomground-norm` | `>=0.1,<0.2` | `9d5f68f` |
+| `loomground-solver` | `>=0.5,<0.7` | `2cdf037` |
+| `loomground-ingest` | `>=0.2,<0.4` | `e741c28` |
+| `loomground-brief` | `>=0.1,<0.3` | `f9a092d` |
+| `loomground-collapse` | `>=0.1,<0.3` | `8469398` |
+| `loomground-escalation` | `>=0.1,<0.3` | `cd2a10a` |
+| `loomground-falsifiability` | `>=0.1,<0.3` | `dc59847` |
+| `loomground-proxy` | `>=0.1,<0.3` | `ba3598a` |
+| `loomground-mandate` | `>=0.1,<0.3` | `d37cc61` |
 | `oversight-certificate` | `>=0.2,<0.3` | `8dbb4fa` |
-| `governance-certification` | `>=0.1,<0.2` | `acc7741` |
+| `governance-certification` | `>=0.1,<0.3` | `3d7a112` |
 | `norm-freshness` | `>=0.3,<0.4` | `e2951a6` |
-| `obligation-discharge` | `>=0.1,<0.2` | `45058bc` |
+| `obligation-discharge` | `>=0.1,<0.2` | `4030c2d` |
 | `effect-reconciliation` | `>=0.2,<0.3` | `a5164fb` |
 | `enforcement-posture` | `>=0.5,<0.6` | `5e0096c` |
-| `5d-nd` | `>=0.1,<0.2` | `5d71a78` |
+| `5d-nd` | `>=0.1,<0.3` | `5d8d726` |
 | `loomground-audit-chain` | `>=0.1,<0.2` | `7a6e7a4` |
-| `loomground-lock` | `>=0.1,<0.2` | `b8a2693` |
+| `loomground-lock` | `>=0.1,<0.3` | `f99e24b` |
 | `loomground-lane` | `>=0.1,<0.2` | `9bac236` |
-| `loomground-drift` | `>=0.1,<0.2` | `f7de945` |
+| `loomground-drift` | `>=0.1,<0.3` | `e8279ec` |
 | `loomground-erasure` | `>=0.1,<0.2` | `df098be` |
+| `policy-compiler` | `>=0.3,<0.4` | `d14e9a8` |
+| `evidence-emitter` | `>=0.1,<0.2` | `07af3e3` |
+| `privacy-shield` | `>=2,<3` | `dc71ff0` |
+| `a2a-compliance` | `>=0.3,<0.4` | `fd22399` |
 
 The five runtime-control pins are release tags. `loomground-lock-v0.2.0` and `loomground-drift-v0.2.0` tag
 commits whose `_version.py` still reads `0.1.0` -- release-please bumped the manifest, not the version
 source -- so their ranges follow the version pip installs, not the tag name. `loomground-workspace`
-(`e6e5e7d`, tag `v0.1.0`) is pinned in `requirements-dev.txt` as well: the audit chain, the lock and
+(`b022d61`, tag `v0.1.0`) is pinned in `requirements-dev.txt` as well: the audit chain, the lock and
 erasure consume it, and there is no index to resolve it from.
 
 The `loomground` catalogue and release register are consumed as data, not as a package:

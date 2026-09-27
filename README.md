@@ -37,7 +37,7 @@ out: 55 loomground_catalogue
 
 `versum_capture` / `versum_confirm` / `versum_canon` are dry runs by default and write nothing. `confirm=True` writes only into a **local, unsigned working folder** on this host — the result carries `governed: false`, `signed: false` and the absolute `working_folder` written, plus a `note`. That write is never the governed graph: the signed record other services rely on, if any, is produced host-side, not by this offline tool.
 
-Call `loomground_catalogue` first: the family map, the pipeline order, how documents become an `.lg` patch. `loomground_releases` is the family's release and pin register, vendored from `RELEASES.json`. `loomground_skill` returns the vendored skill index; the same 26 skills are served as MCP prompts, each vendored whole — body, references, scripts — at a recorded commit and checked file for file against its repository: [docs/skills.md](docs/skills.md).
+Call `loomground_catalogue` first: the family map, the pipeline order, how documents become an `.lg` patch. `loomground_releases` is the family's release and pin register, vendored from `RELEASES.json`. `loomground_skill` returns the vendored skill index; the same 33 skills are served as MCP prompts, each vendored whole — body, references, scripts — at a recorded commit and checked file for file against its repository: [docs/skills.md](docs/skills.md).
 
 Result envelope: `{plane, function, ok, result | error | unavailable}`; keys are passed per call as PEM.
 
@@ -45,13 +45,17 @@ Result envelope: `{plane, function, ok, result | error | unavailable}`; keys are
 
 Interface: exposes the planes over MCP. Pipeline position: beside `source → loomground-ingest → loomground-versum → loomground-solver → applied or diagnostic planes`, reachable from any MCP client.
 
-- consumes: the four languages, versum, solver and its seven skill scripts, ingest, the six operators, the seven assurance artifacts, the signed audit chain, the four runtime controls, and the loomground catalogue and release register; declared ranges and dev pins in [docs/family.md](docs/family.md)
+- consumes: the four languages, versum, solver and its seven skill scripts, ingest, the six operators, the seven assurance artifacts, the signed audit chain, the four runtime controls, the four applied skill runtimes, and the loomground catalogue and release register; declared ranges and dev pins in [docs/family.md](docs/family.md)
 - consumed by: any MCP client: Claude, Codex, n8n MCP Client Tool, Langdock remote MCP
 - third-party: `mcp` `>=2,<3`, the official SDK
 
 ## Status
 
-0.1.0 · 55 tools · 26 prompts · Python >=3.10 · mcp 2.x. What the suite covers: [docs/testing.md](docs/testing.md).
+0.1.0 · 55 tools · 33 prompts · Python >=3.10 · mcp 2.x. What the suite covers: [docs/testing.md](docs/testing.md).
+
+## How this is made
+
+The code and documentation are written with Loomground agents. The maintainer reads and corrects all of it.
 
 ## License
 
