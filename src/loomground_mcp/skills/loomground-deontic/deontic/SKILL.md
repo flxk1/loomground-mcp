@@ -2,6 +2,21 @@
 name: deontic
 description: 'Transcribe a natural-language norm into a verified deontic formula. Use when the user wants to formalise an obligation, permission, or prohibition as a typed statement O/P/F(bearer : action); classify the Hohfeldian incident (claim, duty, privilege, no-right, power, liability, immunity, disability); decide whether a "right" is a claim or a liberty; validate a deontic statement; or flag candidate normative conflicts across a set of norms. The procedure transcribes each norm, classifies its incident, validates it against the schema with a bundled engine, flags conflicts, and reports what is a deontic statement versus what belongs to the reasoning layer. Triggers on "formalise this obligation", "write this as a deontic statement", "O/P/F", "is this a claim or a liberty", "validate this deontic formula", "are these norms in conflict".'
 allowed-tools: deontic_parse deontic_conflicts
+governance:
+  grade: L1
+  actions:
+    - { kind: transcribe, risk: low }
+    - { kind: detect_conflicts, risk: low }
+  reserved: []
+  prohibited:
+    - infer
+    - schedule
+    - resolve
+  obligations:
+    - conflicts_flagged_not_resolved
+  redress: []
+  budget: { usd: 1, iters: 20 }
+  on-boundary: report-not-resolve
 ---
 
 # Deontic skill — transcribe, classify, validate

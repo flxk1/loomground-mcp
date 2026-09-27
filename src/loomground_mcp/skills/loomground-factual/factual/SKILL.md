@@ -4,6 +4,14 @@ description: 'Lower one plain assertion into a factual triple: subject, predicat
 allowed-tools: factual_lower
 metadata:
   version: "1.0"
+governance:
+  grade: L1
+  actions:
+    - { kind: lower, risk: low }
+  reserved: []
+  prohibited:
+    - guess_triple
+  budget: { usd: 1, iters: 10 }
 ---
 
 # loomground-factual — language card

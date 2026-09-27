@@ -4,6 +4,13 @@ description: 'Extract who knows or believes what, at which certainty band, from 
 allowed-tools: epistemic_extract
 metadata:
   version: "1.0"
+governance:
+  grade: L1
+  actions:
+    - { kind: extract, risk: low }
+  reserved: []
+  prohibited: []
+  budget: { usd: 1, iters: 10 }
 ---
 
 # loomground-epistemic — language card
