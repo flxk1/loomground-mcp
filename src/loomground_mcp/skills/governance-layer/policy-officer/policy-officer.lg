@@ -1,5 +1,5 @@
 # policy-officer.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
-# stamped: tool=governance-layer version=0.1.0 input_sha256=cd77a103afdba2446b2ef07cdb3a0969a7bd929db6300c1ab1302d1cf9baca26
+# stamped: tool=governance-layer version=0.1.0 input_sha256=961912cc6084b682196a83e1a84d7ff261830a2dc5ff1c55d435356e6bad34c1
 human workspace_owner role workspace_owner
 actor policy_officer grade L2
 

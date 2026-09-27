@@ -1,5 +1,5 @@
 # auditor.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
-# stamped: tool=governance-layer version=0.1.0 input_sha256=1f8ca9059aad629fd2c61a9b6d59b50562cb60635cc42179338355d8d8fd9bea
+# stamped: tool=governance-layer version=0.1.0 input_sha256=a88d7c881f2c17bc9184d87fe78729c21baa0e26120a4d658ba356f98f751616
 human workspace_owner role workspace_owner
 actor auditor grade L2
 

@@ -32,9 +32,9 @@
     "allowed_tools": [
       "audit_chain_verify"
     ],
-    "commit": "479a59488ea3d97c31c80f6ceeb029d18b47b861",
+    "commit": "bb756d35983826c390fd0a30b288e93437bbb7f7",
     "path": "skills/auditor/SKILL.md",
-    "url": "https://github.com/flxk1/governance-layer/blob/479a59488ea3d97c31c80f6ceeb029d18b47b861/skills/auditor/SKILL.md"
+    "url": "https://github.com/flxk1/governance-layer/blob/bb756d35983826c390fd0a30b288e93437bbb7f7/skills/auditor/SKILL.md"
   },
   {
     "repo": "governance-layer",
@@ -44,9 +44,9 @@
       "versum_search",
       "versum_claims"
     ],
-    "commit": "479a59488ea3d97c31c80f6ceeb029d18b47b861",
+    "commit": "bb756d35983826c390fd0a30b288e93437bbb7f7",
     "path": "skills/grounder/SKILL.md",
-    "url": "https://github.com/flxk1/governance-layer/blob/479a59488ea3d97c31c80f6ceeb029d18b47b861/skills/grounder/SKILL.md"
+    "url": "https://github.com/flxk1/governance-layer/blob/bb756d35983826c390fd0a30b288e93437bbb7f7/skills/grounder/SKILL.md"
   },
   {
     "repo": "governance-layer",
@@ -60,9 +60,9 @@
       "versum_canon",
       "erasure_sweep"
     ],
-    "commit": "479a59488ea3d97c31c80f6ceeb029d18b47b861",
+    "commit": "bb756d35983826c390fd0a30b288e93437bbb7f7",
     "path": "skills/knowledge-steward/SKILL.md",
-    "url": "https://github.com/flxk1/governance-layer/blob/479a59488ea3d97c31c80f6ceeb029d18b47b861/skills/knowledge-steward/SKILL.md"
+    "url": "https://github.com/flxk1/governance-layer/blob/bb756d35983826c390fd0a30b288e93437bbb7f7/skills/knowledge-steward/SKILL.md"
   },
   {
     "repo": "governance-layer",
@@ -80,9 +80,9 @@
       "solver_strategy",
       "solver_advise_addons"
     ],
-    "commit": "479a59488ea3d97c31c80f6ceeb029d18b47b861",
+    "commit": "bb756d35983826c390fd0a30b288e93437bbb7f7",
     "path": "skills/legal-reasoner/SKILL.md",
-    "url": "https://github.com/flxk1/governance-layer/blob/479a59488ea3d97c31c80f6ceeb029d18b47b861/skills/legal-reasoner/SKILL.md"
+    "url": "https://github.com/flxk1/governance-layer/blob/bb756d35983826c390fd0a30b288e93437bbb7f7/skills/legal-reasoner/SKILL.md"
   },
   {
     "repo": "governance-layer",
@@ -92,9 +92,9 @@
       "versum_search",
       "versum_claims"
     ],
-    "commit": "479a59488ea3d97c31c80f6ceeb029d18b47b861",
+    "commit": "bb756d35983826c390fd0a30b288e93437bbb7f7",
     "path": "skills/local-grounder/SKILL.md",
-    "url": "https://github.com/flxk1/governance-layer/blob/479a59488ea3d97c31c80f6ceeb029d18b47b861/skills/local-grounder/SKILL.md"
+    "url": "https://github.com/flxk1/governance-layer/blob/bb756d35983826c390fd0a30b288e93437bbb7f7/skills/local-grounder/SKILL.md"
   },
   {
     "repo": "governance-layer",
@@ -104,9 +104,9 @@
       "lock_text",
       "privacy_scan"
     ],
-    "commit": "479a59488ea3d97c31c80f6ceeb029d18b47b861",
+    "commit": "bb756d35983826c390fd0a30b288e93437bbb7f7",
     "path": "skills/lock-steward/SKILL.md",
-    "url": "https://github.com/flxk1/governance-layer/blob/479a59488ea3d97c31c80f6ceeb029d18b47b861/skills/lock-steward/SKILL.md"
+    "url": "https://github.com/flxk1/governance-layer/blob/bb756d35983826c390fd0a30b288e93437bbb7f7/skills/lock-steward/SKILL.md"
   },
   {
     "repo": "governance-layer",
@@ -121,18 +121,18 @@
       "versum_claims",
       "lane_evaluate"
     ],
-    "commit": "479a59488ea3d97c31c80f6ceeb029d18b47b861",
+    "commit": "bb756d35983826c390fd0a30b288e93437bbb7f7",
     "path": "skills/policy-officer/SKILL.md",
-    "url": "https://github.com/flxk1/governance-layer/blob/479a59488ea3d97c31c80f6ceeb029d18b47b861/skills/policy-officer/SKILL.md"
+    "url": "https://github.com/flxk1/governance-layer/blob/bb756d35983826c390fd0a30b288e93437bbb7f7/skills/policy-officer/SKILL.md"
   },
   {
     "repo": "loomground",
     "name": "loomground",
     "description": "Express an AI-governance requirement as a validated Loomground policy-graph patch. Use when the user wants to encode a governance rule (human oversight, reservation, prohibition, separation of duty / quorum, redress or contestation, delegation and the principal chain, autonomy grades, disclosure obligation) as a .lg patch; validate or fix an existing patch; or judge whether a requirement is expressible in Loomground versus belonging to policy or a host. Triggers on \"express this as Loomground\", \"write a .lg patch\", \"is this governable in Loomground\", \"validate this patch\", \"governance as a policy graph\".",
     "allowed_tools": [],
-    "commit": "6a7f37011b595cb70783f4d57ca6b5c2ca9324b6",
+    "commit": "47858e0c005e7c1481cd6dcc6f778e5cc8e685c9",
     "path": "skills/loomground/SKILL.md",
-    "url": "https://github.com/flxk1/loomground/blob/6a7f37011b595cb70783f4d57ca6b5c2ca9324b6/skills/loomground/SKILL.md"
+    "url": "https://github.com/flxk1/loomground/blob/47858e0c005e7c1481cd6dcc6f778e5cc8e685c9/skills/loomground/SKILL.md"
   },
   {
     "repo": "loomground-deontic",
@@ -142,9 +142,9 @@
       "deontic_parse",
       "deontic_conflicts"
     ],
-    "commit": "319e218500da42dea693830ff790343aa340bd60",
+    "commit": "92259770a02987b1763eb3dafd24612b9def0bf9",
     "path": "skills/deontic/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-deontic/blob/319e218500da42dea693830ff790343aa340bd60/skills/deontic/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-deontic/blob/92259770a02987b1763eb3dafd24612b9def0bf9/skills/deontic/SKILL.md"
   },
   {
     "repo": "loomground-epistemic",
@@ -153,9 +153,9 @@
     "allowed_tools": [
       "epistemic_extract"
     ],
-    "commit": "7c5dac171e2df91ae91d96c3ccbea22b27cdd667",
+    "commit": "3058c4c5c7036dd6a2fcc6b94c6a61a42c310c47",
     "path": "skills/epistemic/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-epistemic/blob/7c5dac171e2df91ae91d96c3ccbea22b27cdd667/skills/epistemic/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-epistemic/blob/3058c4c5c7036dd6a2fcc6b94c6a61a42c310c47/skills/epistemic/SKILL.md"
   },
   {
     "repo": "loomground-factual",
@@ -164,9 +164,9 @@
     "allowed_tools": [
       "factual_lower"
     ],
-    "commit": "4be819ec28c890e476b246e3ec616a5e1c3b857c",
+    "commit": "639f57025a1a2942195a8e37729e85c95522abcd",
     "path": "skills/factual/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-factual/blob/4be819ec28c890e476b246e3ec616a5e1c3b857c/skills/factual/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-factual/blob/639f57025a1a2942195a8e37729e85c95522abcd/skills/factual/SKILL.md"
   },
   {
     "repo": "loomground-governance",
@@ -176,9 +176,9 @@
       "solver_evaluate",
       "solver_verify"
     ],
-    "commit": "646893b5757659a16100af26b738fc47ccf7106b",
+    "commit": "9eb9bee37598c347fdbefcaca0c1361a02287932",
     "path": "skills/loomground/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-governance/blob/646893b5757659a16100af26b738fc47ccf7106b/skills/loomground/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-governance/blob/9eb9bee37598c347fdbefcaca0c1361a02287932/skills/loomground/SKILL.md"
   },
   {
     "repo": "loomground-ingest",
@@ -187,9 +187,9 @@
     "allowed_tools": [
       "ingest_text"
     ],
-    "commit": "e741c28f3b4f9cc89e61ae23ff537414ea95cad1",
+    "commit": "2d14ddfeb98bc0ce5811b75eb6b1e98a407cb898",
     "path": "skills/loomground-ingest/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-ingest/blob/e741c28f3b4f9cc89e61ae23ff537414ea95cad1/skills/loomground-ingest/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-ingest/blob/2d14ddfeb98bc0ce5811b75eb6b1e98a407cb898/skills/loomground-ingest/SKILL.md"
   },
   {
     "repo": "loomground-norm",
@@ -198,9 +198,9 @@
     "allowed_tools": [
       "norm_extract"
     ],
-    "commit": "9d5f68f140dc8a904306eb265e19ddfb4dd4562a",
+    "commit": "4924256193b596f71d4ac066e58eafc76297feeb",
     "path": "skills/norm/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-norm/blob/9d5f68f140dc8a904306eb265e19ddfb4dd4562a/skills/norm/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-norm/blob/4924256193b596f71d4ac066e58eafc76297feeb/skills/norm/SKILL.md"
   },
   {
     "repo": "loomground-solver",
@@ -209,9 +209,9 @@
     "allowed_tools": [
       "solver_advise_addons"
     ],
-    "commit": "38a4fcb3a02ed6390aac3a39ee9d753795a231c5",
+    "commit": "7878431c3e803704c80e1129a9d7a24333c35c91",
     "path": "skills/advise-solver-addons/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-solver/blob/38a4fcb3a02ed6390aac3a39ee9d753795a231c5/skills/advise-solver-addons/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-solver/blob/7878431c3e803704c80e1129a9d7a24333c35c91/skills/advise-solver-addons/SKILL.md"
   },
   {
     "repo": "loomground-solver",
@@ -220,9 +220,9 @@
     "allowed_tools": [
       "solver_analyse_risks"
     ],
-    "commit": "38a4fcb3a02ed6390aac3a39ee9d753795a231c5",
+    "commit": "7878431c3e803704c80e1129a9d7a24333c35c91",
     "path": "skills/analyse-risks/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-solver/blob/38a4fcb3a02ed6390aac3a39ee9d753795a231c5/skills/analyse-risks/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-solver/blob/7878431c3e803704c80e1129a9d7a24333c35c91/skills/analyse-risks/SKILL.md"
   },
   {
     "repo": "loomground-solver",
@@ -231,9 +231,9 @@
     "allowed_tools": [
       "solver_estimate_liability"
     ],
-    "commit": "38a4fcb3a02ed6390aac3a39ee9d753795a231c5",
+    "commit": "7878431c3e803704c80e1129a9d7a24333c35c91",
     "path": "skills/estimate-liability/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-solver/blob/38a4fcb3a02ed6390aac3a39ee9d753795a231c5/skills/estimate-liability/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-solver/blob/7878431c3e803704c80e1129a9d7a24333c35c91/skills/estimate-liability/SKILL.md"
   },
   {
     "repo": "loomground-solver",
@@ -242,9 +242,9 @@
     "allowed_tools": [
       "solver_litigation_risk"
     ],
-    "commit": "38a4fcb3a02ed6390aac3a39ee9d753795a231c5",
+    "commit": "7878431c3e803704c80e1129a9d7a24333c35c91",
     "path": "skills/litigation-risk-assessor/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-solver/blob/38a4fcb3a02ed6390aac3a39ee9d753795a231c5/skills/litigation-risk-assessor/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-solver/blob/7878431c3e803704c80e1129a9d7a24333c35c91/skills/litigation-risk-assessor/SKILL.md"
   },
   {
     "repo": "loomground-solver",
@@ -253,9 +253,9 @@
     "allowed_tools": [
       "solver_opponent_model"
     ],
-    "commit": "38a4fcb3a02ed6390aac3a39ee9d753795a231c5",
+    "commit": "7878431c3e803704c80e1129a9d7a24333c35c91",
     "path": "skills/opponent-modeler/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-solver/blob/38a4fcb3a02ed6390aac3a39ee9d753795a231c5/skills/opponent-modeler/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-solver/blob/7878431c3e803704c80e1129a9d7a24333c35c91/skills/opponent-modeler/SKILL.md"
   },
   {
     "repo": "loomground-solver",
@@ -264,9 +264,9 @@
     "allowed_tools": [
       "solver_probability"
     ],
-    "commit": "38a4fcb3a02ed6390aac3a39ee9d753795a231c5",
+    "commit": "7878431c3e803704c80e1129a9d7a24333c35c91",
     "path": "skills/probability-tracker/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-solver/blob/38a4fcb3a02ed6390aac3a39ee9d753795a231c5/skills/probability-tracker/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-solver/blob/7878431c3e803704c80e1129a9d7a24333c35c91/skills/probability-tracker/SKILL.md"
   },
   {
     "repo": "loomground-solver",
@@ -275,9 +275,9 @@
     "allowed_tools": [
       "solver_strategy"
     ],
-    "commit": "38a4fcb3a02ed6390aac3a39ee9d753795a231c5",
+    "commit": "7878431c3e803704c80e1129a9d7a24333c35c91",
     "path": "skills/strategic-analysis/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-solver/blob/38a4fcb3a02ed6390aac3a39ee9d753795a231c5/skills/strategic-analysis/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-solver/blob/7878431c3e803704c80e1129a9d7a24333c35c91/skills/strategic-analysis/SKILL.md"
   },
   {
     "repo": "loomground-topos",
@@ -286,9 +286,9 @@
     "allowed_tools": [
       "topos_parse"
     ],
-    "commit": "a9f4f54cff8275726ea29139d7a8fabc22182747",
+    "commit": "b7e9375067b822204d122e56dd3a19f9fefbfaf2",
     "path": "skills/topos/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-topos/blob/a9f4f54cff8275726ea29139d7a8fabc22182747/skills/topos/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-topos/blob/b7e9375067b822204d122e56dd3a19f9fefbfaf2/skills/topos/SKILL.md"
   },
   {
     "repo": "loomground-versum",
@@ -299,9 +299,9 @@
       "versum_confirm",
       "versum_canon"
     ],
-    "commit": "e12fd35f251c1af758b83ed32e918797a07b6bfc",
+    "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
     "path": "skills/loomground-curate/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-versum/blob/e12fd35f251c1af758b83ed32e918797a07b6bfc/skills/loomground-curate/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-versum/blob/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-curate/SKILL.md"
   },
   {
     "repo": "loomground-versum",
@@ -311,9 +311,9 @@
       "versum_search",
       "versum_claims"
     ],
-    "commit": "e12fd35f251c1af758b83ed32e918797a07b6bfc",
+    "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
     "path": "skills/loomground-enrich/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-versum/blob/e12fd35f251c1af758b83ed32e918797a07b6bfc/skills/loomground-enrich/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-versum/blob/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-enrich/SKILL.md"
   },
   {
     "repo": "loomground-versum",
@@ -323,9 +323,9 @@
       "versum_search",
       "versum_claims"
     ],
-    "commit": "e12fd35f251c1af758b83ed32e918797a07b6bfc",
+    "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
     "path": "skills/loomground-kg/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-versum/blob/e12fd35f251c1af758b83ed32e918797a07b6bfc/skills/loomground-kg/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-versum/blob/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-kg/SKILL.md"
   },
   {
     "repo": "loomground-versum",
@@ -335,9 +335,9 @@
       "versum_search",
       "versum_claims"
     ],
-    "commit": "e12fd35f251c1af758b83ed32e918797a07b6bfc",
+    "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
     "path": "skills/loomground-kg-chat/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-versum/blob/e12fd35f251c1af758b83ed32e918797a07b6bfc/skills/loomground-kg-chat/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-versum/blob/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-kg-chat/SKILL.md"
   },
   {
     "repo": "loomground-versum",
@@ -346,9 +346,9 @@
     "allowed_tools": [
       "versum_capture"
     ],
-    "commit": "e12fd35f251c1af758b83ed32e918797a07b6bfc",
+    "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
     "path": "skills/loomground-knowledge-write/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-versum/blob/e12fd35f251c1af758b83ed32e918797a07b6bfc/skills/loomground-knowledge-write/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-versum/blob/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-knowledge-write/SKILL.md"
   },
   {
     "repo": "loomground-versum",
@@ -359,9 +359,9 @@
       "versum_claims",
       "versum_search"
     ],
-    "commit": "e12fd35f251c1af758b83ed32e918797a07b6bfc",
+    "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
     "path": "skills/loomground-mental-model/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-versum/blob/e12fd35f251c1af758b83ed32e918797a07b6bfc/skills/loomground-mental-model/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-versum/blob/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-mental-model/SKILL.md"
   },
   {
     "repo": "loomground-versum",
@@ -371,9 +371,9 @@
       "versum_index",
       "versum_search"
     ],
-    "commit": "e12fd35f251c1af758b83ed32e918797a07b6bfc",
+    "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
     "path": "skills/loomground-organise/SKILL.md",
-    "url": "https://github.com/flxk1/loomground-versum/blob/e12fd35f251c1af758b83ed32e918797a07b6bfc/skills/loomground-organise/SKILL.md"
+    "url": "https://github.com/flxk1/loomground-versum/blob/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-organise/SKILL.md"
   },
   {
     "repo": "policy-compiler",

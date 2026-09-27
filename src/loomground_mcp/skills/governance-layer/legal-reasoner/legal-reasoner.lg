@@ -1,5 +1,5 @@
 # legal-reasoner.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
-# stamped: tool=governance-layer version=0.1.0 input_sha256=88668c11e121fc9b2b10c2425b098683aef4805ce77dfa0be76f5a2976b33fac
+# stamped: tool=governance-layer version=0.1.0 input_sha256=b22094ab0e9a67423b9194636633c0220ab28856d1ff697cbceaf29a4cd71cb0
 human affected_party role affected_party
 human legal_reviewer role legal_reviewer
 human policy_owner role policy_owner

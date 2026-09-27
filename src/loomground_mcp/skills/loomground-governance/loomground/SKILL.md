@@ -2,6 +2,26 @@
 name: loomground
 description: Express an AI-governance requirement as a verified Loomground policy-graph patch. Use when the user wants to encode a governance rule (human oversight, reservation, prohibition, separation of duty / quorum, redress or contestation, delegation, disclosure obligation) as a .lg patch; validate or fix an existing patch; or judge whether a requirement is expressible in Loomground versus belonging to a host. The procedure drafts the patch, applies the litmus to classify each requirement as expressible, policy, or host, validates the result against the schemas and the bundled validation engine, and reports what the patch governs and what was handed off to a host. Triggers on "express this as Loomground", "write a .lg patch", "is this governable in Loomground", "validate this patch", "governance as a policy graph".
 allowed-tools: solver_evaluate solver_verify
+governance:
+  grade: L1
+  actions:
+    - { kind: classify_requirement, risk: low }
+    - { kind: draft_patch, risk: low }
+    - { kind: validate_patch, risk: low }
+  reserved: []
+  prohibited:
+    - compute
+    - aggregate
+    - schedule
+    - persist
+    - communicate
+    - force_host_concern_into_guard
+    - claim_patch_satisfies_legal_obligation
+  obligations:
+    - host_handoffs_named_not_absorbed
+  redress: []
+  budget: { usd: 1, iters: 20 }
+  on-boundary: express-and-hand-off
 ---
 
 # Loomground skill — draft, validate, classify

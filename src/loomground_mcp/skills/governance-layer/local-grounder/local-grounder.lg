@@ -1,5 +1,5 @@
 # local-grounder.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
-# stamped: tool=governance-layer version=0.1.0 input_sha256=e89563bfe97bf58e98a85018664eca391dc450e438aca4d2e2b34438336e442a
+# stamped: tool=governance-layer version=0.1.0 input_sha256=aeec1b40e8d2b378a90fc9b29079c774ea91c029b491c523739a9871d27bbfb5
 human felix role felix
 actor local_grounder grade L2
 

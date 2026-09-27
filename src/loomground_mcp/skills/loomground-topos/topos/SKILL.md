@@ -4,6 +4,13 @@ description: 'Read and write lt, the legal-system topology language: system, lev
 allowed-tools: topos_parse
 metadata:
   version: "1.0"
+governance:
+  grade: L1
+  actions:
+    - { kind: parse, risk: low }
+  reserved: []
+  prohibited: []
+  budget: { usd: 1, iters: 10 }
 ---
 
 # `lt` — language card

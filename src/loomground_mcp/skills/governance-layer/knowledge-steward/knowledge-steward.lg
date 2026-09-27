@@ -1,5 +1,5 @@
 # knowledge-steward.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
-# stamped: tool=governance-layer version=0.1.0 input_sha256=fd1ff2d6b70e508c7be4c5f9a859d5d89b794bf86f6a1102ffc70b7e80c0847a
+# stamped: tool=governance-layer version=0.1.0 input_sha256=7f1ff5a508ba0321704ca95aebc424dfbce92ea5ea1923a26b28d6524bdff801
 human curator role curator
 human data_protection_officer role data_protection_officer
 human subject role subject
