@@ -1,7 +1,8 @@
 ---
 name: knowledge-steward
 description: "Build and maintain the graph: ingest, concepts, placement, write, curate; enrich; erase. The one write/erase authority. Use when material must enter, be curated in, or be erased from the graph — 'ingest this', 'add what we learned to the graph', 'curate the concepts', 'erase this subject'."
-metadata: { provenance: { stamp: "tool=governance-layer version=0.1.0 input_sha256=4d337b7bb3cd4ca89127cfa401fec9873132209bd9a01a81ee83a1370a218b83" } }
+allowed-tools: ingest_text, versum_capture, versum_suggest, versum_confirm, versum_canon, erasure_sweep
+metadata: { provenance: { stamp: "tool=governance-layer version=0.1.0 input_sha256=05ee243107fa4eef95ed84ef9d82393975a2aa08e833e1f0cd5d2722aaa6d09b" } }
 governance:
   grade: L2
   actions:
@@ -40,6 +41,8 @@ governance:
 Build and maintain the graph: ingest, concepts, placement, write, curate; enrich; erase. The one write/erase authority.
 
 **Doors.** Host: ingest / capture / memory / folder / mirror / erase interfaces. Writes append to the host's signed mutation chain (reserved).
+
+**Public skill.** loomground-versum:loomground-knowledge-write (ingest/capture/suggest/confirm/canon); no public skill currently serves erasure_sweep — named here, not invented. `allowed-tools` above is this role's whole tool grant, from one source (`ROLES` in `build_role_skills.py`); no other tool is served.
 
 ## Governance identity
 The `governance:` block above is the whole of this skill's authority. A skill is universal; the block turns it into a governed **role** that ctrl plans on and an **enforcement host enforces** (a signed verdict on the host's hash-chain -- auto / human / reserved / prohibited, joined strictest-wins), and the agent-registry records. Reserved acts hold for a human; prohibited kinds are severed regardless of grade.

@@ -1,4 +1,5 @@
 # knowledge-steward.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
+# stamped: tool=governance-layer version=0.1.0 input_sha256=fd1ff2d6b70e508c7be4c5f9a859d5d89b794bf86f6a1102ffc70b7e80c0847a
 human curator role curator
 human data_protection_officer role data_protection_officer
 human subject role subject
@@ -11,7 +12,6 @@ gate propose_placement risk medium grant knowledge_steward
 gate graph_write risk high grade L3 grant knowledge_steward
 gate curate_canon risk high grade L3 grant knowledge_steward
 gate graph_erase risk critical grade L4 grant knowledge_steward
-gate release risk low
 
 cord knowledge_steward -> ingest_dryrun
 cord knowledge_steward -> extract_concepts
@@ -19,13 +19,12 @@ cord knowledge_steward -> propose_placement
 cord knowledge_steward -> graph_write
 cord knowledge_steward -> curate_canon
 cord knowledge_steward -> graph_erase
-cord ingest_dryrun -> release
-cord extract_concepts -> release
-cord propose_placement -> release
-cord graph_write -> release
-cord curate_canon -> release
-cord graph_erase -> release
-cord release -> master
+cord ingest_dryrun -> master
+cord extract_concepts -> master
+cord propose_placement -> master
+cord graph_write -> master
+cord curate_canon -> master
+cord graph_erase -> master
 
 prohibit direct_write_bypassing_path
 prohibit binary_fetch_in_session
@@ -33,11 +32,41 @@ prohibit invent_node
 prohibit unlogged_mutation
 reserve graph_erase by data_protection_officer and workspace_owner
 reserve curate_canon by curator
-obligation single_write_path on release
-obligation dry_run_then_confirm on release
-obligation dedup_urn_sidecar on release
-obligation legal_basis_recorded on release
-obligation egress_checked on release
-obligation erase_egress_limit_disclosed on release
+obligation single_write_path on ingest_dryrun
+obligation single_write_path on extract_concepts
+obligation single_write_path on propose_placement
+obligation single_write_path on graph_write
+obligation single_write_path on curate_canon
+obligation single_write_path on graph_erase
+obligation dry_run_then_confirm on ingest_dryrun
+obligation dry_run_then_confirm on extract_concepts
+obligation dry_run_then_confirm on propose_placement
+obligation dry_run_then_confirm on graph_write
+obligation dry_run_then_confirm on curate_canon
+obligation dry_run_then_confirm on graph_erase
+obligation dedup_urn_sidecar on ingest_dryrun
+obligation dedup_urn_sidecar on extract_concepts
+obligation dedup_urn_sidecar on propose_placement
+obligation dedup_urn_sidecar on graph_write
+obligation dedup_urn_sidecar on curate_canon
+obligation dedup_urn_sidecar on graph_erase
+obligation legal_basis_recorded on ingest_dryrun
+obligation legal_basis_recorded on extract_concepts
+obligation legal_basis_recorded on propose_placement
+obligation legal_basis_recorded on graph_write
+obligation legal_basis_recorded on curate_canon
+obligation legal_basis_recorded on graph_erase
+obligation egress_checked on ingest_dryrun
+obligation egress_checked on extract_concepts
+obligation egress_checked on propose_placement
+obligation egress_checked on graph_write
+obligation egress_checked on curate_canon
+obligation egress_checked on graph_erase
+obligation erase_egress_limit_disclosed on ingest_dryrun
+obligation erase_egress_limit_disclosed on extract_concepts
+obligation erase_egress_limit_disclosed on propose_placement
+obligation erase_egress_limit_disclosed on graph_write
+obligation erase_egress_limit_disclosed on curate_canon
+obligation erase_egress_limit_disclosed on graph_erase
 redress graph_erase by subject within 30d
 redress graph_write by workspace_owner overturn

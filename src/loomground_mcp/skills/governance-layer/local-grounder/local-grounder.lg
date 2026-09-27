@@ -1,23 +1,26 @@
 # local-grounder.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
+# stamped: tool=governance-layer version=0.1.0 input_sha256=e89563bfe97bf58e98a85018664eca391dc450e438aca4d2e2b34438336e442a
 human felix role felix
 actor local_grounder grade L2
 
 gate ground_private risk low grant local_grounder
 gate read_private_evidence risk low grant local_grounder
-gate release risk low
 
 cord local_grounder -> ground_private
 cord local_grounder -> read_private_evidence
-cord ground_private -> release
-cord read_private_evidence -> release
-cord release -> master
+cord ground_private -> master
+cord read_private_evidence -> master
 
 prohibit feed_product_grounding
 prohibit write_to_official_versum
 prohibit egress_private_content
 prohibit ship
-obligation local_only on release
-obligation private_stays_private on release
-obligation firewalled_from_product on release
-obligation separate_store on release
+obligation local_only on ground_private
+obligation local_only on read_private_evidence
+obligation private_stays_private on ground_private
+obligation private_stays_private on read_private_evidence
+obligation firewalled_from_product on ground_private
+obligation firewalled_from_product on read_private_evidence
+obligation separate_store on ground_private
+obligation separate_store on read_private_evidence
 redress private_grounding by felix overturn

@@ -1,4 +1,5 @@
 # auditor.lg — compiled from the governance block (SPEC §4). Generated; do not edit by hand.
+# stamped: tool=governance-layer version=0.1.0 input_sha256=1f8ca9059aad629fd2c61a9b6d59b50562cb60635cc42179338355d8d8fd9bea
 human workspace_owner role workspace_owner
 actor auditor grade L2
 
@@ -8,7 +9,6 @@ gate get_event risk low grant auditor
 gate shadow_scan risk low grant auditor
 gate discipline risk low grant auditor
 gate record_override risk medium grant auditor
-gate release risk low
 
 cord auditor -> verify_chain
 cord auditor -> tail_chain
@@ -16,20 +16,39 @@ cord auditor -> get_event
 cord auditor -> shadow_scan
 cord auditor -> discipline
 cord auditor -> record_override
-cord verify_chain -> release
-cord tail_chain -> release
-cord get_event -> release
-cord shadow_scan -> release
-cord discipline -> release
-cord record_override -> release
-cord release -> master
+cord verify_chain -> master
+cord tail_chain -> master
+cord get_event -> master
+cord shadow_scan -> master
+cord discipline -> master
+cord record_override -> master
 
 prohibit mutate_graph
 prohibit mutate_policy
 prohibit sign_content
 prohibit repair_in_place
-obligation read_only_default on release
-obligation chain_verified_before_report on release
-obligation rationale_on_override on release
-obligation findings_not_masked on release
+obligation read_only_default on verify_chain
+obligation read_only_default on tail_chain
+obligation read_only_default on get_event
+obligation read_only_default on shadow_scan
+obligation read_only_default on discipline
+obligation read_only_default on record_override
+obligation chain_verified_before_report on verify_chain
+obligation chain_verified_before_report on tail_chain
+obligation chain_verified_before_report on get_event
+obligation chain_verified_before_report on shadow_scan
+obligation chain_verified_before_report on discipline
+obligation chain_verified_before_report on record_override
+obligation rationale_on_override on verify_chain
+obligation rationale_on_override on tail_chain
+obligation rationale_on_override on get_event
+obligation rationale_on_override on shadow_scan
+obligation rationale_on_override on discipline
+obligation rationale_on_override on record_override
+obligation findings_not_masked on verify_chain
+obligation findings_not_masked on tail_chain
+obligation findings_not_masked on get_event
+obligation findings_not_masked on shadow_scan
+obligation findings_not_masked on discipline
+obligation findings_not_masked on record_override
 redress recorded_override by workspace_owner overturn
