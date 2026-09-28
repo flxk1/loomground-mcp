@@ -4,6 +4,7 @@
 import asyncio
 import base64
 import json
+import os
 import sys
 
 import pytest
@@ -13,7 +14,7 @@ from conftest import PATCH, SOLVER_SAMPLES, TRANSPORT, call
 from loomground_mcp import build_server
 from loomground_mcp.tools import ALL
 
-AHEAD_OF_CATALOGUE: set[str] = set()
+AHEAD_OF_CATALOGUE: set[str] = {"versum_coords", "versum_cell", "nd_resolve"}
 
 
 def test_lists_every_tool_with_plane_and_function():
@@ -21,7 +22,7 @@ def test_lists_every_tool_with_plane_and_function():
         async with Client(build_server()) as client:
             return (await client.list_tools()).tools
     tools = asyncio.run(go())
-    assert len(tools) == len(ALL) == 55
+    assert len(tools) == len(ALL) == 58
     assert all(t.description.startswith("[") and " · " in t.description for t in tools)
     assert "patch_lg" in next(t for t in tools if t.name == "solver_evaluate").input_schema["properties"]
     assert tools[0].name == "loomground_catalogue"
@@ -215,6 +216,117 @@ def test_versum_canon(corpus_folder, tmp_path):
     assert env["result"]["n_domains"] == 1 and env["result"]["n_concepts"] == 1
     assert os.path.isfile(tmp_path / "kg" / "canon.json")
     assert call("versum_canon", {"folder": str(kg)})["result"]["layout"] == "domain"
+
+
+def _entry_ids(folder):
+    import csv
+    with open(os.path.join(folder, ".versum", "entries.csv"), newline="", encoding="utf-8") as fh:
+        return [r["item_id"] for r in csv.DictReader(fh)]
+
+
+def _norm_and_fact_entries(folder):
+    """(norm entry id, fact entry id) out of graph_folder's real index: the norm entry carries the
+    deontic plane's `bearer`=`controller` assignment; the fact entry carries the factual plane's
+    `subject`=`controller` assignment over the same sentence's content clause."""
+    norm = call("versum_cell", {"folder": folder, "cell": {"loomground-deontic": {"bearer": "controller"}}})["result"]["entries"]
+    fact = call("versum_cell", {"folder": folder, "cell": {"loomground-factual": {"subject": "controller"}}})["result"]["entries"]
+    return norm[0], fact
+
+
+def test_versum_coords(graph_folder):
+    norm_id, fact_ids = _norm_and_fact_entries(graph_folder)
+    env = call("versum_coords", {"folder": graph_folder, "entry_id": norm_id})
+    r = env["result"]
+    assert env["plane"] == "loomground-versum" and r["entry_id"] == norm_id
+    assert r["dimension"] is None  # an OUGHT/norm entry: 5D describes what IS, never a deontic operator
+    assert r["assignments"] and "note" not in r
+    for a in r["assignments"]:
+        assert set(a) == {"system", "axis", "value", "source", "verification"}
+        assert a["verification"] == "candidate"  # this store never promotes anything itself
+    axes = {a["axis"] for a in r["assignments"]}
+    assert {"bearer", "operator"} <= axes
+
+    fact_env = call("versum_coords", {"folder": graph_folder, "entry_id": fact_ids[1]})["result"]
+    assert fact_env["dimension"] == "relational"  # a plain factual entry does carry a 5D dimension
+
+
+def test_versum_coords_empty_nd_rows(policy_folder):
+    call("versum_index", {"folder": policy_folder, "profile": "law-eu"})  # no planes discovered: no nD rows
+    entry_id = _entry_ids(policy_folder)[0]
+    env = call("versum_coords", {"folder": policy_folder, "entry_id": entry_id})
+    r = env["result"]
+    assert r["assignments"] == [] and r["note"] == "this store carries no nD coordinate assignments"
+
+
+def test_versum_coords_unknown_entry(policy_folder):
+    call("versum_index", {"folder": policy_folder, "profile": "law-eu"})
+    env = call("versum_coords", {"folder": policy_folder, "entry_id": "ent-does-not-exist"})
+    assert env["ok"] is False and env.get("unavailable") is not True
+    assert env["error"]["type"] == "UnknownEntryError"
+
+
+def test_versum_coords_is_deterministic(graph_folder):
+    norm_id, _ = _norm_and_fact_entries(graph_folder)
+    a = call("versum_coords", {"folder": graph_folder, "entry_id": norm_id})
+    b = call("versum_coords", {"folder": graph_folder, "entry_id": norm_id})
+    assert a == b
+
+
+def _promote(folder, entry_id, axis, tier):
+    from versum.nd import load_assignments, save_assignments
+    path = os.path.join(folder, ".versum", "nd", "assignments.csv")
+    rows = load_assignments(path)
+    for r in rows:
+        if r["subject_id"] == entry_id and r["axis_id"] == axis:
+            r["verification"] = tier
+    save_assignments(path, rows)
+
+
+def test_versum_cell(graph_folder):
+    cell = {"loomground-factual": {"subject": "controller"}}
+    env = call("versum_cell", {"folder": graph_folder, "cell": cell})
+    r = env["result"]
+    assert env["plane"] == "loomground-versum" and r["verification"] is None and r["cell"] == cell
+    assert len(r["entries"]) == 2 and "note" not in r
+
+
+def test_versum_cell_verification_filter_candidate_never_confirmed(graph_folder):
+    cell = {"loomground-factual": {"subject": "controller"}}
+    _, fact_ids = _norm_and_fact_entries(graph_folder)
+    promoted, untouched = fact_ids[0], fact_ids[1]
+    _promote(graph_folder, promoted, "subject", "confirmed")
+
+    all_candidate = call("versum_cell", {"folder": graph_folder, "cell": cell, "verification": "candidate"})["result"]
+    assert all_candidate["entries"] == [untouched]  # the promoted one no longer reads candidate for `subject`
+    assert promoted not in all_candidate["entries"]  # never reported candidate as confirmed, or vice versa
+
+    confirmed = call("versum_cell", {"folder": graph_folder, "cell": cell, "verification": "confirmed"})["result"]
+    assert confirmed["entries"] == [promoted]
+    assert untouched not in confirmed["entries"]  # the untouched candidate is never reported confirmed
+
+    none_yet = call("versum_cell", {"folder": graph_folder, "cell": cell, "verification": "attested"})["result"]
+    assert none_yet["entries"] == []  # a tier the store carries nowhere: empty, not fabricated
+
+
+def test_versum_cell_empty_nd_rows(policy_folder):
+    call("versum_index", {"folder": policy_folder, "profile": "law-eu"})
+    env = call("versum_cell", {"folder": policy_folder, "cell": {"versum-context": {"jurisdiction": "EU"}}})
+    r = env["result"]
+    assert r["entries"] == [] and r["note"] == "this store carries no nD coordinate assignments"
+
+
+def test_versum_cell_unknown_axis(policy_folder):
+    call("versum_index", {"folder": policy_folder, "profile": "law-eu"})
+    env = call("versum_cell", {"folder": policy_folder, "cell": {"versum-context": {"not-a-real-axis": "x"}}})
+    assert env["ok"] is False and env.get("unavailable") is not True
+    assert env["error"]["type"] == "UnknownAxisError"
+
+
+def test_versum_cell_is_deterministic(graph_folder):
+    cell = {"loomground-factual": {"subject": "controller"}}
+    a = call("versum_cell", {"folder": graph_folder, "cell": cell})
+    b = call("versum_cell", {"folder": graph_folder, "cell": cell})
+    assert a == b
 
 
 # deontic
@@ -727,6 +839,74 @@ def test_nd_digest():
     assert call("nd_digest", {"ref": {"dimensions": ["spooky"], "anchor": "x"}})["result"]["valid"] is False
 
 
+def _source_urn(folder):
+    import csv
+    with open(os.path.join(folder, ".versum", "entries.csv"), newline="", encoding="utf-8") as fh:
+        return next(csv.DictReader(fh))["source_urn"]
+
+
+def test_nd_resolve(graph_folder):
+    norm_id, _ = _norm_and_fact_entries(graph_folder)
+    coords = call("versum_coords", {"folder": graph_folder, "entry_id": norm_id})["result"]
+    urn = coords["source_urn"]
+    start, end = coords["span"]["start"], coords["span"]["end"]
+    ref = {"dimensions": ["relational"], "anchor": f"{urn}#{start}-{end}"}
+
+    env = call("nd_resolve", {"ref": ref, "store": graph_folder})
+    r = env["result"]
+    assert env["plane"] == "5d-nd" and r["ref"] == ref and r["canonical"] == ref["anchor"]
+    assert r["digest"] == {"sha256": r["digest"]["sha256"]}
+    resolved = r["resolved"]
+    assert resolved["entry_id"] == norm_id and resolved["dimension"] is None  # OUGHT entry: no 5D dimension
+    assert resolved["nd"]["loomground-deontic"]["bearer"] == "controller"
+    assert "note" not in r
+
+
+def test_nd_resolve_empty_nd_rows(policy_folder):
+    import csv
+    call("versum_index", {"folder": policy_folder, "profile": "law-eu"})  # no planes discovered
+    urn = _source_urn(policy_folder)
+    with open(os.path.join(policy_folder, ".versum", "entries.csv"), newline="", encoding="utf-8") as fh:
+        row = next(csv.DictReader(fh))
+    ref = {"dimensions": ["relational"], "anchor": f"{urn}#{row['span_start']}-{row['span_end']}"}
+    env = call("nd_resolve", {"ref": ref, "store": policy_folder})
+    r = env["result"]
+    assert r["resolved"]["nd"] == {} and r["note"] == "this store carries no nD coordinate assignments for this entry"
+
+
+def test_nd_resolve_unknown_reference(graph_folder):
+    urn = _source_urn(graph_folder)
+    env = call("nd_resolve", {"ref": {"dimensions": ["relational"], "anchor": f"{urn}#9999-10010"}, "store": graph_folder})
+    assert env["ok"] is False and env.get("unavailable") is not True
+    assert env["error"]["type"] == "UnknownReferenceError"
+
+
+def test_nd_resolve_missing_store_is_unavailable(graph_folder):
+    urn = _source_urn(graph_folder)
+    env = call("nd_resolve", {"ref": {"dimensions": ["relational"], "anchor": f"{urn}#0-10"}, "store": "/no/such/store"})
+    assert env["ok"] is False and env["unavailable"] is True
+    assert "store" in env["reason"] or "grounding" in env["reason"]
+
+
+def test_nd_resolve_versum_absent_is_unavailable(graph_folder, monkeypatch):
+    urn = _source_urn(graph_folder)
+    monkeypatch.setitem(sys.modules, "versum", None)
+    monkeypatch.setitem(sys.modules, "versum.coordinates", None)
+    monkeypatch.setitem(sys.modules, "versum.planes", None)
+    env = call("nd_resolve", {"ref": {"dimensions": ["relational"], "anchor": f"{urn}#0-10"}, "store": graph_folder})
+    assert env["ok"] is False and env["unavailable"] is True and "grounding" in env["reason"]
+
+
+def test_nd_resolve_is_deterministic(graph_folder):
+    norm_id, _ = _norm_and_fact_entries(graph_folder)
+    coords = call("versum_coords", {"folder": graph_folder, "entry_id": norm_id})["result"]
+    urn = coords["source_urn"]
+    ref = {"dimensions": ["relational"], "anchor": f"{urn}#{coords['span']['start']}-{coords['span']['end']}"}
+    a = call("nd_resolve", {"ref": ref, "store": graph_folder})
+    b = call("nd_resolve", {"ref": ref, "store": graph_folder})
+    assert a == b
+
+
 # the signed audit chain and the runtime controls
 
 LEASE = {"agent": "bot", "granted_grade": "L3", "expires_at": 1000.0}
@@ -809,7 +989,10 @@ ABSENT = [("audit_chain_verify", {"folder": "."}, "loomground_audit_chain"),
           ("lane_evaluate", {"lane": None, "request": {"agent": "bot", "action_class": "summarise",
                                                        "autonomy_grade": "L0", "footprint": []}}, "loomground_lane"),
           ("drift_breaker", {"lease": LEASE}, "loomground_drift"),
-          ("erasure_sweep", {"folder": ".", "subject": "Jane Doe"}, "loomground_erasure")]
+          ("erasure_sweep", {"folder": ".", "subject": "Jane Doe"}, "loomground_erasure"),
+          ("versum_coords", {"folder": ".", "entry_id": "ent-x"}, "versum.coordinates"),
+          ("versum_cell", {"folder": ".", "cell": {}}, "versum.coordinates"),
+          ("nd_resolve", {"ref": {"dimensions": [], "anchor": "urn:x:1#0-1"}, "store": "."}, "five_d_nd")]
 
 
 @pytest.mark.parametrize("name, arguments, module", ABSENT, ids=[m for _, _, m in ABSENT])
