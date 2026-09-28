@@ -28,12 +28,12 @@ loomground-mcp tools      # the tool table as JSON
 
 ```
 in:  loomground-mcp tools | python -c 'import json,sys; t=json.load(sys.stdin); print(len(t), t[0]["tool"])'
-out: 55 loomground_catalogue
+out: 58 loomground_catalogue
 ```
 
 ## Interface
 
-55 tools, one per plane function; the seven solver skill scripts count as functions, and the topos reader, the catalogue, the release register and the skill index are this repository's. Policy compilation, development-signed evidence, local privacy scanning, A2A grounding, full-family planning, admission preview and reconciliation expose the four applied skill runtimes without activating policy, handling production keys or dispatching agent directives. The audit chain and the four runtime controls are served read-only: they decide, they do not write. Signatures, envelopes, enums and the tool table per plane: [docs/tools.md](docs/tools.md).
+58 tools, one per plane function; the seven solver skill scripts count as functions, and the topos reader, the catalogue, the release register and the skill index are this repository's. Policy compilation, development-signed evidence, local privacy scanning, A2A grounding, full-family planning, admission preview and reconciliation expose the four applied skill runtimes without activating policy, handling production keys or dispatching agent directives. The audit chain and the four runtime controls are served read-only: they decide, they do not write. Signatures, envelopes, enums and the tool table per plane: [docs/tools.md](docs/tools.md).
 
 `versum_capture` / `versum_confirm` / `versum_canon` are dry runs by default and write nothing. `confirm=True` writes only into a **local, unsigned working folder** on this host — the result carries `governed: false`, `signed: false` and the absolute `working_folder` written, plus a `note`. That write is never the governed graph: the signed record other services rely on, if any, is produced host-side, not by this offline tool.
 
@@ -51,7 +51,7 @@ Interface: exposes the planes over MCP. Pipeline position: beside `source → lo
 
 ## Status
 
-0.1.0 · 55 tools · 33 prompts · Python >=3.10 · mcp 2.x. What the suite covers: [docs/testing.md](docs/testing.md).
+0.1.0 · 58 tools · 33 prompts · Python >=3.10 · mcp 2.x. What the suite covers: [docs/testing.md](docs/testing.md).
 
 ## How this is made
 

@@ -123,6 +123,21 @@ def corpus_folder(tmp_path):
     return str(tmp_path)
 
 
+GRAPH_TEXT = ("The controller must notify the supervisory authority within 72 hours. "
+              "Data subjects are entitled to access their personal data.\n")
+
+
+@pytest.fixture
+def graph_folder(tmp_path):
+    """One norm sentence + one fact sentence, indexed with the deontic and factual planes discovered: real
+    nD coordinate assignments (verification `candidate`) for versum_coords/versum_cell/nd_resolve to read,
+    and one OUGHT entry (5D `dimension` null) alongside a factual one."""
+    (tmp_path / "doc.txt").write_text(GRAPH_TEXT, encoding="utf-8")
+    from versum.store.index import index_folder
+    index_folder(str(tmp_path), "generic", planes="discover")
+    return str(tmp_path)
+
+
 # solver_* skill tools: (skill directory, script file, the JSON the script reads on stdin)
 SOLVER_SAMPLES = {
     "solver_analyse_risks": ("analyse-risks", "run.py", {

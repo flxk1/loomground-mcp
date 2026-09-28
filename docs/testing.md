@@ -2,9 +2,9 @@
 <!-- Copyright 2026 flxk1 -->
 # What the suite covers
 
-270 tests:
+288 tests:
 
-- one per tool, across all 55;
+- one per tool, across all 58;
 - the graceful degradation of each optional plane, with its package absent;
 - script parity for the seven solver skill tools;
 - the loomground-topos examples corpus;

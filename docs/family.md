@@ -15,10 +15,10 @@ the table below is a reading of them.
 | dependency | range | dev pin |
 |---|---|---|
 | `mcp` | `>=2,<3` | PyPI |
-| `loomground-governance` | `>=0.11,<0.12` | `82c7613` |
-| `loomground-versum` | `>=0.13,<0.15` | `2855a49` |
-| `loomground-deontic` | `>=0.1,<0.3` | `319e218` |
-| `loomground-factual` | `>=0.1,<0.2` | `db60a05` |
+| `loomground-governance` | `>=0.11,<0.12` | `3eed4ca` |
+| `loomground-versum` | `>=0.13,<0.15` | `884cb28` |
+| `loomground-deontic` | `>=0.1,<0.3` | `4c01e03` |
+| `loomground-factual` | `>=0.1,<0.2` | `514c75a` |
 | `loomground-epistemic` | `>=0.1,<0.2` | `2c1dc8e` |
 | `loomground-norm` | `>=0.1,<0.2` | `9d5f68f` |
 | `loomground-solver` | `>=0.5,<0.7` | `2cdf037` |
@@ -35,7 +35,7 @@ the table below is a reading of them.
 | `obligation-discharge` | `>=0.1,<0.2` | `4030c2d` |
 | `effect-reconciliation` | `>=0.2,<0.3` | `a5164fb` |
 | `enforcement-posture` | `>=0.5,<0.6` | `5e0096c` |
-| `5d-nd` | `>=0.1,<0.3` | `5d8d726` |
+| `5d-nd` | `>=0.1,<0.3` | `21c3772` |
 | `loomground-audit-chain` | `>=0.1,<0.2` | `7a6e7a4` |
 | `loomground-lock` | `>=0.1,<0.3` | `f99e24b` |
 | `loomground-lane` | `>=0.1,<0.2` | `9bac236` |

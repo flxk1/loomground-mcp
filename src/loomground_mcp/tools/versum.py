@@ -3,13 +3,15 @@
 """loomground-versum: index a folder, read its span-anchored claims, search them; admit one source, curate
 (suggest → confirm) and build the coordinate canon."""
 import csv
+import json
 from pathlib import Path
 from typing import Any, Optional
 
-from ._result import Unavailable, tool
+from ._result import Unavailable, import_plane, tool
 
 PLANE = "loomground-versum"
 _INT = ("span_start", "span_end")
+_NO_ND_NOTE = "this store carries no nD coordinate assignments"
 
 
 def _folder(folder: str) -> Path:
@@ -17,6 +19,14 @@ def _folder(folder: str) -> Path:
     if not p.is_dir():
         raise FileNotFoundError(f"not a directory: {folder}")
     return p
+
+
+def _versum_dir(folder: str) -> Path:
+    """A folder ``versum index``/``capture`` wrote into, or its ``.versum/`` directory directly — the
+    same either-form ``versum.coordinates`` itself accepts."""
+    p = _folder(folder)
+    inner = p / ".versum"
+    return inner if inner.is_dir() else p
 
 
 def _claims_path(folder: str) -> Path:
@@ -261,4 +271,82 @@ def versum_canon(folder: str, config: Optional[str] = None, m_max: int = 1, conf
             "dry_run": False, **_offline_write(root / ".versum")}
 
 
-TOOLS = [versum_index, versum_claims, versum_search, versum_capture, versum_suggest, versum_confirm, versum_canon]
+def _assignment_key(a: dict[str, Any]) -> tuple:
+    return (a["system"], a["axis"], json.dumps(a["value"], ensure_ascii=False, sort_keys=True, default=str), a["source"])
+
+
+@tool(PLANE, "versum.coordinates.entry_coordinates / versum.planes.entry_coordinates")
+def versum_coords(folder: str, entry_id: str) -> dict[str, Any]:
+    """One entry's 5D coordinates and every nD assignment that applies to it (its own assignment rows plus
+    its source's core `jurisdiction`/`time` rows, versum's own entry+source join) — each as `{system, axis,
+    value, source, verification}`, sorted deterministically. `dimension` is the entry's 5D dominant
+    dimension, or `null` for an OUGHT/norm entry (5D describes what IS; a deontic operator O/P/F is a
+    normative force and gets no 5D dimension under any name). A verification tier is reported exactly as the
+    store's own `assignments.csv` carries it (e.g. `candidate`) — never rewritten or promoted here. Empty
+    `assignments` (the store or this entry carries no nD rows) comes with a `note`. Unknown `entry_id` is an
+    error; `versum` not installed is `unavailable`."""
+    coordinates = import_plane("versum.coordinates")
+    planes = import_plane("versum.planes")
+    nd_mod = import_plane("versum.nd")
+    versum_dir = _versum_dir(folder)
+    coord = coordinates.entry_coordinates(versum_dir, entry_id)
+    all_assignments = nd_mod.load_assignments(versum_dir / "nd" / "assignments.csv")
+    entry = {"item_id": entry_id, "source_urn": coord["source_urn"]}
+    rows = planes.entry_coordinates(entry, all_assignments)
+    assignments = sorted(({"system": r["system_id"], "axis": r["axis_id"], "value": r["value"],
+                           "source": r["source_id"], "verification": r["verification"]} for r in rows),
+                         key=_assignment_key)
+    start, end, text = coord["span"]
+    out: dict[str, Any] = {"entry_id": entry_id, "dimension": coord["dimension"], "source_urn": coord["source_urn"],
+                           "span": {"start": start, "end": end, "text": text}, "assignments": assignments}
+    if not assignments:
+        out["note"] = _NO_ND_NOTE
+    return out
+
+
+@tool(PLANE, "versum.coordinates.entries_in_cell")
+def versum_cell(folder: str, cell: dict[str, dict[str, Any]], verification: Optional[str] = None) -> dict[str, Any]:
+    """Entry ids whose nD assignments satisfy every `{system_id: {axis_id: value}}` constraint in `cell`
+    (an entry's own rows unioned with its source's core `jurisdiction`/`time` rows — the same join
+    `versum.coordinates.entries_in_cell` applies), in its deterministic reading order. `verification`, when
+    given, keeps only an entry whose *matching* assignment for every constrained axis carries that exact
+    tier — the store's own tier name (e.g. `candidate`), read from `assignments.csv`, never invented or
+    normalised: a `candidate` assignment is never reported as satisfying a `confirmed` filter. Empty
+    `entries` because the store carries no nD rows at all comes with a `note`. An unknown system or axis in
+    `cell` is an error; `versum` not installed is `unavailable`."""
+    coordinates = import_plane("versum.coordinates")
+    nd_mod = import_plane("versum.nd")
+    versum_dir = _versum_dir(folder)
+    entry_ids = coordinates.entries_in_cell(versum_dir, cell)
+    all_assignments = nd_mod.load_assignments(versum_dir / "nd" / "assignments.csv")
+    out: dict[str, Any] = {"cell": cell, "verification": verification}
+    if verification is None:
+        out["entries"] = entry_ids
+    else:
+        by_subject: dict[str, list[dict]] = {}
+        for row in all_assignments:
+            by_subject.setdefault(row["subject_id"], []).append(row)
+        kept = []
+        for eid in entry_ids:
+            coord = coordinates.entry_coordinates(versum_dir, eid)
+            rows = by_subject.get(eid, []) + by_subject.get(coord["source_urn"], [])
+            ok = True
+            for system_id, axes in cell.items():
+                for axis_id, value in axes.items():
+                    match = [r for r in rows if r["system_id"] == system_id and r["axis_id"] == axis_id
+                             and r["value"] == value]
+                    if not any(r["verification"] == verification for r in match):
+                        ok = False
+                        break
+                if not ok:
+                    break
+            if ok:
+                kept.append(eid)
+        out["entries"] = kept
+    if not all_assignments:
+        out["note"] = _NO_ND_NOTE
+    return out
+
+
+TOOLS = [versum_index, versum_claims, versum_search, versum_capture, versum_suggest, versum_confirm, versum_canon,
+         versum_coords, versum_cell]

@@ -123,6 +123,29 @@ def nd_digest(ref: dict[str, Any]) -> dict[str, Any]:
     return {"scheme": nd.SCHEME, "ref": ref, "valid": nd.validate(ref), "canonical": nd.canonicalize(ref), "digest": nd.digest(ref)}
 
 
+@tool("5d-nd", "five_d_nd.resolve")
+def nd_resolve(ref: dict[str, Any], store: str) -> dict[str, Any]:
+    """Resolve a 5d+nd reference `{dimensions, anchor}` into its concrete versum span via `store` (a folder
+    versum has indexed, or its `.versum` directory). Returns `canonical` (the anchor's one canonical
+    span-reference form), `digest` (sha256 over `canonicalize(ref)`, the reference-only digest a
+    certification already carries) and `resolved` (`entry_id`, `span` {`start`,`end`,`text`}, `dimension`,
+    `nd`, `source_urn`, `content_digest` — the additive digest bound to the resolved span text). `dimension`
+    is `null` for an OUGHT/norm entry (5D describes what IS; a deontic operator carries no 5D dimension). A
+    `note` is added when the resolved entry carries no nD coordinate assignments. A malformed reference or
+    an anchor no entry in `store` matches is an error; a missing/unreadable `store` or the optional `versum`
+    dependency (5d-nd's `grounding` extra) is `unavailable`."""
+    nd = import_plane("five_d_nd")
+    try:
+        resolved = nd.resolve(ref, store=store)
+    except nd.MissingStoreError as exc:
+        raise Unavailable(str(exc)) from exc
+    out = {"ref": ref, "canonical": nd.normalize_reference(ref["anchor"]), "digest": nd.digest(ref),
+           "resolved": resolved}
+    if not resolved.get("nd"):
+        out["note"] = "this store carries no nD coordinate assignments for this entry"
+    return out
+
+
 @tool("loomground-audit-chain", "mutation_log.MutationLog.verify_chain / pillar.intact_attestation")
 def audit_chain_verify(folder: str, log_root: Optional[str] = None, subject: str = "", entry_ref: str = "") -> dict[str, Any]:
     """Walk a folder's append-only log: hash links, Ed25519 signatures, purge tombstones, the head anchor, the
@@ -143,4 +166,4 @@ def audit_chain_verify(folder: str, log_root: Optional[str] = None, subject: str
 
 
 TOOLS = [oversight_issue, oversight_verify, govcert_verify, norm_freshness, obligation_admit, effect_reconcile,
-         enforcement_compare, nd_digest, audit_chain_verify]
+         enforcement_compare, nd_digest, nd_resolve, audit_chain_verify]
