@@ -3,12 +3,12 @@
 # resolve the set together; otherwise a commit on the dependency's public main (see CHANGELOG for which and why).
 loomground-governance @ git+https://github.com/flxk1/loomground-governance@3eed4cab3cba2a288fcac3671171cd4fa7e5bc18
 loomground-deontic @ git+https://github.com/flxk1/loomground-deontic@4c01e0390767917333db99b6355842eb34745563
-loomground-factual @ git+https://github.com/flxk1/loomground-factual@514c75aa4bb95846a25fd42cef821750be6230f4
-loomground-epistemic @ git+https://github.com/flxk1/loomground-epistemic@2c1dc8ea8278fe3d1aeffa470319573c53dee932
+loomground-factual @ git+https://github.com/flxk1/loomground-factual@4f3043dcd64f1cde4e30f790a76afe80058ab4dc
+loomground-epistemic @ git+https://github.com/flxk1/loomground-epistemic@f4f293dd7d8a17e28d4ad710565dee234cf9234a
 loomground-solver @ git+https://github.com/flxk1/loomground-solver@2cdf037882e3d867faa7e47e8f6b71a4dee0e38d
 loomground-norm @ git+https://github.com/flxk1/loomground-norm@9d5f68f140dc8a904306eb265e19ddfb4dd4562a
 loomground-versum @ git+https://github.com/flxk1/loomground-versum@884cb28371460a576ca0dfe2793ed2b19c7ca325
-loomground-ingest @ git+https://github.com/flxk1/loomground-ingest@e741c28f3b4f9cc89e61ae23ff537414ea95cad1
+loomground-ingest @ git+https://github.com/flxk1/loomground-ingest@652cb49fcf61b2bac71684d9d80dbf26d7c02b26
 loomground-brief @ git+https://github.com/flxk1/loomground-brief@f9a092de9bb5f81fdb0149e3fe563ac7fb1bf48e
 loomground-collapse @ git+https://github.com/flxk1/loomground-collapse@84693981a02d7e0465c4d3c7b91c0552e6e0826e
 loomground-escalation @ git+https://github.com/flxk1/loomground-escalation@cd2a10ac78bd31d7d3baa0a10d147c1288a1ed35
