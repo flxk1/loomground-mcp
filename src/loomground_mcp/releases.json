@@ -127,9 +127,9 @@
       "skills": []
     },
     "loomground-ingest": {
-      "version": "0.3.1",
-      "tag": "loomground-ingest-v0.3.1",
-      "commit": "9a994941ba2591416ccd90e5561f25eb4145f1cd",
+      "version": "0.3.2",
+      "tag": "loomground-ingest-v0.3.2",
+      "commit": "ca12e4d1b1e13f1840566e72f4b3abd6b4306e17",
       "package": "loomground-ingest",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -141,9 +141,9 @@
       ]
     },
     "loomground-versum": {
-      "version": "0.14.1",
-      "tag": "loomground-versum-v0.14.1",
-      "commit": "eaf316d1cf14e5c4af2ba065a27601f1ba7a495d",
+      "version": "0.14.2",
+      "tag": "loomground-versum-v0.14.2",
+      "commit": "e416c81da5cfeab13457d7d70119c6631dbdc4d4",
       "package": "loomground-versum",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -169,9 +169,9 @@
       ]
     },
     "loomground-solver": {
-      "version": "0.6.1",
-      "tag": "solver-v0.6.1",
-      "commit": "0effea096234145f69a9f374dd430fb2d170c666",
+      "version": "0.6.2",
+      "tag": "solver-v0.6.2",
+      "commit": "b6e3beb14a7b76c440fc343716305ab8f6587a09",
       "package": "loomground-solver",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -237,9 +237,9 @@
       ]
     },
     "loomground-brief": {
-      "version": "0.2.0",
-      "tag": "loomground-brief-v0.2.0",
-      "commit": "f9a092de9bb5f81fdb0149e3fe563ac7fb1bf48e",
+      "version": "0.2.1",
+      "tag": "loomground-brief-v0.2.1",
+      "commit": "70b02461fee750ad118d42a3cf913495ff1ea43d",
       "package": "loomground-brief",
       "pypi": false,
       "family": "Diagnostic operators",
