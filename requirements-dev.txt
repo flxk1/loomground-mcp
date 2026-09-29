@@ -1,14 +1,14 @@
 # Git-pinned first-party planes (no index yet). Install BEFORE `pip install .` so the ranges resolve.
 # A pin is the dependency's release tag (RELEASES.json in loomground) where the family's declared ranges let pip
 # resolve the set together; otherwise a commit on the dependency's public main (see CHANGELOG for which and why).
-loomground-governance @ git+https://github.com/flxk1/loomground-governance@3eed4cab3cba2a288fcac3671171cd4fa7e5bc18
-loomground-deontic @ git+https://github.com/flxk1/loomground-deontic@4c01e0390767917333db99b6355842eb34745563
-loomground-factual @ git+https://github.com/flxk1/loomground-factual@4f3043dcd64f1cde4e30f790a76afe80058ab4dc
-loomground-epistemic @ git+https://github.com/flxk1/loomground-epistemic@f4f293dd7d8a17e28d4ad710565dee234cf9234a
+loomground-governance @ git+https://github.com/flxk1/loomground-governance@ff2afcde03131859d21fc7195697e799aa65a9be
+loomground-deontic @ git+https://github.com/flxk1/loomground-deontic@0f57e8d2c02f288169d76e3ec93714b0d3f00ea2
+loomground-factual @ git+https://github.com/flxk1/loomground-factual@ebf9fe19d518dde0aad08962632d95f9d97ee31c
+loomground-epistemic @ git+https://github.com/flxk1/loomground-epistemic@10a3d6948eaf20092c49fc72efa98d43a5c2fca3
 loomground-solver @ git+https://github.com/flxk1/loomground-solver@2cdf037882e3d867faa7e47e8f6b71a4dee0e38d
 loomground-norm @ git+https://github.com/flxk1/loomground-norm@9d5f68f140dc8a904306eb265e19ddfb4dd4562a
-loomground-versum @ git+https://github.com/flxk1/loomground-versum@884cb28371460a576ca0dfe2793ed2b19c7ca325
-loomground-ingest @ git+https://github.com/flxk1/loomground-ingest@652cb49fcf61b2bac71684d9d80dbf26d7c02b26
+loomground-versum @ git+https://github.com/flxk1/loomground-versum@eaf316d1cf14e5c4af2ba065a27601f1ba7a495d
+loomground-ingest @ git+https://github.com/flxk1/loomground-ingest@9a994941ba2591416ccd90e5561f25eb4145f1cd
 loomground-brief @ git+https://github.com/flxk1/loomground-brief@f9a092de9bb5f81fdb0149e3fe563ac7fb1bf48e
 loomground-collapse @ git+https://github.com/flxk1/loomground-collapse@84693981a02d7e0465c4d3c7b91c0552e6e0826e
 loomground-escalation @ git+https://github.com/flxk1/loomground-escalation@cd2a10ac78bd31d7d3baa0a10d147c1288a1ed35
@@ -21,7 +21,7 @@ norm-freshness @ git+https://github.com/flxk1/norm-freshness@e2951a6db30e0773742
 obligation-discharge @ git+https://github.com/flxk1/obligation-discharge@4030c2d4fc2603d5bff272859abb1dae7ee89d8c
 effect-reconciliation @ git+https://github.com/flxk1/effect-reconciliation@a5164fb54cc9c29ff38baa68dd0499336c1684ab
 enforcement-posture @ git+https://github.com/flxk1/enforcement-posture@5e0096cff629e44d51c4f1b2db5116820b3f1a1b
-5d-nd @ git+https://github.com/flxk1/5d-nd@21c3772ddd23834ff3f784fe267d477daca1f5ee
+5d-nd @ git+https://github.com/flxk1/5d-nd@12fbde031e26c7ed7ec2f1a181dbf0410c92f12b
 # Runtime controls and the signed audit chain, at their release tags. `loomground-lock-v0.2.0` and
 # `loomground-drift-v0.2.0` tag commits whose `_version.py` still reads 0.1.0 (release-please bumped the
 # manifest, not the version source), so the declared ranges follow the version pip actually installs.
