@@ -44,9 +44,9 @@
       ]
     },
     "loomground-deontic": {
-      "version": "0.2.2",
-      "tag": "loomground-deontic-v0.2.2",
-      "commit": "0f57e8d2c02f288169d76e3ec93714b0d3f00ea2",
+      "version": "0.2.3",
+      "tag": "loomground-deontic-v0.2.3",
+      "commit": "2dd810bdeac05196fd917b05556ccdd460af9215",
       "package": "loomground-deontic",
       "pypi": false,
       "family": "Standard/language planes",
@@ -169,9 +169,9 @@
       ]
     },
     "loomground-solver": {
-      "version": "0.6.0",
-      "tag": "solver-v0.6.0",
-      "commit": "2cdf037882e3d867faa7e47e8f6b71a4dee0e38d",
+      "version": "0.6.1",
+      "tag": "solver-v0.6.1",
+      "commit": "0effea096234145f69a9f374dd430fb2d170c666",
       "package": "loomground-solver",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -198,9 +198,9 @@
       ]
     },
     "loomground-norm": {
-      "version": "0.1.1",
-      "tag": "norm-v0.1.1",
-      "commit": "9d5f68f140dc8a904306eb265e19ddfb4dd4562a",
+      "version": "0.1.2",
+      "tag": "norm-v0.1.2",
+      "commit": "a37b0f1f3609ea84a999d8e0a5b3dd88d1e81086",
       "package": "loomground-norm",
       "pypi": false,
       "family": "Applied reasoning",
@@ -212,9 +212,9 @@
       ]
     },
     "loomground-legal": {
-      "version": "0.2.1",
-      "tag": "legal-v0.2.1",
-      "commit": "abd77cfd344096687a95ddf96ed79c1d98bc77cc",
+      "version": "0.2.2",
+      "tag": "legal-v0.2.2",
+      "commit": "aabfe26a62409effff29f820f972622249fe2ccc",
       "package": "loomground-legal",
       "pypi": false,
       "family": "Applied reasoning",
@@ -222,9 +222,9 @@
       "skills": []
     },
     "policy-compiler": {
-      "version": "0.3.0",
-      "tag": "policy-compiler-v0.3.0",
-      "commit": "d14e9a859661421738c3e0c8d2d79ae1941fbc2f",
+      "version": "0.3.1",
+      "tag": "policy-compiler-v0.3.1",
+      "commit": "961a46d593a3478c8633305d6c9f5fc729cb8412",
       "package": "policy-compiler",
       "pypi": false,
       "family": "Applied reasoning",
@@ -249,9 +249,9 @@
       "skills": []
     },
     "loomground-collapse": {
-      "version": "0.2.0",
-      "tag": "loomground-collapse-v0.2.0",
-      "commit": "84693981a02d7e0465c4d3c7b91c0552e6e0826e",
+      "version": "0.2.1",
+      "tag": "loomground-collapse-v0.2.1",
+      "commit": "4b456c505a5603539e5fb7a564670f4d4ba9925d",
       "package": "loomground-collapse",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -261,9 +261,9 @@
       "skills": []
     },
     "loomground-escalation": {
-      "version": "0.2.0",
-      "tag": "loomground-escalation-v0.2.0",
-      "commit": "cd2a10ac78bd31d7d3baa0a10d147c1288a1ed35",
+      "version": "0.2.1",
+      "tag": "loomground-escalation-v0.2.1",
+      "commit": "38c925d7a2734e90fbf8d7bc03afda566e80c005",
       "package": "loomground-escalation",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -273,9 +273,9 @@
       "skills": []
     },
     "loomground-falsifiability": {
-      "version": "0.2.0",
-      "tag": "loomground-falsifiability-v0.2.0",
-      "commit": "dc5984720cdd77dfdfd16b0f681c4f5155ecdf12",
+      "version": "0.2.1",
+      "tag": "loomground-falsifiability-v0.2.1",
+      "commit": "7324815f80b45e16b50a7deddef517ec9ccf0d71",
       "package": "loomground-falsifiability",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -285,9 +285,9 @@
       "skills": []
     },
     "loomground-mandate": {
-      "version": "0.2.0",
-      "tag": "loomground-mandate-v0.2.0",
-      "commit": "d37cc6123919206dda8021e9c5075b9b8a5ae5ee",
+      "version": "0.2.1",
+      "tag": "loomground-mandate-v0.2.1",
+      "commit": "a465df47a9407afbb4bfc31c663b9efd875c2e3e",
       "package": "loomground-mandate",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -297,9 +297,9 @@
       "skills": []
     },
     "loomground-proxy": {
-      "version": "0.2.0",
-      "tag": "loomground-proxy-v0.2.0",
-      "commit": "ba3598a4d7f392a722c7f99c1ed6ec5ee543e5ae",
+      "version": "0.2.1",
+      "tag": "loomground-proxy-v0.2.1",
+      "commit": "f850274a7b8bf9ae927c8a64749db8bbca05e7eb",
       "package": "loomground-proxy",
       "pypi": false,
       "family": "Diagnostic operators",
@@ -309,9 +309,9 @@
       "skills": []
     },
     "governance-certification": {
-      "version": "0.2.0",
-      "tag": "v0.2.0",
-      "commit": "3d7a1121c135b43784d9b21d750d54c1a4f879c6",
+      "version": "0.2.1",
+      "tag": "v0.2.1",
+      "commit": "c5e52bd3e8e67c1cc934e1896795922397aed641",
       "package": "governance-certification",
       "pypi": false,
       "family": "Assurance artifacts",
@@ -321,9 +321,9 @@
       "skills": []
     },
     "5d-nd": {
-      "version": "0.2.1",
-      "tag": "v0.2.1",
-      "commit": "12fbde031e26c7ed7ec2f1a181dbf0410c92f12b",
+      "version": "0.2.2",
+      "tag": "v0.2.2",
+      "commit": "4b9e78be8cd3059001d1d292de3a920823f788e2",
       "package": "5d-nd",
       "pypi": false,
       "family": "Assurance artifacts",
@@ -432,9 +432,9 @@
       ]
     },
     "loomground-lock": {
-      "version": "0.2.0",
-      "tag": "loomground-lock-v0.2.0",
-      "commit": "f99e24b79278f42c7fcfdf5394bb6aea8173a91f",
+      "version": "0.2.1",
+      "tag": "loomground-lock-v0.2.1",
+      "commit": "25b2c7effd079a972249852ced10a1a9cc57ac6f",
       "package": "loomground-lock",
       "pypi": false,
       "family": "Runtime controls",
@@ -456,9 +456,9 @@
       "skills": []
     },
     "loomground-drift": {
-      "version": "0.2.0",
-      "tag": "loomground-drift-v0.2.0",
-      "commit": "e8279ec38255f278b978752fc13dffb51acfd448",
+      "version": "0.2.1",
+      "tag": "loomground-drift-v0.2.1",
+      "commit": "c0133448e5a46423f9f7bb26b7611a71589db749",
       "package": "loomground-drift",
       "pypi": false,
       "family": "Runtime controls",
