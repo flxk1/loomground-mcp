@@ -15,14 +15,14 @@ the table below is a reading of them.
 | dependency | range | dev pin |
 |---|---|---|
 | `mcp` | `>=2,<3` | PyPI |
-| `loomground-governance` | `>=0.11,<0.12` | `3eed4ca` |
-| `loomground-versum` | `>=0.13,<0.15` | `884cb28` |
-| `loomground-deontic` | `>=0.1,<0.3` | `4c01e03` |
-| `loomground-factual` | `>=0.1,<0.2` | `514c75a` |
-| `loomground-epistemic` | `>=0.1,<0.2` | `2c1dc8e` |
+| `loomground-governance` | `>=0.11,<0.12` | `ff2afcd` |
+| `loomground-versum` | `>=0.13,<0.15` | `eaf316d` |
+| `loomground-deontic` | `>=0.1,<0.3` | `0f57e8d` |
+| `loomground-factual` | `>=0.1,<0.3` | `ebf9fe1` |
+| `loomground-epistemic` | `>=0.1,<0.3` | `10a3d69` |
 | `loomground-norm` | `>=0.1,<0.2` | `9d5f68f` |
 | `loomground-solver` | `>=0.5,<0.7` | `2cdf037` |
-| `loomground-ingest` | `>=0.2,<0.4` | `e741c28` |
+| `loomground-ingest` | `>=0.2,<0.4` | `9a99494` |
 | `loomground-brief` | `>=0.1,<0.3` | `f9a092d` |
 | `loomground-collapse` | `>=0.1,<0.3` | `8469398` |
 | `loomground-escalation` | `>=0.1,<0.3` | `cd2a10a` |
@@ -35,7 +35,7 @@ the table below is a reading of them.
 | `obligation-discharge` | `>=0.1,<0.2` | `4030c2d` |
 | `effect-reconciliation` | `>=0.2,<0.3` | `a5164fb` |
 | `enforcement-posture` | `>=0.5,<0.6` | `5e0096c` |
-| `5d-nd` | `>=0.1,<0.3` | `21c3772` |
+| `5d-nd` | `>=0.1,<0.3` | `12fbde0` |
 | `loomground-audit-chain` | `>=0.1,<0.2` | `7a6e7a4` |
 | `loomground-lock` | `>=0.1,<0.3` | `f99e24b` |
 | `loomground-lane` | `>=0.1,<0.2` | `9bac236` |
