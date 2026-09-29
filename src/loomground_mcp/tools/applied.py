@@ -163,7 +163,7 @@ def _declared_team_inventory(a2a: Any) -> Any:
         tools=(fn.__name__ for fn in ALL),
         skills=(item["name"] for item in skill_index if not item.get("private")),
         contracts=repos,
-        distributions={"loomground-plugins", "loomground-patchbay", "loomground-mcp"} & repos,
+        distributions={"loomground-plugins", "loomground-mcp"} & repos,
     )
 
 
