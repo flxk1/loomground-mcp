@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-25",
+  "generated": "2026-09-29",
   "repos": {
     "loomground": {
       "version": null,
@@ -18,9 +18,9 @@
       ]
     },
     "loomground-governance": {
-      "version": "0.11.1",
-      "tag": "loomground-governance-v0.11.1",
-      "commit": "82c7613e4a2247218a7281dd99933ed7c9e31218",
+      "version": "0.11.3",
+      "tag": "loomground-governance-v0.11.3",
+      "commit": "ff2afcde03131859d21fc7195697e799aa65a9be",
       "package": "loomground-governance",
       "pypi": false,
       "family": "Standard",
@@ -30,9 +30,9 @@
       ]
     },
     "loomground-factual": {
-      "version": "0.1.0",
-      "tag": "factual-v0.1.0",
-      "commit": "db60a0592eb7741732944f05279b27def0c9685b",
+      "version": "0.2.0",
+      "tag": "factual-v0.2.0",
+      "commit": "ebf9fe19d518dde0aad08962632d95f9d97ee31c",
       "package": "loomground-factual",
       "pypi": false,
       "family": "Standard/language planes",
@@ -44,9 +44,9 @@
       ]
     },
     "loomground-deontic": {
-      "version": "0.2.1",
-      "tag": "loomground-deontic-v0.2.1",
-      "commit": "319e218500da42dea693830ff790343aa340bd60",
+      "version": "0.2.2",
+      "tag": "loomground-deontic-v0.2.2",
+      "commit": "0f57e8d2c02f288169d76e3ec93714b0d3f00ea2",
       "package": "loomground-deontic",
       "pypi": false,
       "family": "Standard/language planes",
@@ -59,9 +59,9 @@
       ]
     },
     "loomground-epistemic": {
-      "version": "0.1.0",
-      "tag": "epistemic-v0.1.0",
-      "commit": "2c1dc8ea8278fe3d1aeffa470319573c53dee932",
+      "version": "0.2.0",
+      "tag": "epistemic-v0.2.0",
+      "commit": "10a3d6948eaf20092c49fc72efa98d43a5c2fca3",
       "package": "loomground-epistemic",
       "pypi": false,
       "family": "Standard/language planes",
@@ -73,10 +73,10 @@
       ]
     },
     "loomground-topos": {
-      "version": null,
+      "version": "0.1.0",
       "tag": null,
       "commit": null,
-      "package": null,
+      "package": "loomground-topos",
       "pypi": false,
       "family": "Standard/language planes",
       "tools": [
@@ -107,10 +107,10 @@
       "skills": []
     },
     "skill-governance-block": {
-      "version": null,
+      "version": "0.1.0",
       "tag": null,
       "commit": null,
-      "package": null,
+      "package": "skill-governance-block",
       "pypi": false,
       "family": "Standard/contracts",
       "tools": [],
@@ -127,9 +127,9 @@
       "skills": []
     },
     "loomground-ingest": {
-      "version": "0.3.0",
-      "tag": "loomground-ingest-v0.3.0",
-      "commit": "e741c28f3b4f9cc89e61ae23ff537414ea95cad1",
+      "version": "0.3.1",
+      "tag": "loomground-ingest-v0.3.1",
+      "commit": "9a994941ba2591416ccd90e5561f25eb4145f1cd",
       "package": "loomground-ingest",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -141,9 +141,9 @@
       ]
     },
     "loomground-versum": {
-      "version": "0.14.0",
-      "tag": "loomground-versum-v0.14.0",
-      "commit": "2855a4904bea9ec4cc88e8c3550bd0c20ba4764a",
+      "version": "0.14.1",
+      "tag": "loomground-versum-v0.14.1",
+      "commit": "eaf316d1cf14e5c4af2ba065a27601f1ba7a495d",
       "package": "loomground-versum",
       "pypi": false,
       "family": "Evidence pipeline",
@@ -154,7 +154,9 @@
         "versum_capture",
         "versum_suggest",
         "versum_confirm",
-        "versum_canon"
+        "versum_canon",
+        "versum_coords",
+        "versum_cell"
       ],
       "skills": [
         "loomground-curate",
@@ -319,14 +321,15 @@
       "skills": []
     },
     "5d-nd": {
-      "version": "0.2.0",
-      "tag": "v0.2.0",
-      "commit": "5d8d726675c093fff13cc011b49a22fd60568f22",
+      "version": "0.2.1",
+      "tag": "v0.2.1",
+      "commit": "12fbde031e26c7ed7ec2f1a181dbf0410c92f12b",
       "package": "5d-nd",
       "pypi": false,
       "family": "Assurance artifacts",
       "tools": [
-        "nd_digest"
+        "nd_digest",
+        "nd_resolve"
       ],
       "skills": []
     },
@@ -477,9 +480,9 @@
       "skills": []
     },
     "privacy-shield": {
-      "version": "2.1.1",
-      "tag": "v2.1.1",
-      "commit": "dc71ff0bc1491cc6cfd5f31568c41a3c94d474a0",
+      "version": "2.2.0",
+      "tag": "v2.2.0",
+      "commit": "741670c3325cc80a21163a317ecf83406a87d2d4",
       "package": "privacy-shield",
       "pypi": false,
       "family": "Runtime controls",
@@ -641,8 +644,8 @@
       "consumer": "loomground-epistemic",
       "dependency": "loomground-factual",
       "range": null,
-      "dev_pin": "db60a0592eb7741732944f05279b27def0c9685b",
-      "dev_pin_release": "factual-v0.1.0",
+      "dev_pin": "ebf9fe19d518dde0aad08962632d95f9d97ee31c",
+      "dev_pin_release": "factual-v0.2.0",
       "status": "release"
     },
     {
@@ -729,24 +732,24 @@
       "consumer": "loomground-ingest",
       "dependency": "loomground-deontic",
       "range": null,
-      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
-      "dev_pin_release": "loomground-deontic-v0.2.1",
+      "dev_pin": "0f57e8d2c02f288169d76e3ec93714b0d3f00ea2",
+      "dev_pin_release": "loomground-deontic-v0.2.2",
       "status": "release"
     },
     {
       "consumer": "loomground-ingest",
       "dependency": "loomground-factual",
       "range": null,
-      "dev_pin": "db60a0592eb7741732944f05279b27def0c9685b",
-      "dev_pin_release": "factual-v0.1.0",
+      "dev_pin": "ebf9fe19d518dde0aad08962632d95f9d97ee31c",
+      "dev_pin_release": "factual-v0.2.0",
       "status": "release"
     },
     {
       "consumer": "loomground-ingest",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
-      "dev_pin_release": "loomground-governance-v0.11.1",
+      "dev_pin": "ff2afcde03131859d21fc7195697e799aa65a9be",
+      "dev_pin_release": "loomground-governance-v0.11.3",
       "status": "release"
     },
     {
@@ -849,8 +852,8 @@
       "consumer": "loomground-mcp",
       "dependency": "5d-nd",
       "range": ">=0.1,<0.3",
-      "dev_pin": "5d8d726675c093fff13cc011b49a22fd60568f22",
-      "dev_pin_release": "v0.2.0",
+      "dev_pin": "12fbde031e26c7ed7ec2f1a181dbf0410c92f12b",
+      "dev_pin_release": "v0.2.1",
       "status": "release"
     },
     {
@@ -921,8 +924,8 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-deontic",
       "range": ">=0.1,<0.3",
-      "dev_pin": "319e218500da42dea693830ff790343aa340bd60",
-      "dev_pin_release": "loomground-deontic-v0.2.1",
+      "dev_pin": "0f57e8d2c02f288169d76e3ec93714b0d3f00ea2",
+      "dev_pin_release": "loomground-deontic-v0.2.2",
       "status": "release"
     },
     {
@@ -936,9 +939,9 @@
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-epistemic",
-      "range": ">=0.1,<0.2",
-      "dev_pin": "2c1dc8ea8278fe3d1aeffa470319573c53dee932",
-      "dev_pin_release": "epistemic-v0.1.0",
+      "range": ">=0.1,<0.3",
+      "dev_pin": "10a3d6948eaf20092c49fc72efa98d43a5c2fca3",
+      "dev_pin_release": "epistemic-v0.2.0",
       "status": "release"
     },
     {
@@ -960,9 +963,9 @@
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-factual",
-      "range": ">=0.1,<0.2",
-      "dev_pin": "db60a0592eb7741732944f05279b27def0c9685b",
-      "dev_pin_release": "factual-v0.1.0",
+      "range": ">=0.1,<0.3",
+      "dev_pin": "ebf9fe19d518dde0aad08962632d95f9d97ee31c",
+      "dev_pin_release": "factual-v0.2.0",
       "status": "release"
     },
     {
@@ -977,16 +980,16 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-governance",
       "range": ">=0.11,<0.12",
-      "dev_pin": "82c7613e4a2247218a7281dd99933ed7c9e31218",
-      "dev_pin_release": "loomground-governance-v0.11.1",
+      "dev_pin": "ff2afcde03131859d21fc7195697e799aa65a9be",
+      "dev_pin_release": "loomground-governance-v0.11.3",
       "status": "release"
     },
     {
       "consumer": "loomground-mcp",
       "dependency": "loomground-ingest",
       "range": ">=0.2,<0.4",
-      "dev_pin": "e741c28f3b4f9cc89e61ae23ff537414ea95cad1",
-      "dev_pin_release": "loomground-ingest-v0.3.0",
+      "dev_pin": "9a994941ba2591416ccd90e5561f25eb4145f1cd",
+      "dev_pin_release": "loomground-ingest-v0.3.1",
       "status": "release"
     },
     {
@@ -1041,8 +1044,8 @@
       "consumer": "loomground-mcp",
       "dependency": "loomground-versum",
       "range": ">=0.13,<0.15",
-      "dev_pin": "2855a4904bea9ec4cc88e8c3550bd0c20ba4764a",
-      "dev_pin_release": "loomground-versum-v0.14.0",
+      "dev_pin": "eaf316d1cf14e5c4af2ba065a27601f1ba7a495d",
+      "dev_pin_release": "loomground-versum-v0.14.1",
       "status": "release"
     },
     {
@@ -1153,24 +1156,24 @@
       "consumer": "loomground-solver",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "2a1e8a0b4fe9de6c4d273eb50e401342d6b275fc",
-      "dev_pin_release": "loomground-governance-v0.11.0",
+      "dev_pin": "7f04e1c67694ef3eca995d51a61eabecec4cba7c",
+      "dev_pin_release": "loomground-governance-v0.11.2",
       "status": "release"
     },
     {
       "consumer": "loomground-versum",
       "dependency": "loomground-deontic",
       "range": null,
-      "dev_pin": "4dec997a583faebe915a392747c031c70c11cf3a",
-      "dev_pin_release": "loomground-deontic-v0.2.0",
+      "dev_pin": "0f57e8d2c02f288169d76e3ec93714b0d3f00ea2",
+      "dev_pin_release": "loomground-deontic-v0.2.2",
       "status": "release"
     },
     {
       "consumer": "loomground-versum",
       "dependency": "loomground-governance",
       "range": null,
-      "dev_pin": "2a1e8a0b4fe9de6c4d273eb50e401342d6b275fc",
-      "dev_pin_release": "loomground-governance-v0.11.0",
+      "dev_pin": "ff2afcde03131859d21fc7195697e799aa65a9be",
+      "dev_pin_release": "loomground-governance-v0.11.3",
       "status": "release"
     }
   ],

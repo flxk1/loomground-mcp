@@ -14,7 +14,7 @@ from conftest import PATCH, SOLVER_SAMPLES, TRANSPORT, call
 from loomground_mcp import build_server
 from loomground_mcp.tools import ALL
 
-AHEAD_OF_CATALOGUE: set[str] = {"versum_coords", "versum_cell", "nd_resolve"}
+AHEAD_OF_CATALOGUE: set[str] = set()
 
 
 def test_lists_every_tool_with_plane_and_function():
@@ -34,7 +34,7 @@ def test_loomground_catalogue():
     env = call("loomground_catalogue")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"repos", "pipeline", "patch_from_documents", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "cf221b464f41bd5e0f77a733aa0d3d8bf0bab8c0"}
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "987eb6fc533b834c00e98c25aa7f314e2c95f391"}
     names = [x["repo"] for x in r["repos"]]
     assert len(names) == 42 and names[0] == "loomground" and "loomground-mcp" in names
     assert {"repo", "family", "role", "description", "pipeline_position", "depends_on", "tools", "skills", "install", "url"} == set(r["repos"][0])
@@ -53,7 +53,7 @@ def test_loomground_releases():
     env = call("loomground_releases")
     r = env["result"]
     assert env["plane"] == "loomground" and set(r) == {"generated", "repos", "edges", "accepted", "skipped", "source"}
-    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "cf221b464f41bd5e0f77a733aa0d3d8bf0bab8c0"}
+    assert r["source"] == {"repo": "https://github.com/flxk1/loomground", "commit": "987eb6fc533b834c00e98c25aa7f314e2c95f391"}
     assert len(r["repos"]) == 42 and len(r["edges"]) == 77 and len(r["accepted"]) == 1 and r["skipped"] == []
     assert sum(1 for x in r["repos"].values() if x["tag"]) == 34 and all(set(x) == {"version", "tag", "commit", "package", "pypi", "family", "tools", "skills"} for x in r["repos"].values())
     d = r["repos"]["loomground-deontic"]
