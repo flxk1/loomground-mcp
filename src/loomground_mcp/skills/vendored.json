@@ -284,9 +284,9 @@
     {
       "repo": "loomground-versum",
       "name": "loomground-curate",
-      "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
+      "commit": "d4491b6f896ef2d3acd2d36eccb07af48b477a29",
       "source": "skills/loomground-curate",
-      "url": "https://github.com/flxk1/loomground-versum/tree/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-curate",
+      "url": "https://github.com/flxk1/loomground-versum/tree/d4491b6f896ef2d3acd2d36eccb07af48b477a29/skills/loomground-curate",
       "files": {
         "SKILL.md": "2fe61c699c81ebbe558bf61543ac90392419a047d3956128b4e5269c37f92be6"
       }
@@ -294,9 +294,9 @@
     {
       "repo": "loomground-versum",
       "name": "loomground-enrich",
-      "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
+      "commit": "d4491b6f896ef2d3acd2d36eccb07af48b477a29",
       "source": "skills/loomground-enrich",
-      "url": "https://github.com/flxk1/loomground-versum/tree/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-enrich",
+      "url": "https://github.com/flxk1/loomground-versum/tree/d4491b6f896ef2d3acd2d36eccb07af48b477a29/skills/loomground-enrich",
       "files": {
         "SKILL.md": "f74811c8a4ec74bded854a1116b787dbb51c288562e2dd301b836048f2150617",
         "agents/interface.yaml": "c48a053ff2923ed21dc8b5efcae68092f955fed8e1a916269a85cda54d6097d2",
@@ -307,9 +307,9 @@
     {
       "repo": "loomground-versum",
       "name": "loomground-kg",
-      "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
+      "commit": "d4491b6f896ef2d3acd2d36eccb07af48b477a29",
       "source": "skills/loomground-kg",
-      "url": "https://github.com/flxk1/loomground-versum/tree/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-kg",
+      "url": "https://github.com/flxk1/loomground-versum/tree/d4491b6f896ef2d3acd2d36eccb07af48b477a29/skills/loomground-kg",
       "files": {
         "SKILL.md": "cc8d66cca94ea44df81ead2889523d0d5214ec8baa9b2a74355f5ceb75ddc2eb",
         "agents/interface.yaml": "f3480066b1f5f4d3c0094b28ca79d0691b2ef87b5d13b93d5c2a36caa00d5ff3",
@@ -322,9 +322,9 @@
     {
       "repo": "loomground-versum",
       "name": "loomground-kg-chat",
-      "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
+      "commit": "d4491b6f896ef2d3acd2d36eccb07af48b477a29",
       "source": "skills/loomground-kg-chat",
-      "url": "https://github.com/flxk1/loomground-versum/tree/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-kg-chat",
+      "url": "https://github.com/flxk1/loomground-versum/tree/d4491b6f896ef2d3acd2d36eccb07af48b477a29/skills/loomground-kg-chat",
       "files": {
         "SKILL.md": "46065a4a39cede510b1acfad07425decddb119e3db615ee77e4f64c150339725",
         "agents/interface.yaml": "489dd7bace7dcf3a5ad9b901205c91877a37cca6df1a16f2ca51a13f6aacc7f2",
@@ -335,9 +335,9 @@
     {
       "repo": "loomground-versum",
       "name": "loomground-knowledge-write",
-      "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
+      "commit": "d4491b6f896ef2d3acd2d36eccb07af48b477a29",
       "source": "skills/loomground-knowledge-write",
-      "url": "https://github.com/flxk1/loomground-versum/tree/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-knowledge-write",
+      "url": "https://github.com/flxk1/loomground-versum/tree/d4491b6f896ef2d3acd2d36eccb07af48b477a29/skills/loomground-knowledge-write",
       "files": {
         "SKILL.md": "398929b38946c742ae68466005e99dca463c1fe60def2bc2221d09658db3bc86",
         "agents/interface.yaml": "b99a7a153a1cd9ec3e3aebaccc8d06ee44fdceb57f320ca0241fd084735e9e9d",
@@ -349,22 +349,22 @@
     {
       "repo": "loomground-versum",
       "name": "loomground-mental-model",
-      "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
+      "commit": "d4491b6f896ef2d3acd2d36eccb07af48b477a29",
       "source": "skills/loomground-mental-model",
-      "url": "https://github.com/flxk1/loomground-versum/tree/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-mental-model",
+      "url": "https://github.com/flxk1/loomground-versum/tree/d4491b6f896ef2d3acd2d36eccb07af48b477a29/skills/loomground-mental-model",
       "files": {
         "SKILL.md": "cba399a96802b2d5109b964076dbb7c9b6f63aba17a0df9d9d70cf1b20e52c79",
         "agents/interface.yaml": "7a9522392efd9f4ef895fb79f19bd5b1b7974b6def13a327fed47ffdb79df4c9",
         "references/eval.json": "e614c6340091f0d8adeaa5eee7ab8a95dc01e59531e9168578ddd6efd5ff61d3",
-        "references/reference.md": "2021da0236ee2cc9edce547107e16ea792f7dd8ef31b540ca3cf7f9e77a6b9bb"
+        "references/reference.md": "a693339cda6116bdabfb6c78b9404f0f4b00359e78d0ff348d856e71d3c5d768"
       }
     },
     {
       "repo": "loomground-versum",
       "name": "loomground-organise",
-      "commit": "dd12dcecc04c135c52b867a423d202fc831cdaaa",
+      "commit": "d4491b6f896ef2d3acd2d36eccb07af48b477a29",
       "source": "skills/loomground-organise",
-      "url": "https://github.com/flxk1/loomground-versum/tree/dd12dcecc04c135c52b867a423d202fc831cdaaa/skills/loomground-organise",
+      "url": "https://github.com/flxk1/loomground-versum/tree/d4491b6f896ef2d3acd2d36eccb07af48b477a29/skills/loomground-organise",
       "files": {
         "SKILL.md": "ae0d808f8e1f8f1c2e1dd3324cdbce9147b9e0c64cfcee2518f39b29aa878899",
         "agents/interface.yaml": "07b78b7695dba0567644c11c30d25ad6ec8da839afa15e3aa3e9b94e25c8a643",
